@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aday Listesi | Dijital Usta Panel</title>
+    <link rel="stylesheet" href="site.css">
+    <script src="site.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1><a href="/">Dijital Usta Panel</a></h1>
+    </header>
+    <menu><a href="/profil.html">Özgür Kurtuluş</a><a href="/cikis.html">Çıkış</a></menu>
+    <main class="admin">
+        <h2>Yapay Zeka Değerlendirmeleri Listesi</h2>
+        <input type="text" class="tblfilter" placeholder="filtrele" />
+        <table>
+            <thead>
+                <tr>
+                    <th>Yapay Zeka</th>
+                    <th>Aday</th>
+                    <th>Puan</th>
+                    <th>Yorum</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Gemini</td>
+                    <td><a href="/firma-aday-profil.html">Özgür Kurtuluş</a></td>
+                    <td>88</td>
+                    <td><span class="truncated" onclick="toggleText(this)">
+                            Yeni mezun aday, güçlü bir akademik altyapıya sahip olup, iyi bir üniversiteden...
+                        </span>
+                        <span class="full" onclick="toggleText(this)"">
+                            Yeni mezun aday, güçlü bir akademik altyapıya sahip olup, iyi bir üniversiteden aldığı
+                            eğitimi e-ticaret sertifikası ile desteklemiştir. Öğrenmeye açık, disiplinli ve gelişime
+                            hevesli yapısıyla iş ortamına hızlı adapte olabileceği öngörülmektedir. Özellikle dijital
+                            dünyaya olan ilgisi ve e-ticaret alanındaki bilgi birikimi, analitik düşünme ve problem
+                            çözme becerileriyle birleştiğinde, ekip çalışmalarına değer katacağı ve kısa sürede yüksek
+                            performans sergileyebileceği değerlendirilmektedir.
+                        </span>
+                    </td>
+                    <td>
+                        <a href=" admin-yapay-zeka-degerledir.html">tekrar değerlendir</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul id="admin-menu">
+            <li><a href="/admin-yapay-zeka-degerledir-toplu.html">Kümülatif Yapay Zeka Değerlendirmesi</a></li>
+        </ul>
+
+    </main>
+    <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır. <a href="/sorular.html">Sorular</a></footer>
+</body>
+
+</html>

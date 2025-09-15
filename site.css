@@ -1,0 +1,237 @@
+* {
+    font-family: sans;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+html {
+    font-size: 16px;
+    line-height: 21px;
+}
+
+body {
+    background-color: #F5F5F5;
+    color: #333;
+}
+
+header,
+footer {
+    background-color: #333;
+    color: #F5F5F5;
+    padding: 34px;
+    height: 88px;
+
+}
+
+footer a {
+    float: right;
+}
+
+menu {
+    float: right;
+    margin: 13px;
+    margin-top: -44px;
+}
+
+menu a {
+    margin: 5px;
+}
+
+main {
+    padding: 34px;
+    min-height: 300px;
+}
+
+
+.firma {
+    border-top: 13px solid #a244a2;
+}
+
+.admin {
+    border-top: 13px solid #df5959;
+}
+
+.aday {
+    border-top: 13px solid #ffa85b;
+}
+
+a,
+a:visited {
+    color: #2775c8;
+}
+
+h1 {
+    font-size: 44px;
+}
+
+h1 a,
+h1 a:visited {
+    color: #F5F5F5;
+    text-decoration: none;
+    float: left;
+}
+
+h2 {
+    font-size: 34px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-top: 13px;
+    margin-bottom: 5px;
+    padding-top: 8px;
+}
+
+label span {
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 13px;
+    font-weight: bold;
+}
+
+input,
+textarea, select {
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 13px;
+    border-radius: 3px;
+    padding: 5px;
+    border: 1px solid #777;
+    font-size: 19px;
+    width: 555px;
+}
+
+textarea {
+    height: 333px;
+}
+
+input:read-only,
+textarea:read-only {
+    background-color: #ddd;
+}
+
+button {
+    background-color: #FE5200;
+    border: 1px solid #FE5200;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 19px;
+    padding: 13px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    width: fit-content;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-bottom: 21px;
+}
+
+table {
+    margin-top: 21px;
+    margin-bottom: 21px;
+    min-width: 777px;
+    border: 1px solid #999;
+    border-radius: 8px;
+    padding: 8px;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #abc3dd;
+}
+
+
+
+thead tr th {
+    background-color: #789fc9;
+    color: #fff;
+    padding: 8px;
+    text-align: left;
+}
+
+td {
+    padding-block: 13px;
+    padding-inline: 8px;
+}
+
+thead tr th a,
+tbody tr td a {
+    color: #2509a0;
+    padding: 8px;
+    font-size: 15px;
+}
+
+tbody tr td button {
+    padding: 5px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-size: 15px;
+}
+
+section a {
+    display: block;
+    margin-top: 21px;
+}
+
+hr {
+    height: 5px;
+    width: 444px;
+    color: #FE5200;
+    background-color: #FE5200;
+    margin-top: 21px;
+    margin-bottom: 21px;
+    border: 1px solid #FE5200;
+}
+
+ul#firma-menu,
+ul#admin-menu {
+    margin-top: 21px;
+}
+
+ul#firma-menu li,
+ul#admin-menu li {
+    list-style: none;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+ul li a {
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid #2775c8;
+    padding: 8px;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+details {
+    margin-bottom: 21px;
+}
+
+summary {
+    margin-bottom: 13px;
+    cursor: pointer;
+}
+
+table p {
+    font-size: 13px;
+    color: #666;
+}
+
+.truncated {
+    max-width: 555px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.full {
+    max-width: 555px;
+    display: none;
+    cursor: pointer;
+}
