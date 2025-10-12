@@ -64,8 +64,9 @@ function buildUserMenu() {
   let $m = document.querySelector("menu");
   if (!$m) { return; }
 
-  let role = USER.role.toLowerCase() === "editor" ? "admin" : USER.role.toLowerCase();
-  $m.innerHTML = `<a href="${role}-profile.html?id=${USER.id}">${USER.name}</a><a href="logout.html">Çıkış</a>`;
+  let role = USER.role === "editor" ? "admin" : USER.role;
+  let id = USER.role === "company" ? USER.companyId : USER.id;
+  $m.innerHTML = `<a href="${role}-profile.html?id=${id}">${USER.name}</a><a href="logout.html">Çıkış</a>`;
 }
 
 function buildRoleMenu() {
@@ -73,7 +74,7 @@ function buildRoleMenu() {
   if (!$m) { return; }
   if (!$m.firstElementChild) { return; }
 
-  let items = MENU[USER.role.toLowerCase()];
+  let items = MENU[USER.role];
   items.forEach(i => {
     let $a = a(i.text, i.href + ".html");
     $m.firstElementChild.append($a);

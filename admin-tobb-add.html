@@ -35,7 +35,7 @@
       let $msg = $btn.nextElementSibling;
       $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
-          lines: inner("lines")
+          lines: val("lines")
         };
 
         req.lines = (req.lines || "").trim();

@@ -120,12 +120,6 @@ function val(id) {
   return undefined;
 }
 
-function inner(id) {
-  let $i = document.getElementById(id);
-  if ($i) { return ($i.textContent || "").trim(); }
-  return undefined;
-}
-
 function formatDateLong(dateStr) {
   if (!dateStr) return "-";
   let dt = new Date(dateStr);
