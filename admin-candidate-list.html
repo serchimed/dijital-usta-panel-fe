@@ -47,20 +47,20 @@
         tbody.innerHTML = "";
 
         for (let candidate of result.data) {
-          let tr = tr();
-          tr.append(tda(candidate.displayName, "admin-candidate-profile.html?id=" + candidate.id));
-          tr.append(td(candidate.gender));
+          let $tr = tr();
+          $tr.append(tda(candidate.displayName, "admin-candidate-profile.html?id=" + candidate.id));
+          $tr.append(td(candidate.gender));
           let bd = candidate.birthDate ? new Date(candidate.birthDate) : null;
           let bdText = bd && !isNaN(bd) ? bd.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' }) : '';
-          tr.append(td(bdText));
-          tr.append(td(candidate.city));
-          tr.append(td(candidate.county));
-          tr.append(td(candidate.educationLevel));
-          tr.append(td(candidate.university));
-          tr.append(td(candidate.major));
-          tr.append(td(candidate.status));
+          $tr.append(td(bdText));
+          $tr.append(td(candidate.city));
+          $tr.append(td(candidate.county));
+          $tr.append(td(candidate.educationLevel));
+          $tr.append(td(candidate.university));
+          $tr.append(td(candidate.major));
+          $tr.append(td(candidate.status));
 
-          let btn = createBlockButton(
+          let $btn = createBlockButton(
             candidate.id,
             candidate.isBlocked,
             candidate.displayName,
@@ -68,9 +68,9 @@
             "Member/Unblock",
             "memberId"
           );
-          tr.append(tdbtn(btn));
+          $tr.append(tdbtn($btn));
 
-          tbody.append(tr);
+          tbody.append($tr);
         }
       } else {
         let errText = "Bir hata oluştu.";

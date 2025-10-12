@@ -46,16 +46,16 @@
         tbody.innerHTML = "";
 
         for (let admin of result.data) {
-          let tr = tr();
-          tr.append(tda(admin.displayName, "admin-profile.html?id=" + admin.id));
-          tr.append(td(admin.role));
-          tr.append(td(admin.companyName));
-          tr.append(tda(admin.email, "mailto:" + admin.email));
-          tr.append(tda(admin.phone, "tel:" + admin.phone));
+          let $tr = tr();
+          $tr.append(tda(admin.displayName, "admin-profile.html?id=" + admin.id));
+          $tr.append(td(admin.role));
+          $tr.append(td(admin.companyName));
+          $tr.append(tda(admin.email, "mailto:" + admin.email));
+          $tr.append(tda(admin.phone, "tel:" + admin.phone));
 
-          tr.append(td(""));
+          $tr.append(td(""));
 
-          let btn = createBlockButton(
+          let $btn = createBlockButton(
             admin.id,
             admin.isBlocked,
             admin.displayName,
@@ -63,8 +63,8 @@
             "Member/Unblock",
             "memberId"
           );
-          tr.append(tdbtn(btn));
-          tbody.append(tr);
+          $tr.append(tdbtn($btn));
+          tbody.append($tr);
         }
       } else {
         let errText = "Bir hata oluştu.";
