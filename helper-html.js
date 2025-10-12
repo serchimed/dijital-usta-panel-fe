@@ -126,6 +126,20 @@ function inner(id) {
   return undefined;
 }
 
+function formatDateLong(dateStr) {
+  if (!dateStr) return "-";
+  let dt = new Date(dateStr);
+  if (isNaN(dt.getTime())) return dateStr;
+  return dt.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+function formatDateInput(dateStr) {
+  if (!dateStr) return "";
+  let dt = new Date(dateStr);
+  if (isNaN(dt.getTime())) return "";
+  return dt.toISOString().split('T')[0];
+}
+
 function checkEmail(email) {
   return email.includes("@") && email.includes(".") && email.indexOf("@") < email.lastIndexOf(".") && email.indexOf(" ") < 0 && email.length >= 5;
 }

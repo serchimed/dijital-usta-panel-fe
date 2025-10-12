@@ -44,9 +44,9 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl) {
   if (!result || result.error || !result.isSuccess) {
     let errText = errorMsg || ERROR_MESSAGE_DEFAULT;
     if (result && Array.isArray(result.errors) && result.errors.length) {
-      errText = result.errors.join(", ");
+      errText = result.errors.map(e => `• ${e}`).join("<br>");
     }
-    $msg.textContent = errText;
+    $msg.innerHTML = errText;
     btn.disabled = false;
   } else {
     $msg.textContent = successMsg;

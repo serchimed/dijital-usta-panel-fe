@@ -61,6 +61,7 @@
 
       document.querySelector("button").addEventListener(CLICK_EVENT, async function () {
         let req = {
+          memberId: USER.id,
           companyId: id,
           companyName: val("companyName"),
           city: val("city"),
@@ -76,15 +77,18 @@
         if (!req.companyName) { errors.push("Lütfen firma adını giriniz."); }
         if (!req.responsibleMemberName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
         if (!req.phone) { errors.push("Lütfen telefon numarası giriniz."); }
-        if (!checkEmail(req.email)) { errors.push("Lütfen geçerli eposta adresini giriniz."); }
+        if (!req.email) { errors.push("Lütfen eposta adresini giriniz."); }
+        else if (!checkEmail(req.email)) { errors.push("Lütfen geçerli eposta adresini giriniz."); }
         if (!req.city) { errors.push("Lütfen il bilgisini giriniz."); }
         if (!req.sector) { errors.push("Lütfen sektör bilgisini giriniz."); }
         if (!req.webUrl) { errors.push("Lütfen web sitesi bilgisini giriniz."); }
+        else if (!checkUrl(req.webUrl)) { errors.push("Lütfen geçerli bir web sitesi URL'si giriniz."); }
         if (!req.trendyolUrl) { errors.push("Lütfen Trendyol satıcı profili bilgisini giriniz."); }
+        else if (!checkUrl(req.trendyolUrl)) { errors.push("Lütfen geçerli bir Trendyol profil URL'si giriniz."); }
 
         if (errors.length) {
           let p = this.nextElementSibling;
-          p.innerHTML = errors.join("<br>");
+          p.innerHTML = errors.map(e => `• ${e}`).join("<br>");
           return;
         }
 

@@ -97,9 +97,8 @@ async function fillSpans(url, key = "memberId") {
       let $s = document.getElementById(prop);
       if ($s) {
         let v = result.data[prop] ?? "-";
-        if (prop == "birthDate" && v) {
-          let dt = new Date(v);
-          v = dt.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' });
+        if ((prop === "birthDate" || prop.toLowerCase().includes("date")) && v && v !== "-") {
+          v = formatDateLong(v);
         }
 
         let tag = ($s.tagName || "").toLowerCase();
@@ -140,6 +139,8 @@ async function fillInputs(url, key = "memberId") {
 
           if (tag === "textarea") {
             $i.value = v ?? "";
+          } else if (tag === "input" && type === "date" && v) {
+            $i.value = formatDateInput(v);
           } else if (tag === "input" && (type === "checkbox" || type === "radio")) {
             if (type === "checkbox") {
               $i.checked = Boolean(v);

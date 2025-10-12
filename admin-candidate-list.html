@@ -50,9 +50,7 @@
           let $tr = tr();
           $tr.append(tda(candidate.displayName, "admin-candidate-profile.html?id=" + candidate.id));
           $tr.append(td(candidate.gender));
-          let bd = candidate.birthDate ? new Date(candidate.birthDate) : null;
-          let bdText = bd && !isNaN(bd) ? bd.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' }) : '';
-          $tr.append(td(bdText));
+          $tr.append(td(formatDateLong(candidate.birthDate)));
           $tr.append(td(candidate.city));
           $tr.append(td(candidate.county));
           $tr.append(td(candidate.educationLevel));
