@@ -23,7 +23,7 @@
     </div>
 
     <label>Profil Fotoğrafı
-      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/gif">
+      <input type="file" id="fileInput" accept="image/jpeg,image/png" />
     </label>
 
     <button id="submitBtn" disabled>Güncelle</button>
@@ -36,12 +36,10 @@
       let fileInput = document.getElementById('fileInput');
       let imagePreview = document.getElementById('imagePreview');
       let submitBtn = document.getElementById('submitBtn');
-
       let base64String = null;
-      let candidateId = new URLSearchParams(location.search).get('id');
 
       try {
-        let result = await api('Candidate/Image', { id: candidateId });
+        let result = await api('Candidate/Image', { memberId: USER.id });
         if (result && result.image) {
           base64String = result.image;
           imagePreview.innerHTML = `<img src="${base64String}" alt="Profil Fotoğrafı">`;
@@ -80,6 +78,27 @@
           return;
         }
 
+        let img = new Image();
+        img.onload = function () {
+          if (this.width < 150 || this.height < 150) {
+            let p = submitBtn.nextElementSibling;
+            p.innerHTML = '• Görsel boyutu çok küçük. Minimum 150x150 piksel olmalıdır.';
+            return;
+          }
+
+          if (this.width > 1500 || this.height > 1500) {
+            let p = submitBtn.nextElementSibling;
+            p.innerHTML = '• Görsel boyutu çok büyük. Maksimum 1500x1500 piksel olmalıdır.';
+            return;
+          }
+        };
+
+        img.onerror = function () {
+          let p = submitBtn.nextElementSibling;
+          p.innerHTML = '• Görsel dosyası okunamadı.';
+        };
+
+        img.src = URL.createObjectURL(file);
         convertToBase64(file);
       }
 
@@ -111,8 +130,8 @@
 
         try {
           let result = await api('Candidate/ImageChange', {
-            id: candidateId,
-            image: base64String
+            memberId: USER.id,
+            imageBase64: base64String
           });
 
           if (!result || result.error || !result.isSuccess) {
@@ -120,9 +139,7 @@
             btn.disabled = false;
           } else {
             p.innerText = 'Profil fotoğrafınız başarıyla güncellendi!';
-            setTimeout(() => {
-              location.href = 'candidate-profile.html?id=' + candidateId;
-            }, 1500);
+            setTimeout(() => { location.href = 'candidate-profile.html'; }, 1234);
           }
         } catch (error) {
           console.error('Upload error:', error);

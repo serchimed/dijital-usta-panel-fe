@@ -3,7 +3,7 @@ async function initAuth() {
   USER = await api("Member/Check");
   if (!USER || USER.error) {
     showOverMsg("Sisteme giriş yapmanız gerekiyor...");
-    setTimeout(() => window.location.replace("demand-password.html"), 1000);
+    setTimeout(() => window.location.replace("demand-password.html"), 789);
     return;
   }
 
@@ -14,7 +14,7 @@ async function initAuth() {
   if (!PUBLIC_PAGES.includes(page)) {
     if (!USER.isAuthenticated) {
       showOverMsg("Sisteme giriş yapmanız gerekiyor...");
-      setTimeout(() => window.location.replace("demand-password.html"), 1000);
+      setTimeout(() => window.location.replace("demand-password.html"), 789);
       return;
     }
     buildUserMenu();
@@ -22,7 +22,7 @@ async function initAuth() {
     let allowedRoles = PAGE_ROLES[page];
     if (!allowedRoles || !allowedRoles.includes(USER.role.toLowerCase())) {
       showOverMsg("Access denied. Redirecting...");
-      setTimeout(() => window.location.replace("access-denied.html"), 1000);
+      setTimeout(() => window.location.replace("access-denied.html"), 789);
       return;
     }
 

@@ -1,4 +1,4 @@
-let MODAL_AUTO_CLOSE_DELAY = 2000;
+let MODAL_AUTO_CLOSE_DELAY = 2345;
 let CSS_CLASSES = {
   modal: "modal",
   modalOverlay: "modal-overlay",

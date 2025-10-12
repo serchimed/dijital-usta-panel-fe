@@ -51,6 +51,7 @@
 
       $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
+          memberId: USER.id,
           experienceId: experienceId,
           company: val("company"),
           start: val("start"),

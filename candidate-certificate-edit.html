@@ -53,6 +53,7 @@
 
       $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
+          memberId: USER.id,
           certificateId: certificateId,
           name: val("name"),
           organization: val("organization"),
