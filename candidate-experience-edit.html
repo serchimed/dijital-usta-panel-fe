@@ -45,7 +45,7 @@
   <script src="site.js"></script>
   <script>
     onAuthReady(async () => {
-      let experienceId = await fillInputs("MemberExperience/Get");
+      let experienceId = await fillInputs("CandidateExperience/Get");
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
 
@@ -88,7 +88,7 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "MemberExperience/Edit", req, "Deneyim başarıyla güncellendi.", "Deneyim güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html");
+        await apiBtn(this, "CandidateExperience/Update", req, "Deneyim başarıyla güncellendi.", "Deneyim güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html");
       });
     });
   </script>

@@ -41,7 +41,7 @@
   <script src="site.js"></script>
   <script>
     onAuthReady(async () => {
-      let certificateId = await fillInputs("MemberCertificate/Get");
+      let certificateId = await fillInputs("CandidateCertificate/Get");
 
       let $year = document.getElementById("year");
       if ($year) {
@@ -86,7 +86,7 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "MemberCertificate/Edit", req, "Sertifika başarıyla güncellendi.", "Sertifika güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html");
+        await apiBtn(this, "CandidateCertificate/Update", req, "Sertifika başarıyla güncellendi.", "Sertifika güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html");
       });
     });
   </script>

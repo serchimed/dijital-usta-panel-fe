@@ -33,13 +33,14 @@ async function loadTables() {
   for (let tbody of tBodies) {
     tbody.innerHTML = getMsgLine("Yükleniyor...");
 
-    let data = await api(`${tbody.id}/GetAll`, req);
-    if (!data || data.error) {
+    let result = await api(`${tbody.id}/GetAll`, req);
+    if (!result || result.error || !result.isSuccess) {
       tbody.innerHTML = getMsgLine("Veri yüklenemedi");
       tbody.dispatchEvent(new CustomEvent('tableLoaded', { detail: { data: null, error: true } }));
       continue;
     }
 
+    let data = result.data;
     if (!Array.isArray(data) || data.length === 0) {
       tbody.innerHTML = getMsgLine("Veri bulunamadı");
       tbody.dispatchEvent(new CustomEvent('tableLoaded', { detail: { data: [], error: false } }));

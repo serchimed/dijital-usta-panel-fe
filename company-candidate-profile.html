@@ -117,12 +117,35 @@
       </table>
     </details>
 
+    <button>Favorilere Ekle</button>
+    <p></p>
+
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
     onAuthReady(async () => {
-      await fillSpans("Candidate/Get");
+      let candidateId = await fillSpans("Candidate/Get");
+
+      let $btn = document.querySelector("button");
+      let $msg = $btn.nextElementSibling;
+
+      $btn.addEventListener(CLICK_EVENT, async function () {
+        if (!USER.companyId || !candidateId) {
+          $msg.innerText = "Firma bilgisi alınamadı.";
+          return;
+        }
+
+        if (!confirm("Bu adayı favorilerinize eklemek istediğinizden emin misiniz?")) {
+          return;
+        }
+
+        $msg.textContent = "";
+        await apiBtn(this, "CompanyFavorite/Add", {
+          memberId: candidateId,
+          companyId: USER.companyId
+        }, "Favorilere başarıyla eklendi", "İşlem başarısız oldu, lütfen tekrar deneyiniz.");
+      });
     });
   </script>
 </body>
