@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aday Profili Güncelle | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <div id="msg"></div>
+    <h2>Aday Profili Güncelle</h2>
+
+    <label>Adı Soyadı
+      <input type="text" id="displayName">
+    </label>
+
+    <label>Doğum Tarihi
+      <input type="text" id="birthDate">
+    </label>
+
+    <label>Cinsiyet
+      <input type="text" id="gender">
+    </label>
+
+    <label>Eğitim Durumu
+      <input type="text" id="educationLevel">
+    </label>
+
+    <label>Üniversite Adı
+      <input type="text" id="university">
+    </label>
+
+    <label>Bölümü
+      <input type="text" id="major">
+    </label>
+
+    <label>Sınıfı
+      <input type="text" id="classYear">
+    </label>
+
+    <label>Aday İli
+      <input type="text" id="city">
+    </label>
+
+    <label>Aday İlçesi
+      <input type="text" id="county">
+    </label>
+
+    <label>Seyahat Engeli Var Mı?
+      <input type="text" id="travelWillingness">
+    </label>
+
+    <label>Çalışmak İstediği Sektör
+      <input type="text" id="willingSector" />
+    </label>
+
+    <button>Kaydet</button>
+    <p></p>
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      let id = await fillInputs("Candidate/Get");
+
+      document.querySelector("button").addEventListener("click", async function () {
+        let req = {
+          memberId: id,
+          displayName: val("displayName"),
+          birthDate: val("birthDate"),
+          gender: val("gender"),
+          educationLevel: val("educationLevel"),
+          university: val("university"),
+          major: val("major"),
+          classYear: val("classYear"),
+          city: val("city"),
+          county: val("county"),
+          travelWillingness: val("travelWillingness"),
+          willingSector: val("willingSector")
+        };
+
+        let errors = [];
+        if (!req.displayName) { errors.push("Lütfen adınızı ve soyadınızı giriniz."); }
+        if (!req.birthDate) { errors.push("Lütfen doğum tarihinizi giriniz."); }
+        if (!req.gender) { errors.push("Lütfen cinsiyetinizi giriniz."); }
+        if (!req.educationLevel) { errors.push("Lütfen eğitim durumunuzu giriniz."); }
+        if (!req.university) { errors.push("Lütfen üniversite adını giriniz."); }
+        if (!req.major) { errors.push("Lütfen bölüm bilgisini giriniz."); }
+        if (!req.classYear) { errors.push("Lütfen sınıf bilgisini giriniz."); }
+        if (!req.city) { errors.push("Lütfen il bilgisini giriniz."); }
+        if (!req.county) { errors.push("Lütfen ilçe bilgisini giriniz."); }
+        if (!req.travelWillingness) { errors.push("Lütfen seyahat engeli bilgisini giriniz."); }
+
+        if (errors.length) {
+          let p = this.nextElementSibling;
+          p.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          return;
+        }
+
+        this.disabled = true;
+        let p = this.nextElementSibling;
+        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
+        let result = await api("Candidate/Update", req);
+        if (!result || result.error || !result.isSuccess) {
+          p.innerText = "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.";
+        } else {
+          p.innerText = "Güncelleme başarılı.";
+          setTimeout(() => { location.href = "candidate-profile.html?id=" + id; }, 1000);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

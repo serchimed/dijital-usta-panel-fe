@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firma Profili | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <div id="msg"></div>
+    <h2>Firma Profili</h2>
+
+    <label>Firma Adı
+      <span id="companyName"></span>
+    </label>
+
+    <label>İl
+      <span id="city"></span>
+    </label>
+
+    <label>Sektör
+      <span id="sector"></span>
+    </label>
+
+    <label>Yetkili Adı Soyadı
+      <span id="responsibleMemberName"></span>
+    </label>
+
+    <label>Yetkili Eposta Adresi
+      <span id="email"></span>
+    </label>
+
+    <label>Yetkili Telefonu
+      <span id="phone"></span>
+    </label>
+
+    <label>Web Sitesi
+      <span id="webUrl"></span>
+    </label>
+
+    <label>Trendyol Satıcı Profili
+      <span id="trendyolUrl"></span>
+    </label>
+
+    <label>Favori Adaylar</label>
+    <table class="load">
+      <thead>
+        <tr>
+          <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
+          <th id="city">İl</th>
+          <th id="county">İlçe</th>
+          <th id="birthDate">Doğum Tarihi</th>
+          <th id="sector">Çalışmak İstediği Sektör</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="CompanyFavorite"></tbody>
+    </table>
+
+    <a href="company-profile-edit.html" class="qs">Güncelle</a>
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      await fillSpans("Company/Get", "companyId");
+
+      let $tbody = document.getElementById("CompanyFavorite");
+      if ($tbody) {
+        $tbody.addEventListener('tableLoaded', (e) => {
+          let data = e.detail.data;
+          if (!data || data.length === 0) { return; }
+
+          let rows = e.target.querySelectorAll('tr');
+          rows.forEach((tr, index) => {
+            let item = data[index];
+            if (item && item.memberId && item.companyId) {
+              let $favoriteBtn = createFavoriteButton(item.memberId, item.companyId, item.displayName || "Bu aday");
+              let $interviewBtn = createInterviewScheduleButton(item.memberId, item.companyId, item.displayName || "Bu aday");
+              let $hireBtn = createHireCandidateButton(item.memberId, item.companyId, item.displayName || "Bu aday");
+
+              let $td = document.createElement("td");
+              $td.append($favoriteBtn, $interviewBtn, $hireBtn);
+              tr.append($td);
+            }
+          });
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

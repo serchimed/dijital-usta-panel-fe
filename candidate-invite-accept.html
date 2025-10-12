@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Davet Kabul | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>Davet Kabul</h2>
+
+    <label for="email">E-posta
+      <input type="email" id="email" />
+    </label>
+
+    <label for="letter">Mektup (max 500 kelime)
+      <textarea id="letter"></textarea>
+    </label>
+
+    <button>Kaydet ve Giriş Yap</button>
+    <p></p>
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(() => {
+      let prms = new URLSearchParams(window.location.search);
+      let token = prms.get("ref");
+      if (!token) { window.location.href = "index.html"; }
+
+      let $btn = document.querySelector("button");
+      let $msg = $btn.nextElementSibling;
+      $btn.addEventListener("click", async function () {
+        let req = {
+          token: token,
+          email: val("email"),
+          letter: valin("letter")
+        };
+
+        let errors = [];
+        if (!req.email) { errors.push("Lütfen e-posta adresini giriniz."); }
+
+        if (req.email && !checkEmail(req.email)) {
+          errors.push("Lütfen geçerli bir e-posta adresi giriniz.");
+        }
+
+        if (req.letter) {
+          let wordCount = req.letter.split(/\s+/).filter(Boolean).length;
+          if (wordCount > 500) {
+            errors.push(`Mektup en fazla 500 kelime olmalıdır. (Şu an: ${wordCount})`);
+          }
+        }
+
+        if (errors.length) {
+          $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          return;
+        }
+
+        $msg.textContent = "";
+        this.disabled = true;
+        let p = this.nextElementSibling;
+        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
+        let result = await api("Candidate/Add", req);
+        if (!result || result.error || !result.isSuccess) {
+          p.innerText = "Davet kabul başarısız oldu, lütfen tekrar deneyiniz.";
+          this.disabled = false;
+        } else {
+          p.innerText = "Davet başarıyla kabul edildi.";
+          setTimeout(() => { location.href = "index.html"; }, 1000);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOBB Eğitiminden Geçen Adayları Davet Et | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>TOBB Eğitiminden Geçen Adayları Davet Et</h2>
+
+    <label for="eposta">Seçilen Adayların E-posta Adresleri ve Puanları
+      <br />
+      (Her satıra bir aday gelecek şekilde yazınız. Örnek: aday@gmail.com,85)
+      <textarea id="lines"></textarea>
+    </label>
+
+    <button>Kaydet</button>
+    <p></p>
+
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(() => {
+      let $btn = document.querySelector("button");
+      let $msg = $btn.nextElementSibling;
+      $btn.addEventListener("click", async function () {
+        let req = {
+          lines: valin("lines")
+        };
+
+        req.lines = (req.lines || "").trim();
+
+        // Boş textarea kontrolü
+        if (!req.lines) {
+          $msg.innerHTML = "• Lütfen e-posta adreslerini ve puanlarını giriniz.";
+          return;
+        }
+
+        // Satır satır validasyon
+        const rows = req.lines.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        const errs = [];
+        const normalized = [];
+
+        rows.forEach((line, idx) => {
+          const i = idx + 1;
+          const parts = line.split(",").map(s => s.trim());
+
+          if (parts.length !== 2) {
+            errs.push(`Satır ${i}: "eposta,puan" biçiminde olmalıdır.`);
+            return;
+          }
+
+          const email = parts[0];
+          const scoreStr = parts[1];
+          const score = Number(scoreStr);
+
+          if (!checkEmail(email)) {
+            errs.push(`Satır ${i}: Geçersiz e-posta (${email}).`);
+          }
+          if (!Number.isFinite(score) || score < 0 || score > 100) {
+            errs.push(`Satır ${i}: Puan 0-100 arasında olmalıdır (${scoreStr}).`);
+          }
+
+          normalized.push(`${email},${scoreStr}`);
+        });
+
+        // Hata varsa göster
+        if (errs.length) {
+          $msg.innerHTML = errs.map(e => `• ${e}`).join("<br>");
+          return;
+        }
+
+        // Hata yoksa API çağrısı yap
+        req.lines = normalized.join("\n");
+        $msg.textContent = "";
+        this.disabled = true;
+        let p = this.nextElementSibling;
+        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
+        let result = await api("Member/AddTobb", req);
+        if (!result || result.error || !result.isSuccess) {
+          p.innerText = "Aday listesini ekleme başarısız oldu, lütfen tekrar deneyiniz.";
+        } else {
+          p.innerText = "Adaylar başarıyla eklendi.";
+          setTimeout(() => { location.href = "admin-candidate-list.html"; }, 1000);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

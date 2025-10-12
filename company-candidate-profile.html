@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aday Profili | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <div id="msg"></div>
+    <h2>Aday Profili</h2>
+
+    <label for="image">
+      <img id="image" />
+    </label>
+
+    <label>Adı Soyadı
+      <span id="displayName"></span>
+    </label>
+
+    <details open>
+      <summary>Kişisel Bilgiler</summary>
+
+      <label>Doğum Tarihi
+        <span id="birthDate"></span>
+      </label>
+
+      <label>Cinsiyet
+        <span id="gender"></span>
+      </label>
+
+      <label>Aday İli
+        <span id="city"></span>
+      </label>
+
+      <label>Aday İlçesi
+        <span id="county"></span>
+      </label>
+    </details>
+
+    <details open>
+      <summary>Eğitim Bilgileri</summary>
+
+      <label>Eğitim Durumu
+        <span id="educationLevel"></span>
+      </label>
+
+      <label>Üniversite Adı
+        <span id="university"></span>
+      </label>
+
+      <label>Bölümü
+        <span id="major"></span>
+      </label>
+
+      <label>Sınıfı
+        <span id="classYear"></span>
+      </label>
+
+      <label>Yabancı Diller
+        <span id="languages"></span>
+      </label>
+    </details>
+
+    <details open>
+      <summary>Kariyer Bilgileri</summary>
+
+      <label>Seyahat Engeli Var Mı?
+        <span id="travelWillingness"></span>
+      </label>
+
+      <label>Çalışmak İstediği Sektör
+        <span id="willingSector"></span>
+      </label>
+
+      <label>Motivasyon Mektubu
+        <textarea readonly id="motivationLetter"></textarea>
+      </label>
+    </details>
+
+    <details open>
+      <summary>Deneyimler</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="company">Önceki Çalıştığı Firma</th>
+            <th id="start">Başlangıç Tarihi</th>
+            <th id="end">Bitiş Tarihi</th>
+            <th id="position">Pozisyon</th>
+            <th id="description">Açıklama</th>
+          </tr>
+        </thead>
+        <tbody id="CandidateExperience"></tbody>
+      </table>
+    </details>
+
+    <details open>
+      <summary>Sertifikalar</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="name">Sertifika</th>
+            <th id="organization">Veren Kurum</th>
+            <th id="year">Alındığı Yıl</th>
+            <th id="description">Açıklama</th>
+          </tr>
+        </thead>
+        <tbody id="CandidateCertificate"></tbody>
+      </table>
+    </details>
+
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      await fillSpans("Candidate/Get");
+    });
+  </script>
+</body>
+
+</html>

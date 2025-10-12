@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editör Davet | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>Editör Davet</h2>
+
+    <label for="companyName">Firma Adı
+      <input type="text" id="companyName" />
+    </label>
+
+    <label for="editorNameSurname">Firma Yetkilisi Adı Soyadı
+      <input type="text" id="editorNameSurname" />
+    </label>
+
+    <label for="phone">Firma Yetkilisi Telefonu
+      <input type="text" id="phone" />
+    </label>
+
+    <label for="email">E-posta
+      <input type="text" id="email" />
+    </label>
+
+    <button>Davet Et</button>
+    <p></p>
+
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(() => {
+      let $btn = document.querySelector("button");
+      let $msg = $btn.nextElementSibling;
+      $btn.addEventListener("click", async function () {
+        let req = {
+          companyName: val("companyName"),
+          editorNameSurname: val("editorNameSurname"),
+          phone: val("phone"),
+          email: val("email")
+        };
+
+        let errors = [];
+        if (!req.companyName) { errors.push("Lütfen çalışılan firma adını giriniz."); }
+        if (!req.editorNameSurname) { errors.push("Lütfen firma yetkilisi adını ve soyadını giriniz."); }
+        if (!req.phone) { errors.push("Lütfen firma yetkilisi telefonunu giriniz."); }
+        else if (!/^(?:\+\s*[1-9](?:\s*\d){1,14}|0\s*[1-9](?:\s*\d){1,14})\s*$/.test(req.phone)) {
+          errors.push("Lütfen geçerli bir telefon numarası giriniz.");
+        }
+        if (!req.email) { errors.push("Lütfen e-posta adresini giriniz."); }
+        else if (!checkEmail(req.email)) { errors.push("Lütfen geçerli bir e-posta adresi giriniz."); }
+
+        if (errors.length) {
+          $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          return;
+        }
+
+        $msg.textContent = "";
+        this.disabled = true;
+        let p = this.nextElementSibling;
+        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
+        let result = await api("Admin/InviteEditor", req);
+        if (!result || result.error || !result.isSuccess) {
+          p.innerText = "Davet gönderme başarısız oldu, lütfen tekrar deneyiniz.";
+        } else {
+          p.innerText = "Davet başarıyla gönderildi.";
+          setTimeout(() => { location.href = "admin-and-editor-list.html"; }, 1000);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

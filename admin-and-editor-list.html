@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adminler ve Editörler | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>Adminler ve Editörler</h2>
+    <p>
+      <a href="admin-editor-invite.html">Editör Davet Et</a>
+      <br />
+    </p>
+    <input type="text" class="tblfilter" placeholder="filtrele" />
+    <table>
+      <thead>
+        <tr>
+          <th>Ad Soyad</th>
+          <th>Rol</th>
+          <th>Organizasyon</th>
+          <th>E-posta</th>
+          <th>Telefon</th>
+          <th>Davet Bilgisi</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      let result = await api("Admin/GetAdmins", {});
+      if (result && result.isSuccess) {
+        let tbody = document.querySelector("table tbody");
+        tbody.innerHTML = "";
+
+        for (let admin of result.data) {
+          let tr = document.createElement("tr");
+
+          tr.append(tda(admin.displayName, "admin-profile.html?id=" + admin.id));
+          tr.append(td(admin.role));
+          tr.append(td(admin.companyName));
+          tr.append(tda(admin.email, "mailto:" + admin.email));
+          tr.append(tda(admin.phone, "tel:" + admin.phone));
+
+          tr.append(td(""));
+
+          let $btn = createBlockButton(
+            admin.id,
+            admin.isBlocked,
+            admin.displayName,
+            "Member/Block",
+            "Member/Unblock",
+            "memberId"
+          );
+          tr.append(tdbtn($btn));
+          tbody.append(tr);
+        }
+      } else {
+        let errText = "Bir hata oluştu.";
+        if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
+        console.error(errText);
+      }
+    });
+  </script>
+</body>
+
+</html>

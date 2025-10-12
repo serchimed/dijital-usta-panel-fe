@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data İşlemleri | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>Data İşlemleri</h2>
+
+    <button id="btnWP">Wordpress Sistemindeki Son Verilerin CSV'sini İndir</button>
+    <p></p>
+
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      let btnWP = document.getElementById("btnWP");
+      btnWP.addEventListener("click", function () {
+        if (!confirm("Wordpress güncel CSV'yi indirmek istediğinize emin misiniz?")) { return; }
+
+        let btn = this;
+        btn.disabled = true;
+        btn.nextElementSibling.innerText = "İşlem yapılıyor, lütfen bekleyiniz.";
+
+
+
+      });
+    });
+  </script>
+</body>
+
+</html>

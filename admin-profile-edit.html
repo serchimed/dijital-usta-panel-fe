@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Profili | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <div id="msg"></div>
+    <h2>Admin Profili Güncelle</h2>
+
+    <label>Adı Soyadı
+      <input type="text" id="displayName" />
+    </label>
+
+    <label>Organizasyon
+      <input type="text" id="companyName" />
+    </label>
+
+    <label>Telefon
+      <input type="text" id="phone" />
+    </label>
+
+    <button>Kaydet</button>
+    <p></p>
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      let id = await fillInputs("Member/GetAdmin");
+
+      document.querySelector("button").addEventListener("click", async function () {
+        let req = {
+          memberId: id,
+          displayName: val("displayName"),
+          companyName: val("companyName"),
+          phone: val("phone")
+        };
+
+        let errors = [];
+        if (!req.companyName) { errors.push("Lütfen organizasyon adını giriniz."); }
+        if (!req.displayName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
+        if (!req.phone) { errors.push("Lütfen telefon numarası giriniz."); }
+        if (errors.length) {
+          let p = this.nextElementSibling;
+          p.innerHTML = errors.join("<br>");
+          return;
+        }
+
+        this.disabled = true;
+        let p = this.nextElementSibling;
+        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
+        let result = await api("Member/AdminEdit", req);
+        if (!result || result.error || !result.isSuccess) {
+          p.innerText = "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.";
+          this.disabled = false;
+        } else {
+          p.innerText = "Güncelleme başarılı.";
+          setTimeout(() => { location.href = "admin-profile.html?id=" + id; }, 1000);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

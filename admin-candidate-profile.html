@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aday Profili | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <div id="msg"></div>
+    <h2>Aday Profili</h2>
+
+    <label for="image">
+      <img id="image" />
+    </label>
+
+    <label>Adı Soyadı
+      <span id="displayName"></span>
+    </label>
+
+    <details open>
+      <summary>Kişisel Bilgiler</summary>
+
+      <label>Email
+        <span id="email"></span>
+      </label>
+
+      <label>Telefon
+        <span id="phone"></span>
+      </label>
+
+      <label>Doğum Tarihi
+        <span id="birthDate"></span>
+      </label>
+
+      <label>Cinsiyet
+        <span id="gender"></span>
+      </label>
+
+      <label>Aday İli
+        <span id="city"></span>
+      </label>
+
+      <label>Aday İlçesi
+        <span id="county"></span>
+      </label>
+
+    </details>
+
+    <details open>
+      <summary>Eğitim Bilgileri</summary>
+
+      <label>Eğitim Durumu
+        <span id="educationLevel"></span>
+      </label>
+
+      <label>Üniversite Adı
+        <span id="university"></span>
+      </label>
+
+      <label>Bölümü
+        <span id="major"></span>
+      </label>
+
+      <label>Sınıfı
+        <span id="classYear"></span>
+      </label>
+
+      <label>Yabancı Diller
+        <span id="languages"></span>
+      </label>
+    </details>
+
+    <details open>
+      <summary>Kariyer Bilgileri</summary>
+
+      <label>Seyahat Engeli Var Mı?
+        <span id="travelWillingness"></span>
+      </label>
+
+      <label>Çalışmak İstediği Sektör
+        <span id="willingSector"></span>
+      </label>
+
+      <label>Motivasyon Mektubu
+        <textarea readonly id="motivationLetter"></textarea>
+      </label>
+    </details>
+
+    <details open>
+      <summary>Deneyimler</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="company">Önceki Çalıştığı Firma</th>
+            <th id="start">Başlangıç Tarihi</th>
+            <th id="end">Bitiş Tarihi</th>
+            <th id="position">Pozisyon</th>
+            <th id="description">Açıklama</th>
+          </tr>
+        </thead>
+        <tbody id="CandidateExperience"></tbody>
+      </table>
+    </details>
+
+    <details open>
+      <summary>Sertifikalar</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="name">Sertifika</th>
+            <th id="organization">Veren Kurum</th>
+            <th id="year">Alındığı Yıl</th>
+            <th id="description">Açıklama</th>
+          </tr>
+        </thead>
+        <tbody id="CandidateCertificate"></tbody>
+      </table>
+    </details>
+
+    <details open>
+      <summary>Mülakata Davet Eden Firmalar</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="companyName" data-url="admin-company-profile.html?id={companyId}">Firma</th>
+            <th id="city">İl</th>
+            <th id="trendyol" data-url="trendyol">Trendyol Profili</th>
+            <th id="web" data-url="web">Web Sitesi</th>
+          </tr>
+        </thead>
+        <tbody id="CandidateInterview"></tbody>
+      </table>
+    </details>
+
+    <details open>
+      <summary>Profili İnceleyen Firmalar</summary>
+      <input type="text" class="tblfilter" placeholder="filtrele" />
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="companyName" data-url="admin-company-profile.html?id={companyId}">Firma</th>
+            <th id="city">İl</th>
+            <th id="trendyol" data-url="trendyol">Trendyol Profili</th>
+            <th id="web" data-url="web">Web Sitesi</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="CandidateProfileView"></tbody>
+      </table>
+    </details>
+
+    <details id="favoriteDetails">
+      <summary>Firma Favorilerine Ekle</summary>
+
+      <label for="companySearch">Firma Ara
+        <input type="text" id="companySearch" placeholder="Firma adı yazın..." />
+      </label>
+
+      <div id="companyResults"></div>
+
+      <input type="hidden" id="selectedCompanyId" />
+
+      <button id="addFavoriteBtn" disabled>Favorilere Ekle</button>
+      <p id="favoriteMsg"></p>
+    </details>
+
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    let candidateId;
+    let companies = [];
+    let companiesLoaded = false;
+
+    onReady(async () => {
+      candidateId = await fillSpans("Candidate/Get");
+
+      let $profileViewTbody = document.getElementById("CandidateProfileView");
+      if ($profileViewTbody) {
+        $profileViewTbody.addEventListener('tableLoaded', (e) => {
+          let data = e.detail.data;
+          if (!data || data.length === 0) { return; }
+
+          let rows = e.target.querySelectorAll('tr');
+          rows.forEach((tr, index) => {
+            let item = data[index];
+            if (item && item.companyId && candidateId) {
+              let $interviewBtn = createInterviewScheduleButton(candidateId, item.companyId, item.companyName || "Bu firma");
+
+              let $td = document.createElement("td");
+              $td.append($interviewBtn);
+              tr.append($td);
+            }
+          });
+        });
+      }
+
+      let $favoriteDetails = document.getElementById("favoriteDetails");
+      let $search = document.getElementById("companySearch");
+      let $results = document.getElementById("companyResults");
+      let $selectedId = document.getElementById("selectedCompanyId");
+      let $addBtn = document.getElementById("addFavoriteBtn");
+      let $msg = document.getElementById("favoriteMsg");
+
+      $favoriteDetails.addEventListener("toggle", async function () {
+        if (this.open && !companiesLoaded) {
+          $results.innerHTML = "<p style='color:gray;'>Firmalar yükleniyor...</p>";
+          let companyResult = await api("Company/GetAll", {});
+          if (companyResult && companyResult.isSuccess) {
+            companies = companyResult.data;
+            companiesLoaded = true;
+            $results.innerHTML = "";
+          } else {
+            $results.innerHTML = "<p style='color:red;'>Firmalar yüklenemedi</p>";
+          }
+        }
+      });
+
+      $search.addEventListener("input", function () {
+        let searchTerm = this.value.toLowerCase().trim();
+        $selectedId.value = "";
+        $addBtn.disabled = true;
+        $results.innerHTML = "";
+
+        if (!searchTerm) { return; }
+
+        let filtered = companies.filter(c =>
+          c.companyName.toLowerCase().includes(searchTerm)
+        );
+
+        if (filtered.length === 0) {
+          $results.innerHTML = "<p style='color:gray;'>Firma bulunamadı</p>";
+          return;
+        }
+
+        let $list = document.createElement("ul");
+        $list.style.listStyle = "none";
+        $list.style.padding = "0";
+
+        for (let company of filtered) {
+          let $li = document.createElement("li");
+          $li.style.padding = "8px";
+          $li.style.cursor = "pointer";
+          $li.style.borderBottom = "1px solid #eee";
+          $li.innerHTML = `<strong>${company.companyName}</strong> - ${company.city}`;
+
+          $li.addEventListener("click", function () {
+            $search.value = company.companyName;
+            $selectedId.value = company.id;
+            $addBtn.disabled = false;
+            $results.innerHTML = `<p style='color:green;'>✓ ${company.companyName} seçildi</p>`;
+          });
+
+          $list.append($li);
+        }
+
+        $results.append($list);
+      });
+
+      $addBtn.addEventListener("click", async function () {
+        let companyId = $selectedId.value;
+        if (!companyId || !candidateId) {
+          $msg.innerText = "Lütfen bir firma seçiniz.";
+          return;
+        }
+
+        this.disabled = true;
+        $msg.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
+
+        let result = await api("CompanyFavorite/Add", {
+          memberId: candidateId,
+          companyId: companyId
+        });
+
+        if (result && result.isSuccess) {
+          $msg.innerHTML = "<span style='color:green;'>✓ Favorilere başarıyla eklendi</span>";
+          $search.value = "";
+          $results.innerHTML = "";
+          $selectedId.value = "";
+        } else {
+          $msg.innerHTML = "<span style='color:red;'>İşlem başarısız oldu, lütfen tekrar deneyiniz.</span>";
+          this.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

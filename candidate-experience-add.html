@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deneyim Ekle | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>Deneyim Ekle</h2>
+
+    <label for="company">Çalışılan Firma
+      <input type="text" id="company" />
+    </label>
+
+    <label for="start">Çalışma Yılı Başlangıç
+      <input type="date" id="start" />
+    </label>
+
+    <label for="end">Çalışma Yılı Bitiş
+      <input type="date" id="end" />
+    </label>
+
+    <label for="position">Pozisyon
+      <input type="text" id="position" />
+    </label>
+
+    <label for="description">Açıklama (max 200 kelime)
+      <textarea id="description"></textarea>
+    </label>
+
+    <button>Kaydet</button>
+    <p></p>
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(() => {
+      let prms = new URLSearchParams(window.location.search);
+      let id = prms.get("id");
+      if (!id) { window.location.href = "index.html"; }
+
+      let $btn = document.querySelector("button");
+      let $msg = $btn.nextElementSibling;
+      $btn.addEventListener("click", async function () {
+        let req = {
+          memberId: id,
+          company: val("company"),
+          start: val("start"),
+          end: val("end"),
+          position: val("position"),
+          description: valin("description")
+        };
+
+        let errors = [];
+        if (!req.company) { errors.push("Lütfen çalışılan firma adını giriniz."); }
+        if (!req.position) { errors.push("Lütfen pozisyon bilgisini giriniz."); }
+        if (!req.start) { errors.push("Lütfen başlangıç tarihini seçiniz."); }
+        if (!req.end) { errors.push("Lütfen bitiş tarihini seçiniz."); }
+
+        if (req.start && req.end) {
+          let s = new Date(req.start);
+          let e = new Date(req.end);
+          if (isNaN(s.getTime()) || isNaN(e.getTime())) {
+            errors.push("Tarih formatı geçersiz.");
+          } else if (s > e) {
+            errors.push("Bitiş tarihi, başlangıç tarihinden önce olamaz.");
+          }
+        }
+
+        if (req.description) {
+          let wordCount = req.description.split(/\s+/).filter(Boolean).length;
+          if (wordCount > 200) {
+            errors.push(`Açıklama en fazla 200 kelime olmalıdır. (Şu an: ${wordCount})`);
+          }
+        }
+
+        if (errors.length) {
+          $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          return;
+        }
+
+        $msg.textContent = "";
+        this.disabled = true;
+        let p = this.nextElementSibling;
+        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
+        let result = await api("MemberExperience/Add", req);
+        if (!result || result.error || !result.isSuccess) {
+          p.innerText = "Deneyim ekleme başarısız oldu, lütfen tekrar deneyiniz.";
+        } else {
+          p.innerText = "Deneyim başarıyla eklendi.";
+          setTimeout(() => { location.href = "candidate-profile.html?id=" + id; }, 1000);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

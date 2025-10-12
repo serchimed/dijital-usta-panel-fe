@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firma Listesi | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>Firma Listesi</h2>
+    <input type="text" class="tblfilter" placeholder="filtrele" />
+    <table>
+      <thead>
+        <tr>
+          <th>Firma</th>
+          <th>İl</th>
+          <th>Yetkili</th>
+          <th>Trendyol Profili</th>
+          <th>Web Sitesi</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      let result = await api("Company/GetAll", {});
+      if (result && result.isSuccess) {
+        let tbody = document.querySelector("table tbody");
+        tbody.innerHTML = "";
+
+        for (let company of result.data) {
+          let tr = document.createElement("tr");
+
+          tr.append(tda(company.companyName, "admin-company-profile.html?id=" + company.id));
+          tr.append(td(company.city));
+          tr.append(td(company.responsibleMemberName));
+          tr.append(tda(company.trendyolUrl, company.trendyolUrl));
+          tr.append(tda(company.webUrl, company.webUrl));
+
+          let $btn = createBlockButton(
+            company.id,
+            company.isBlocked,
+            company.companyName,
+            "Company/Block",
+            "Company/Unblock",
+            "companyId"
+          );
+          tr.append(tdbtn($btn));
+
+          tbody.append(tr);
+        }
+      } else {
+        let errText = "Bir hata oluştu.";
+        if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
+        console.error(errText);
+      }
+    });
+  </script>
+</body>
+
+</html>

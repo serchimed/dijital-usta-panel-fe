@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adaylar | Dijital Usta</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
+  <menu></menu>
+  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <main>
+    <h2>Adaylar</h2>
+
+    <input type="text" class="tblfilter" placeholder="filtrele" />
+    <table>
+      <thead>
+        <tr>
+          <th>Aday</th>
+          <th>Cinsiyet</th>
+          <th>Doğum Tarihi</th>
+          <th>İl</th>
+          <th>İlçe</th>
+          <th>Eğitim Durumu</th>
+          <th>Üniversite</th>
+          <th>Bölüm</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+  </main>
+  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <script src="site.js"></script>
+  <script>
+    onReady(async () => {
+      let result = await api("Candidate/GetAll", {});
+      if (result && result.isSuccess) {
+        let tbody = document.querySelector("table tbody");
+        tbody.innerHTML = "";
+
+        for (let candidate of result.data) {
+          let tr = document.createElement("tr");
+
+          tr.append(tda(candidate.displayName, "company-candidate-profile.html?id=" + candidate.id));
+          tr.append(td(candidate.gender));
+          let bd = candidate.birthDate ? new Date(candidate.birthDate) : null;
+          let bdText = bd && !isNaN(bd) ? bd.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' }) : '';
+          tr.append(td(bdText));
+          tr.append(td(candidate.city));
+          tr.append(td(candidate.county));
+          tr.append(td(candidate.educationLevel));
+          tr.append(td(candidate.university));
+          tr.append(td(candidate.major));
+          tbody.append(tr);
+        }
+      } else {
+        let errText = "Bir hata oluştu.";
+        if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
+        console.error(errText);
+      }
+    });
+  </script>
+</body>
+
+</html>
