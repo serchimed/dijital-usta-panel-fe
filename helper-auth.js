@@ -2,7 +2,8 @@ let USER;
 async function initAuth() {
   USER = await api("Member/Check");
   if (!USER || USER.error) {
-    window.location.replace("error-server.html");
+    showOverMsg("Sisteme giriş yapmanız gerekiyor...");
+    setTimeout(() => window.location.replace("demand-password.html"), 1000);
     return;
   }
 
