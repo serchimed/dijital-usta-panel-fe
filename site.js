@@ -256,41 +256,51 @@ async function loadTables() {
 
 async function fillSpans(url, key = "memberId") {
   let id = getQueryParam("id");
-  if (id) {
-    let req = {};
-    req[key] = id;
-
-    let $a = document.querySelectorAll(".qs");
-    if ($a) { $a.forEach(a => a.href = a.href + `?id=${id}`); }
-
-    let result = await api(url, req);
-    if (!result || result.error) {
-      console.error("Data fetch error:", result);
-      return null;
+  if (!id) {
+    id = USER.id;
+    if (key !== "memberId") {
+      id = USER.companyId;
     }
+  }
 
-    if (result.isSuccess) {
-      for (let prop in result.data) {
-        let $s = document.getElementById(prop);
-        if ($s) {
-          let v = result.data[prop] ?? "-";
-          if (prop == "birthDate" && v) {
-            let dt = new Date(v);
-            v = dt.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' });
-          }
+  if (!id) {
+    console.warn("No ID in query string or user context, skipping fillSpans.");
+    return null;
+  }
 
-          let tag = ($s.tagName || "").toLowerCase();
-          if (tag === "img") {
-            $s.src = v;
-          } else {
-            $s.innerHTML = v;
-          }
+  let req = {};
+  req[key] = id;
+
+  let $a = document.querySelectorAll(".qs");
+  if ($a) { $a.forEach(a => a.href = a.href + `?id=${id}`); }
+
+  let result = await api(url, req);
+  if (!result || result.error) {
+    console.error("Data fetch error:", result);
+    return null;
+  }
+
+  if (result.isSuccess) {
+    for (let prop in result.data) {
+      let $s = document.getElementById(prop);
+      if ($s) {
+        let v = result.data[prop] ?? "-";
+        if (prop == "birthDate" && v) {
+          let dt = new Date(v);
+          v = dt.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' });
+        }
+
+        let tag = ($s.tagName || "").toLowerCase();
+        if (tag === "img") {
+          $s.src = v;
+        } else {
+          $s.innerHTML = v;
         }
       }
-    } else {
-      console.error("API error:", result);
-      return null;
     }
+  } else {
+    console.error("API error:", result);
+    return null;
   }
 
   return id;
