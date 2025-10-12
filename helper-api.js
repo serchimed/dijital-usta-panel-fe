@@ -42,7 +42,11 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl) {
   let result = await api(endpoint, data);
 
   if (!result || result.error || !result.isSuccess) {
-    $msg.textContent = errorMsg || ERROR_MESSAGE_DEFAULT;
+    let errText = errorMsg || ERROR_MESSAGE_DEFAULT;
+    if (result && Array.isArray(result.errors) && result.errors.length) {
+      errText = result.errors.join(", ");
+    }
+    $msg.textContent = errText;
     btn.disabled = false;
   } else {
     $msg.textContent = successMsg;

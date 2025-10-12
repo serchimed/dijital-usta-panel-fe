@@ -105,16 +105,7 @@
           return;
         }
 
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("Candidate/Update", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.";
-        } else {
-          p.innerText = "Güncelleme başarılı.";
-          setTimeout(() => { location.href = "candidate-profile.html?id=" + id; }, 1000);
-        }
+        await apiBtn(this, "Candidate/Update", req, "Güncelleme başarılı.", "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html?id=" + id);
       });
     });
   </script>

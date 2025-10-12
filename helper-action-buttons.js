@@ -59,13 +59,12 @@ function createFavoriteButton(memberId, companyId, displayName) {
 }
 
 function createInterviewScheduleButton(memberId, companyId, displayName) {
-  let $btn = btn(null, "Mülakata Davet Et");
-  $btn.style.marginLeft = "8px";
+  let $btn = btn("action-btn-secondary", "Mülakata Davet Et");
   $btn.addEventListener(CLICK_EVENT, async function () {
     let $mbody = div();
 
     let $candidateLabel = lbl(`Aday: ${displayName}`);
-    $candidateLabel.style.color = "#666";
+    $candidateLabel.className = "modal-subdued";
 
     let $dateLabel = lbl("Mülakat Tarihi");
     let $dateInput = date(getTomorrow());
@@ -123,13 +122,12 @@ function createInterviewScheduleButton(memberId, companyId, displayName) {
 }
 
 function createHireCandidateButton(memberId, companyId, displayName) {
-  let $btn = btn(null, "İşe Al");
-  $btn.style.marginLeft = "8px";
+  let $btn = btn("action-btn-secondary", "İşe Al");
   $btn.addEventListener(CLICK_EVENT, async function () {
     let $mbody = div();
 
     let $candidateLabel = lbl(`Aday: ${displayName}`);
-    $candidateLabel.style.color = "#666";
+    $candidateLabel.className = "modal-subdued";
 
     let $urlLabel = lbl("İşe Alım Evrak Linki (Google Drive URL)");
     let $urlInput = url("https://drive.google.com/...");

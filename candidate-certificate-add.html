@@ -86,16 +86,7 @@
         }
 
         $msg.textContent = "";
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("MemberCertificate/Add", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Sertifika ekleme başarısız oldu, lütfen tekrar deneyiniz.";
-        } else {
-          p.innerText = "Sertifika başarıyla eklendi.";
-          setTimeout(() => { location.href = "candidate-profile.html?id=" + id; }, 1000);
-        }
+        await apiBtn(this, "MemberCertificate/Add", req, "Sertifika başarıyla eklendi.", "Sertifika ekleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html?id=" + id);
       });
     });
   </script>

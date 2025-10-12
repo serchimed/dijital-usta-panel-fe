@@ -67,16 +67,7 @@
         }
 
         $msg.textContent = "";
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("Admin/InviteEditor", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Davet gönderme başarısız oldu, lütfen tekrar deneyiniz.";
-        } else {
-          p.innerText = "Davet başarıyla gönderildi.";
-          setTimeout(() => { location.href = "admin-and-editor-list.html"; }, 1000);
-        }
+        await apiBtn(this, "Admin/InviteEditor", req, "Davet başarıyla gönderildi.", "Davet gönderme başarısız oldu, lütfen tekrar deneyiniz.", "admin-and-editor-list.html");
       });
     });
   </script>

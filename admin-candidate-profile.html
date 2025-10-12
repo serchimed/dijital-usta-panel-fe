@@ -270,22 +270,16 @@
           return;
         }
 
-        this.disabled = true;
-        $msg.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-
-        let result = await api("CompanyFavorite/Add", {
+        $msg.textContent = "";
+        let result = await apiBtn(this, "CompanyFavorite/Add", {
           memberId: candidateId,
           companyId: companyId
-        });
+        }, "Favorilere başarıyla eklendi", "İşlem başarısız oldu, lütfen tekrar deneyiniz.");
 
         if (result && result.isSuccess) {
-          $msg.innerHTML = "<span style='color:green;'>✓ Favorilere başarıyla eklendi</span>";
           $search.value = "";
           $results.innerHTML = "";
           $selectedId.value = "";
-        } else {
-          $msg.innerHTML = "<span style='color:red;'>İşlem başarısız oldu, lütfen tekrar deneyiniz.</span>";
-          this.disabled = false;
         }
       });
     });

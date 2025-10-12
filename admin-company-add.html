@@ -104,17 +104,7 @@
         }
 
         $msg.textContent = "";
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("Company/Add", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Firma ekleme başarısız oldu, lütfen tekrar deneyiniz.";
-          this.disabled = false;
-        } else {
-          p.innerText = "Firma başarıyla eklendi.";
-          setTimeout(() => { location.href = "admin-company-list.html"; }, 1000);
-        }
+        await apiBtn(this, "Company/Add", req, "Firma başarıyla eklendi.", "Firma ekleme başarısız oldu, lütfen tekrar deneyiniz.", "admin-company-list.html");
       });
     });
   </script>

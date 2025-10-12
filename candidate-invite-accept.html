@@ -65,17 +65,7 @@
         }
 
         $msg.textContent = "";
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("Candidate/Add", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Davet kabul başarısız oldu, lütfen tekrar deneyiniz.";
-          this.disabled = false;
-        } else {
-          p.innerText = "Davet başarıyla kabul edildi.";
-          setTimeout(() => { location.href = "index.html"; }, 1000);
-        }
+        await apiBtn(this, "Candidate/Add", req, "Davet başarıyla kabul edildi.", "Davet kabul başarısız oldu, lütfen tekrar deneyiniz.", "index.html");
       });
     });
   </script>

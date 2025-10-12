@@ -65,7 +65,7 @@
           companyName: val("companyName"),
           city: val("city"),
           sector: val("sector"),
-          displayName: val("displayName"),
+          responsibleMemberName: val("responsibleMemberName"),
           email: val("email"),
           phone: val("phone"),
           webUrl: val("webUrl"),
@@ -74,7 +74,7 @@
 
         let errors = [];
         if (!req.companyName) { errors.push("Lütfen firma adını giriniz."); }
-        if (!req.displayName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
+        if (!req.responsibleMemberName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
         if (!req.phone) { errors.push("Lütfen telefon numarası giriniz."); }
         if (!checkEmail(req.email)) { errors.push("Lütfen geçerli eposta adresini giriniz."); }
         if (!req.city) { errors.push("Lütfen il bilgisini giriniz."); }
@@ -88,17 +88,7 @@
           return;
         }
 
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("Company/Edit", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.";
-          this.disabled = false;
-        } else {
-          p.innerText = "Güncelleme başarılı.";
-          setTimeout(() => { location.href = "company-profile.html?id=" + id; }, 1000);
-        }
+        await apiBtn(this, "Company/Edit", req, "Güncelleme başarılı.", "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "company-profile.html?id=" + id);
       });
     });
   </script>

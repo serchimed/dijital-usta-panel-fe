@@ -89,16 +89,7 @@
         }
 
         $msg.textContent = "";
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("MemberExperience/Add", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Deneyim ekleme başarısız oldu, lütfen tekrar deneyiniz.";
-        } else {
-          p.innerText = "Deneyim başarıyla eklendi.";
-          setTimeout(() => { location.href = "candidate-profile.html?id=" + id; }, 1000);
-        }
+        await apiBtn(this, "MemberExperience/Add", req, "Deneyim başarıyla eklendi.", "Deneyim ekleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html?id=" + id);
       });
     });
   </script>

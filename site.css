@@ -1,5 +1,5 @@
 * {
-  font-family: sans;
+  font-family: sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -21,8 +21,6 @@ footer {
   background-color: #000;
   color: #F5F5F5;
   padding: 34px;
-  height: 88px;
-
 }
 
 footer a,
@@ -47,8 +45,7 @@ menu a:visited {
   font-size: 17px;
   color: #000;
   background: #ff6720;
-  padding: 13px;
-  padding-left: 35px;
+  padding: 13px 13px 13px 35px;
 }
 
 main {
@@ -75,27 +72,23 @@ h1 a:visited {
 
 h2 {
   font-size: 34px;
-  margin-top: 25px;
-  margin-bottom: 25px;
+  margin: 25px 0;
 }
 
 label {
   display: block;
-  margin-top: 13px;
-  margin-bottom: 5px;
+  margin: 13px 0 5px;
   padding-top: 8px;
 }
 
 label span {
   display: block;
-  margin-top: 8px;
-  margin-bottom: 13px;
+  margin: 8px 0 13px;
   font-weight: bold;
 }
 
 label img {
   width: 222px;
-  height: auto;
   border: 1px solid #777;
   border-radius: 3px;
   display: block;
@@ -106,8 +99,7 @@ input,
 textarea,
 select {
   display: block;
-  margin-top: 8px;
-  margin-bottom: 13px;
+  margin: 8px 0 13px;
   border-radius: 3px;
   padding: 5px;
   border: 1px solid #777;
@@ -130,27 +122,19 @@ button {
   color: #fff;
   border-radius: 5px;
   font-size: 19px;
-  padding: 13px;
-  padding-bottom: 8px;
-  padding-top: 8px;
+  padding: 13px 13px 8px;
   width: fit-content;
   cursor: pointer;
-  margin-top: 13px;
-  margin-bottom: 21px;
+  margin: 13px 0 21px;
 }
 
 table {
-  margin-top: 21px;
-  margin-bottom: 21px;
+  margin: 21px 0;
   border: 1px solid #ff6720;
   border-radius: 8px;
   padding: 8px;
   border-collapse: collapse;
   min-width: 555px;
-}
-
-tr:nth-child(even) {
-  background-color: #c6c0be;
 }
 
 thead tr th {
@@ -159,7 +143,17 @@ thead tr th {
   padding: 8px;
   text-align: left;
   font-weight: normal;
-  margin-left: 5px;
+}
+
+thead tr th a,
+tbody tr td a {
+  color: #088a19;
+  padding: 8px;
+  font-size: 15px;
+}
+
+tr:nth-child(even) {
+  background-color: #c6c0be;
 }
 
 td {
@@ -172,18 +166,20 @@ td:last-child {
   padding-right: 21px;
 }
 
-thead tr th a,
-tbody tr td a {
-  color: #088a19;
-  padding: 8px;
+tbody tr td button {
+  padding: 5px 5px 3px;
   font-size: 15px;
 }
 
-tbody tr td button {
-  padding: 5px;
-  padding-bottom: 3px;
-  padding-top: 3px;
-  font-size: 15px;
+table p {
+  font-size: 13px;
+  color: #555;
+  max-width: 150px;
+}
+
+table tbody tr:hover {
+  background-color: #eef6ff;
+  transition: background-color 0.2s ease;
 }
 
 section a {
@@ -203,9 +199,7 @@ ul#admin-menu {
 
 ul#firma-menu li,
 ul#admin-menu li {
-  list-style: none;
-  margin-top: 5px;
-  margin-right: 5px;
+  margin: 5px 5px 0 0;
 }
 
 ul li a {
@@ -213,8 +207,7 @@ ul li a {
   border-radius: 5px;
   border: 1px solid #2775c8;
   padding: 8px;
-  margin-top: 5px;
-  margin-right: 5px;
+  margin: 5px 5px 0 0;
 }
 
 details {
@@ -223,32 +216,6 @@ details {
 
 summary {
   margin-bottom: 13px;
-  cursor: pointer;
-}
-
-table p {
-  font-size: 13px;
-  color: #555;
-  max-width: 150px;
-}
-
-table tbody tr:hover {
-  background-color: #eef6ff;
-  transition: background-color 0.2s ease;
-}
-
-.truncated {
-  max-width: 555px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.full {
-  max-width: 555px;
-  display: none;
   cursor: pointer;
 }
 
@@ -266,7 +233,6 @@ table tbody tr:hover {
   color: #333;
   z-index: 9999;
 }
-
 
 .image-preview {
   width: 200px;
@@ -290,7 +256,6 @@ table tbody tr:hover {
   object-fit: cover;
 }
 
-/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -426,4 +391,27 @@ table tbody tr:hover {
   background: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+}
+
+.modal-subdued {
+  color: #666;
+}
+
+.truncated {
+  max-width: 555px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.full {
+  max-width: 555px;
+  display: none;
+  cursor: pointer;
+}
+
+.action-btn-secondary {
+  margin-left: 8px;
 }

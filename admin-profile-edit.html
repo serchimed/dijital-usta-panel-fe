@@ -57,17 +57,7 @@
           return;
         }
 
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("Member/AdminEdit", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.";
-          this.disabled = false;
-        } else {
-          p.innerText = "Güncelleme başarılı.";
-          setTimeout(() => { location.href = "admin-profile.html?id=" + id; }, 1000);
-        }
+        await apiBtn(this, "Member/AdminEdit", req, "Güncelleme başarılı.", "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "admin-profile.html?id=" + id);
       });
     });
   </script>

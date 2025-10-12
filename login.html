@@ -1,17 +1,23 @@
-<!DOCTYPE html><html lang="tr">
+<!DOCTYPE html>
+<html lang="tr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giriş | Dijital Usta</title>
   <link rel="stylesheet" href="site.css" />
 </head>
+
 <body>
-  <header><h1><a href="./">Dijital Usta</a></h1></header>
+  <header>
+    <h1><a href="./">Dijital Usta</a></h1>
+  </header>
   <menu><a href="demand-password.html">Şifre İste</a></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
     <h2>Giriş Yap</h2>
-    <p>E-postanıza gönderilen tek kullanımlık şifre ile giriş yapabilirsiniz.<br/>Şifreyi henüz istemediyseniz veya ulaşmadıysa, lütfen <a href="demand-password.html">buradan talep edin</a>.</p>
+    <p>E-postanıza gönderilen tek kullanımlık şifre ile giriş yapabilirsiniz.<br />Şifreyi henüz istemediyseniz veya
+      ulaşmadıysa, lütfen <a href="demand-password.html">buradan talep edin</a>.</p>
 
     <label for="email">E-posta
       <input type="email" id="email" />
@@ -21,7 +27,8 @@
       <input type="password" id="passcode" />
     </label>
 
-    <button>Giriş</button><p></p>
+    <button>Giriş</button>
+    <p></p>
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
@@ -38,7 +45,7 @@
       let prmEmail = prms.get("email");
       if (prmEmail) { $email.value = prmEmail; }
 
-      $btn.addEventListener(CLICK_EVENT, async () => {
+      $btn.addEventListener(CLICK_EVENT, async function () {
         let email = $email.value.trim();
         let pass = $pass.value.trim();
 
@@ -52,16 +59,11 @@
           return;
         }
 
-        let result = await api("Member/Login", { email: email, passcode: pass });
-        if (result && result.isSuccess) {
-          window.location.replace("index.html");
-        } else {
-          let errText = "Bir hata oluştu.";
-          if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
-          $msg.innerText = errText;
-        }
+        $msg.textContent = "";
+        await apiBtn(this, "Member/Login", { email: email, passcode: pass }, "Giriş başarılı.", "Bir hata oluştu.", "index.html");
       });
     });
   </script>
 </body>
+
 </html>
