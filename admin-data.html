@@ -25,9 +25,9 @@
 
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
+    onAuthReady(async () => {
       let btnWP = document.getElementById("btnWP");
-      btnWP.addEventListener("click", function () {
+      btnWP.addEventListener(CLICK_EVENT, function () {
         if (!confirm("Wordpress güncel CSV'yi indirmek istediğinize emin misiniz?")) { return; }
 
         let btn = this;

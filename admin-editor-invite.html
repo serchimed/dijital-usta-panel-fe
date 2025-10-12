@@ -40,10 +40,10 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(() => {
+    onAuthReady(() => {
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
-      $btn.addEventListener("click", async function () {
+      $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
           companyName: val("companyName"),
           editorNameSurname: val("editorNameSurname"),

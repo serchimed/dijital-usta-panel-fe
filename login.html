@@ -38,7 +38,7 @@
       let prmEmail = prms.get("email");
       if (prmEmail) { $email.value = prmEmail; }
 
-      $btn.addEventListener("click", async () => {
+      $btn.addEventListener(CLICK_EVENT, async () => {
         let email = $email.value.trim();
         let pass = $pass.value.trim();
 

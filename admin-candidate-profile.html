@@ -181,7 +181,7 @@
     let companies = [];
     let companiesLoaded = false;
 
-    onReady(async () => {
+    onAuthReady(async () => {
       candidateId = await fillSpans("Candidate/Get");
 
       let $profileViewTbody = document.getElementById("CandidateProfileView");
@@ -196,7 +196,7 @@
             if (item && item.companyId && candidateId) {
               let $interviewBtn = createInterviewScheduleButton(candidateId, item.companyId, item.companyName || "Bu firma");
 
-              let $td = document.createElement("td");
+              let $td = td();
               $td.append($interviewBtn);
               tr.append($td);
             }
@@ -242,18 +242,15 @@
           return;
         }
 
-        let $list = document.createElement("ul");
-        $list.style.listStyle = "none";
-        $list.style.padding = "0";
-
+        let $list = ul();
         for (let company of filtered) {
-          let $li = document.createElement("li");
+          let $li = li();
           $li.style.padding = "8px";
           $li.style.cursor = "pointer";
           $li.style.borderBottom = "1px solid #eee";
           $li.innerHTML = `<strong>${company.companyName}</strong> - ${company.city}`;
 
-          $li.addEventListener("click", function () {
+          $li.addEventListener(CLICK_EVENT, function () {
             $search.value = company.companyName;
             $selectedId.value = company.id;
             $addBtn.disabled = false;
@@ -266,7 +263,7 @@
         $results.append($list);
       });
 
-      $addBtn.addEventListener("click", async function () {
+      $addBtn.addEventListener(CLICK_EVENT, async function () {
         let companyId = $selectedId.value;
         if (!companyId || !candidateId) {
           $msg.innerText = "Lütfen bir firma seçiniz.";

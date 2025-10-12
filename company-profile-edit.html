@@ -56,10 +56,10 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
+    onAuthReady(async () => {
       let id = await fillInputs("Company/Get", "companyId");
 
-      document.querySelector("button").addEventListener("click", async function () {
+      document.querySelector("button").addEventListener(CLICK_EVENT, async function () {
         let req = {
           companyId: id,
           companyName: val("companyName"),

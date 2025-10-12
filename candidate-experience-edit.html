@@ -44,19 +44,19 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
+    onAuthReady(async () => {
       let experienceId = await fillInputs("MemberExperience/Get");
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
 
-      $btn.addEventListener("click", async function () {
+      $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
           experienceId: experienceId,
           company: val("company"),
           start: val("start"),
           end: val("end"),
           position: val("position"),
-          description: valin("description")
+          description: inner("description")
         };
 
         let errors = [];

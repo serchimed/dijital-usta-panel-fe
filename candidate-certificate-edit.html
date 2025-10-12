@@ -40,7 +40,7 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
+    onAuthReady(async () => {
       let certificateId = await fillInputs("MemberCertificate/Get");
 
       let $year = document.getElementById("year");
@@ -51,13 +51,13 @@
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
 
-      $btn.addEventListener("click", async function () {
+      $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
           certificateId: certificateId,
           name: val("name"),
           organization: val("organization"),
           year: val("year"),
-          description: valin("description")
+          description: inner("description")
         };
 
         let errors = [];

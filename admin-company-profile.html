@@ -68,7 +68,7 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
+    onAuthReady(async () => {
       await fillSpans("Company/Get", "companyId");
 
       let $tbody = document.getElementById("CompanyFavorite");
@@ -85,7 +85,7 @@
               let $interviewBtn = createInterviewScheduleButton(item.memberId, item.companyId, item.displayName || "Bu aday");
               let $hireBtn = createHireCandidateButton(item.memberId, item.companyId, item.displayName || "Bu aday");
 
-              let $td = document.createElement("td");
+              let $td = td();
               $td.append($favoriteBtn, $interviewBtn, $hireBtn);
               tr.append($td);
             }

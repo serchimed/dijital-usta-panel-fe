@@ -32,17 +32,16 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
-      const fileInput = document.getElementById('fileInput');
-      const imagePreview = document.getElementById('imagePreview');
-      const submitBtn = document.getElementById('submitBtn');
+    onAuthReady(async () => {
+      let fileInput = document.getElementById('fileInput');
+      let imagePreview = document.getElementById('imagePreview');
+      let submitBtn = document.getElementById('submitBtn');
 
       let base64String = null;
       let candidateId = new URLSearchParams(location.search).get('id');
 
-      // Load current image
       try {
-        const result = await api('Candidate/Image', { id: candidateId });
+        let result = await api('Candidate/Image', { id: candidateId });
         if (result && result.image) {
           base64String = result.image;
           imagePreview.innerHTML = `<img src="${base64String}" alt="Profil Fotoğrafı">`;
@@ -53,12 +52,8 @@
         imagePreview.innerHTML = 'Görsel yüklenemedi';
       }
 
-      // File input change
-      fileInput.addEventListener('change', (e) => {
-        handleFile(e.target.files[0]);
-      });
+      fileInput.addEventListener('change', (e) => { handleFile(e.target.files[0]); });
 
-      // Submit button
       submitBtn.addEventListener('click', async function () {
         if (!base64String) {
           let p = this.nextElementSibling;
@@ -68,38 +63,32 @@
         await uploadImage(this);
       });
 
-      // Handle file selection
       function handleFile(file) {
         if (!file) return;
 
-        // Validate file type
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        let validTypes = ['image/jpeg', 'image/png', 'image/gif'];
         if (!validTypes.includes(file.type)) {
           let p = submitBtn.nextElementSibling;
           p.innerHTML = '• Geçersiz dosya türü. Sadece JPG, PNG veya GIF yükleyebilirsiniz.';
           return;
         }
 
-        // Validate file size (500KB max)
-        const maxSize = 500 * 1024; // 500KB
+        let maxSize = 500 * 1024; // 500KB
         if (file.size > maxSize) {
           let p = submitBtn.nextElementSibling;
           p.innerHTML = '• Dosya boyutu çok büyük. Maksimum 500KB yükleyebilirsiniz.';
           return;
         }
 
-        // Convert to base64 and preview
         convertToBase64(file);
       }
 
-      // Convert file to base64
       function convertToBase64(file) {
-        const reader = new FileReader();
+        let reader = new FileReader();
 
         reader.onload = function (e) {
           base64String = e.target.result;
 
-          // Update preview
           imagePreview.innerHTML = `<img src="${base64String}" alt="Preview">`;
 
           submitBtn.disabled = false;
@@ -115,14 +104,13 @@
         reader.readAsDataURL(file);
       }
 
-      // Upload image to server
       async function uploadImage(btn) {
         btn.disabled = true;
         let p = btn.nextElementSibling;
         p.innerHTML = 'Görsel yükleniyor, lütfen bekleyiniz...';
 
         try {
-          const result = await api('Candidate/ImageChange', {
+          let result = await api('Candidate/ImageChange', {
             id: candidateId,
             image: base64String
           });

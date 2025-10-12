@@ -39,15 +39,14 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
+    onAuthReady(async () => {
       let result = await api("Admin/GetAdmins", {});
       if (result && result.isSuccess) {
         let tbody = document.querySelector("table tbody");
         tbody.innerHTML = "";
 
         for (let admin of result.data) {
-          let tr = document.createElement("tr");
-
+          let tr = tr();
           tr.append(tda(admin.displayName, "admin-profile.html?id=" + admin.id));
           tr.append(td(admin.role));
           tr.append(td(admin.companyName));
@@ -56,7 +55,7 @@
 
           tr.append(td(""));
 
-          let $btn = createBlockButton(
+          let btn = createBlockButton(
             admin.id,
             admin.isBlocked,
             admin.displayName,
@@ -64,7 +63,7 @@
             "Member/Unblock",
             "memberId"
           );
-          tr.append(tdbtn($btn));
+          tr.append(tdbtn(btn));
           tbody.append(tr);
         }
       } else {

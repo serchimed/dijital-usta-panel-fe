@@ -191,6 +191,11 @@ section a {
   margin-top: 21px;
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+}
+
 ul#firma-menu,
 ul#admin-menu {
   margin-top: 21px;

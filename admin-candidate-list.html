@@ -40,15 +40,14 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(async () => {
+    onAuthReady(async () => {
       let result = await api("Candidate/GetAll", {});
       if (result && result.isSuccess) {
         let tbody = document.querySelector("table tbody");
         tbody.innerHTML = "";
 
         for (let candidate of result.data) {
-          let tr = document.createElement("tr");
-
+          let tr = tr();
           tr.append(tda(candidate.displayName, "admin-candidate-profile.html?id=" + candidate.id));
           tr.append(td(candidate.gender));
           let bd = candidate.birthDate ? new Date(candidate.birthDate) : null;
@@ -61,7 +60,7 @@
           tr.append(td(candidate.major));
           tr.append(td(candidate.status));
 
-          let $btn = createBlockButton(
+          let btn = createBlockButton(
             candidate.id,
             candidate.isBlocked,
             candidate.displayName,
@@ -69,7 +68,7 @@
             "Member/Unblock",
             "memberId"
           );
-          tr.append(tdbtn($btn));
+          tr.append(tdbtn(btn));
 
           tbody.append(tr);
         }

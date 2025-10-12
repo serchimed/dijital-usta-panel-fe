@@ -30,39 +30,37 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onReady(() => {
+    onAuthReady(() => {
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
-      $btn.addEventListener("click", async function () {
+      $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
-          lines: valin("lines")
+          lines: inner("lines")
         };
 
         req.lines = (req.lines || "").trim();
 
-        // Boş textarea kontrolü
         if (!req.lines) {
           $msg.innerHTML = "• Lütfen e-posta adreslerini ve puanlarını giriniz.";
           return;
         }
 
-        // Satır satır validasyon
-        const rows = req.lines.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-        const errs = [];
-        const normalized = [];
+        let rows = req.lines.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        let errs = [];
+        let normalized = [];
 
         rows.forEach((line, idx) => {
-          const i = idx + 1;
-          const parts = line.split(",").map(s => s.trim());
+          let i = idx + 1;
+          let parts = line.split(",").map(s => s.trim());
 
           if (parts.length !== 2) {
             errs.push(`Satır ${i}: "eposta,puan" biçiminde olmalıdır.`);
             return;
           }
 
-          const email = parts[0];
-          const scoreStr = parts[1];
-          const score = Number(scoreStr);
+          let email = parts[0];
+          let scoreStr = parts[1];
+          let score = Number(scoreStr);
 
           if (!checkEmail(email)) {
             errs.push(`Satır ${i}: Geçersiz e-posta (${email}).`);
@@ -83,16 +81,15 @@
         // Hata yoksa API çağrısı yap
         req.lines = normalized.join("\n");
         $msg.textContent = "";
-        this.disabled = true;
-        let p = this.nextElementSibling;
-        p.innerHTML = "İşlem yapılıyor, lütfen bekleyiniz...";
-        let result = await api("Member/AddTobb", req);
-        if (!result || result.error || !result.isSuccess) {
-          p.innerText = "Aday listesini ekleme başarısız oldu, lütfen tekrar deneyiniz.";
-        } else {
-          p.innerText = "Adaylar başarıyla eklendi.";
-          setTimeout(() => { location.href = "admin-candidate-list.html"; }, 1000);
-        }
+
+        await apiBtn(
+          this,
+          "Member/AddTobb",
+          req,
+          "Adaylar başarıyla eklendi.",
+          "Aday listesini ekleme başarısız oldu, lütfen tekrar deneyiniz.",
+          "admin-candidate-list.html"
+        );
       });
     });
   </script>
