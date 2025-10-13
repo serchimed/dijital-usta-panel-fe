@@ -112,7 +112,7 @@ async function fillSpans(url, key = "memberId") {
         } else if (tag === "textarea") {
           $s.value = v;
         } else {
-          $s.innerHTML = v;
+          $s.textContent = v;
         }
       }
     }

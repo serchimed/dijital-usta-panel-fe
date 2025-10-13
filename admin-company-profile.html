@@ -75,9 +75,9 @@
       if ($tbody) {
         $tbody.addEventListener('tableLoaded', (e) => {
           let data = e.detail.data;
-          if (!data || data.length === 0) { return; }
+          if (!data || data.length === 0 || e.detail.error) { return; }
 
-          let rows = e.target.querySelectorAll('tr');
+          let rows = $tbody.querySelectorAll('tr');
           rows.forEach((tr, index) => {
             let item = data[index];
             if (item && item.memberId && item.companyId) {

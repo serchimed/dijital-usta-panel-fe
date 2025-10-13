@@ -67,7 +67,11 @@ function buildUserMenu() {
 
   let role = USER.role === "editor" ? "admin" : USER.role;
   let id = USER.role === "company" ? USER.companyId : USER.id;
-  $m.innerHTML = `<a href="${role}-profile.html?id=${id}">${USER.name}</a><a href="logout.html">Çıkış</a>`;
+
+  $m.innerHTML = "";
+  let $profileLink = a(USER.name, `${role}-profile.html?id=${id}`);
+  let $logoutLink = a("Çıkış", "logout.html");
+  $m.append($profileLink, $logoutLink);
 }
 
 function buildRoleMenu() {
