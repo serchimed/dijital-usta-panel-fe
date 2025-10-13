@@ -80,7 +80,7 @@
           educationLevel: val("educationLevel"),
           university: val("university"),
           major: val("major"),
-          classYear: val("classYear"),
+          classYear: val("classYear") || "",
           city: val("city"),
           county: val("county"),
           travelWillingness: val("travelWillingness"),
@@ -94,7 +94,6 @@
         if (!req.educationLevel) { errors.push("Lütfen eğitim durumunuzu giriniz."); }
         if (!req.university) { errors.push("Lütfen üniversite adını giriniz."); }
         if (!req.major) { errors.push("Lütfen bölüm bilgisini giriniz."); }
-        if (!req.classYear) { errors.push("Lütfen sınıf bilgisini giriniz."); }
         if (!req.city) { errors.push("Lütfen il bilgisini giriniz."); }
         if (!req.county) { errors.push("Lütfen ilçe bilgisini giriniz."); }
         if (!req.travelWillingness) { errors.push("Lütfen seyahat engeli bilgisini giriniz."); }

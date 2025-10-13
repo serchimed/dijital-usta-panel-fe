@@ -237,17 +237,12 @@ summary {
 .image-preview {
   width: 200px;
   height: 200px;
-  border-radius: 50%;
-  border: 4px solid #007bff;
+  border-radius: 5px;
+  border: 5px solid #ff6720;
   overflow: hidden;
   background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: #999;
   font-size: 14px;
-  text-align: center;
-  margin: 20px auto;
 }
 
 .image-preview img {

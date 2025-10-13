@@ -49,12 +49,12 @@ sed -E '
   # Remove empty lines
   /^$/d
 ' "${TEMP_FILE}" | tr '\n' ' ' | sed -E '
-  # Clean up multiple spaces (but not inside template literals)
+  # Clean up multiple spaces (but not inside strings)
   s/  +/ /g
-  # Remove spaces around semicolons
+  # Remove spaces around semicolons (outside strings)
   s/ *; */;/g
-  # Remove spaces around commas
-  s/ *, */,/g
+  # Remove space BEFORE comma only (keep space after for readability in strings)
+  s/ +,/,/g
   # Add final newline
   s/$/\n/
 ' > "${OUTPUT_FILE}"

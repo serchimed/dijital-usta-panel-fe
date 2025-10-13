@@ -57,6 +57,11 @@ async function loadTables() {
       for (let th of headers) {
         let key = th.id;
         let value = item[key] ?? "";
+
+        if ((key === "birthDate" || key.toLowerCase().includes("date")) && value && value !== "-") {
+          value = formatDateLong(value);
+        }
+
         let template = th.dataset?.url;
 
         if (template) {
@@ -104,6 +109,8 @@ async function fillSpans(url, key = "memberId") {
         let tag = ($s.tagName || "").toLowerCase();
         if (tag === "img") {
           $s.src = v;
+        } else if (tag === "textarea") {
+          $s.value = v;
         } else {
           $s.innerHTML = v;
         }
