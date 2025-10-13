@@ -117,8 +117,7 @@
       </table>
     </details>
 
-    <button>Favorilere Ekle</button>
-    <p></p>
+    <div id="actionButtons"></div>
 
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
@@ -127,25 +126,46 @@
     onAuthReady(async () => {
       let candidateId = await fillSpans("Candidate/Get");
 
-      let $btn = document.querySelector("button");
-      let $msg = $btn.nextElementSibling;
+      if (!USER.companyId || !candidateId) {
+        document.getElementById("msg").innerText = "Firma veya aday bilgisi alınamadı.";
+        return;
+      }
 
-      $btn.addEventListener(CLICK_EVENT, async function () {
-        if (!USER.companyId || !candidateId) {
-          $msg.innerText = "Firma bilgisi alınamadı.";
-          return;
-        }
+      let infoResult = await api("Candidate/CompanyInfo", { memberId: candidateId, companyId: USER.companyId });
 
-        if (!confirm("Bu adayı favorilerinize eklemek istediğinizden emin misiniz?")) {
-          return;
-        }
+      if (!infoResult || !infoResult.isSuccess) {
+        document.getElementById("msg").innerText = "Aday bilgileri yüklenemedi.";
+        return;
+      }
 
-        $msg.textContent = "";
-        await apiBtn(this, "CompanyFavorite/Add", {
-          memberId: candidateId,
-          companyId: USER.companyId
-        }, "Favorilere başarıyla eklendi", "İşlem başarısız oldu, lütfen tekrar deneyiniz.");
-      });
+      let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
+      let companyName = USER.name || "Bu firma";
+      let isFavorited = infoResult.data?.isFavorited || false;
+      let isInterviewPlanned = infoResult.data?.isInterviewPlanned || false;
+
+      let $actionButtons = document.getElementById("actionButtons");
+
+      let $favoriteBtn;
+      if (isFavorited) {
+        $favoriteBtn = createFavoriteRemoveButton(candidateId, USER.companyId, candidateName);
+      } else {
+        $favoriteBtn = btn(null, "Favorilere Ekle");
+        $favoriteBtn.addEventListener(CLICK_EVENT, async function () {
+          if (!confirm("Bu adayı favorilerinize eklemek istediğinizden emin misiniz?")) {
+            return;
+          }
+          await apiBtn(this, "CompanyFavorite/Add", {
+            memberId: candidateId,
+            companyId: USER.companyId
+          }, "Favorilere başarıyla eklendi", "İşlem başarısız oldu, lütfen tekrar deneyiniz.");
+        });
+      }
+
+      let $interviewBtn = isInterviewPlanned
+        ? createInterviewCancelButton(candidateId, USER.companyId, candidateName)
+        : createInterviewAddButton(candidateId, USER.companyId, companyName, candidateName);
+
+      $actionButtons.append($favoriteBtn, p(), $interviewBtn, p());
     });
   </script>
 </body>

@@ -135,6 +135,7 @@
             <th id="city">İl</th>
             <th id="trendyol" data-url="trendyol">Trendyol Profili</th>
             <th id="web" data-url="web">Web Sitesi</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="CandidateInterview"></tbody>
@@ -181,28 +182,60 @@
     let companies = [];
     let companiesLoaded = false;
 
+    // Event listener'ları önce ekle
+    let $interviewTbody = document.getElementById("CandidateInterview");
+    if ($interviewTbody) {
+      $interviewTbody.addEventListener("tableLoaded", (e) => {
+        let data = e.detail.data;
+        if (!data || data.length === 0) { return; }
+
+        let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
+
+        let rows = e.target.querySelectorAll('tr');
+        rows.forEach((tr, index) => {
+          let item = data[index];
+          if (item && item.companyId && candidateId) {
+            let $cancelBtn = createInterviewCancelButton(candidateId, item.companyId, item.companyName || "Bu firma");
+
+            let $td = td();
+            $td.append($cancelBtn);
+            tr.append($td);
+          }
+        });
+      });
+    }
+
+    let $profileViewTbody = document.getElementById("CandidateProfileView");
+    if ($profileViewTbody) {
+      $profileViewTbody.addEventListener("tableLoaded", (e) => {
+        let data = e.detail.data;
+        if (!data || data.length === 0) { return; }
+
+        let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
+
+        let rows = e.target.querySelectorAll('tr');
+        rows.forEach((tr, index) => {
+          let item = data[index];
+          if (item && item.companyId && candidateId) {
+            let $favoriteBtn = item.isFavorited
+              ? createFavoriteRemoveButton(candidateId, item.companyId, item.companyName)
+              : null;
+
+            let $interviewBtn = createInterviewAddButton(candidateId, item.companyId, item.companyName, candidateName);
+
+            let $td = td();
+            if ($favoriteBtn) {
+              $td.append($favoriteBtn);
+            }
+            $td.append($interviewBtn);
+            tr.append($td);
+          }
+        });
+      });
+    }
+
     onAuthReady(async () => {
       candidateId = await fillSpans("Candidate/Get");
-
-      let $profileViewTbody = document.getElementById("CandidateProfileView");
-      if ($profileViewTbody) {
-        $profileViewTbody.addEventListener("tableLoaded", (e) => {
-          let data = e.detail.data;
-          if (!data || data.length === 0) { return; }
-
-          let rows = e.target.querySelectorAll('tr');
-          rows.forEach((tr, index) => {
-            let item = data[index];
-            if (item && item.companyId && candidateId) {
-              let $interviewBtn = createInterviewScheduleButton(candidateId, item.companyId, item.companyName || "Bu firma");
-
-              let $td = td();
-              $td.append($interviewBtn);
-              tr.append($td);
-            }
-          });
-        });
-      }
 
       let $favoriteDetails = document.getElementById("favoriteDetails");
       let $search = document.getElementById("companySearch");

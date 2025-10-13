@@ -95,15 +95,22 @@ function createInterviewCancelButton(memberId, companyId, displayName) {
   return $btn;
 }
 
-function createInterviewScheduleButton(memberId, companyId, displayName) {
-  let $btn = btn("action-btn-secondary", "Mülakata Davet Et");
+function createInterviewAddButton(candidateId, companyId, companyName, candidateName) {
+  let $btn = btn(null, "Mülakata Davet Et");
+
   $btn.addEventListener(CLICK_EVENT, async function () {
     let $mbody = div();
 
-    let $candidateLabel = lbl(`Aday: ${displayName}`);
-    $candidateLabel.className = "modal-subdued";
+    let $warningText = p("E-posta bildirimi gönderilecektir, emin olmadan durumu güncellemeyin.");
+    $warningText.style.color = "#d9534f";
+    $warningText.style.fontSize = "0.9em";
+    $warningText.style.fontWeight = "bold";
+    $warningText.style.marginBottom = "1em";
 
-    let $dateLabel = lbl("Mülakat Tarihi");
+    let $infoLabel = lbl(`${candidateName} adayına ${companyName} firması için mülakat planlamak üzeresiniz.`);
+    $infoLabel.className = "modal-subdued";
+
+    let $dateLabel = lbl("Tahmini Mülakat Tarihi");
     let $dateInput = date(getTomorrow());
     $dateInput.required = true;
     $dateInput.min = new Date().toISOString().split('T')[0];
@@ -112,14 +119,14 @@ function createInterviewScheduleButton(memberId, companyId, displayName) {
     let $msgDiv = div(CSS_CLASSES.modalMessage);
     let $modal;
 
-    let handleSchedule = async function () {
-      let date = $dateInput.value;
-      if (!date) {
+    let handleAdd = async function () {
+      let dateValue = $dateInput.value;
+      if (!dateValue) {
         showModalMessage($msgDiv, "error", "Lütfen tarih seçiniz.");
         return;
       }
 
-      let selectedDate = new Date(date);
+      let selectedDate = new Date(dateValue);
       let today = new Date();
       today.setHours(0, 0, 0, 0);
       if (selectedDate < today) {
@@ -129,30 +136,27 @@ function createInterviewScheduleButton(memberId, companyId, displayName) {
 
       setButtonLoading(buttons.submitBtn, true);
 
-      let result = await api("CandidateInterview/Schedule", {
-        candidateId: memberId,
+      let result = await apiBtn(buttons.submitBtn, "CandidateInterview/Add", {
+        candidateId: candidateId,
         companyId: companyId,
-        scheduledAt: date
-      });
+        scheduledAt: dateValue
+      }, `Mülakat daveti gönderildi. Tahmini tarih: ${dateValue}`, ERROR_MESSAGE_DEFAULT);
 
       if (result && result.isSuccess) {
-        showModalMessage($msgDiv, "success", `${displayName} mülakata davet edildi. Tarih: ${date}`);
         setTimeout(() => { closeModal($modal); }, MODAL_AUTO_CLOSE_DELAY);
-      }
-      else {
-        showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
+      } else {
         setButtonLoading(buttons.submitBtn, false, "Mülakata Davet Et");
       }
     };
 
     let buttons = createModalButtons("İptal", "Mülakata Davet Et",
       () => closeModal($modal),
-      handleSchedule
+      handleAdd
     );
 
-    $mbody.append($candidateLabel, $dateLabel, buttons.buttonsDiv, $msgDiv);
+    $mbody.append($warningText, $infoLabel, $dateLabel, buttons.buttonsDiv, $msgDiv);
 
-    $modal = createModal("Mülakat Planla", $mbody);
+    $modal = createModal("Mülakat Daveti Gönder", $mbody);
   });
 
   return $btn;
