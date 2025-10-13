@@ -41,8 +41,8 @@
 
       try {
         let result = await api("Candidate/Image", { memberId: USER.id });
-        if (result && result.image) {
-          base64String = initialImage = result.image;
+        if (result && result.isSuccess && result.data) {
+          base64String = initialImage = result.data;
           imagePreview.innerHTML = `<img src="${base64String}" alt="Profil Fotoğrafı">`;
         } else {
           imagePreview.innerHTML = "Fotoğraf yüklenmedi";
