@@ -45,7 +45,7 @@
       let prmEmail = prms.get("email");
       if (prmEmail) { $email.value = prmEmail; }
 
-      $btn.addEventListener(CLICK_EVENT, async function () {
+      let handleLogin = async function () {
         let email = $email.value.trim();
         let pass = $pass.value.trim();
 
@@ -60,8 +60,20 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "Member/Login", { email: email, passcode: pass }, "Giriş başarılı.", "Bir hata oluştu.", "index.html");
-      });
+        await apiBtn($btn, "Member/Login", { email: email, passcode: pass }, "Giriş başarılı.", "Bir hata oluştu.", "index.html");
+      };
+
+      $btn.addEventListener(CLICK_EVENT, handleLogin);
+
+      let handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleLogin();
+        }
+      };
+
+      $email.addEventListener("keypress", handleKeyPress);
+      $pass.addEventListener("keypress", handleKeyPress);
     });
   </script>
 </body>

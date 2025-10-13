@@ -186,7 +186,7 @@
 
       let $profileViewTbody = document.getElementById("CandidateProfileView");
       if ($profileViewTbody) {
-        $profileViewTbody.addEventListener('tableLoaded', (e) => {
+        $profileViewTbody.addEventListener("tableLoaded", (e) => {
           let data = e.detail.data;
           if (!data || data.length === 0) { return; }
 

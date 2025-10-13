@@ -58,6 +58,43 @@ function createFavoriteButton(memberId, companyId, displayName) {
   return $btn;
 }
 
+function createFavoriteRemoveButton(memberId, companyId, displayName) {
+  let $btn = btn(null, "Favoriden Çıkar");
+
+  $btn.addEventListener(CLICK_EVENT, async function () {
+    if (!confirm(`${displayName}'i favorilerden çıkarmak istediğinize emin misiniz?`)) { return; }
+
+    await apiBtn(this, "CompanyFavorite/Remove",
+      { memberId: memberId, companyId: companyId },
+      "Favorilerden çıkarıldı.",
+      "Favorilerden çıkarılamadı."
+    );
+
+    if (this.closest("tr")) {
+      this.closest("tr").remove();
+    }
+  });
+
+  return $btn;
+}
+
+function createInterviewCancelButton(memberId, companyId, displayName) {
+  let $btn = btn("action-btn-secondary", "Mülakat İptal");
+  let $msg = p();
+
+  $btn.addEventListener(CLICK_EVENT, async function () {
+    if (!confirm(`${displayName} ile planlanmış mülakatı iptal etmek istediğinize emin misiniz?`)) { return; }
+
+    await apiBtn(this, "CandidateInterview/Cancel",
+      { candidateId: memberId, companyId: companyId },
+      "Mülakat iptal edildi.",
+      "Mülakat iptal edilemedi."
+    );
+  });
+
+  return $btn;
+}
+
 function createInterviewScheduleButton(memberId, companyId, displayName) {
   let $btn = btn("action-btn-secondary", "Mülakata Davet Et");
   $btn.addEventListener(CLICK_EVENT, async function () {

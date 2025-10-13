@@ -36,14 +36,14 @@ async function loadTables() {
     let result = await api(`${tbody.id}/GetAll`, req);
     if (!result || result.error || !result.isSuccess) {
       tbody.innerHTML = getMsgLine("Veri yüklenemedi");
-      tbody.dispatchEvent(new CustomEvent('tableLoaded', { detail: { data: null, error: true } }));
+      tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: null, error: true } }));
       continue;
     }
 
     let data = result.data;
     if (!Array.isArray(data) || data.length === 0) {
       tbody.innerHTML = getMsgLine("Veri bulunamadı");
-      tbody.dispatchEvent(new CustomEvent('tableLoaded', { detail: { data: [], error: false } }));
+      tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: [], error: false } }));
       continue;
     }
 
@@ -77,7 +77,7 @@ async function loadTables() {
 
     tbody.innerHTML = "";
     tbody.append(fragment);
-    tbody.dispatchEvent(new CustomEvent('tableLoaded', { detail: { data: data, error: false } }));
+    tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: data, error: false } }));
   }
 }
 

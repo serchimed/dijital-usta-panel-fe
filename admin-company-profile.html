@@ -68,30 +68,35 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
+    // Event listener'ı hemen ekle, loadTables çalışmadan önce hazır olsun
+    let $tbody = document.getElementById("CompanyFavorite");
+    if ($tbody) {
+      $tbody.addEventListener("tableLoaded", (e) => {
+        let data = e.detail.data;
+        if (!data || data.length === 0 || e.detail.error) { return; }
+
+        let rows = $tbody.querySelectorAll('tr');
+        rows.forEach((tr, index) => {
+          let item = data[index];
+          if (item && item.memberId && item.companyId) {
+            let $favoriteBtn = createFavoriteRemoveButton(item.memberId, item.companyId, item.displayName || "Bu aday");
+
+            let $interviewBtn = item.isInterviewPlanned
+              ? createInterviewCancelButton(item.memberId, item.companyId, item.displayName || "Bu aday")
+              : createInterviewScheduleButton(item.memberId, item.companyId, item.displayName || "Bu aday");
+
+            let $hireBtn = createHireCandidateButton(item.memberId, item.companyId, item.displayName || "Bu aday");
+
+            let $td = td();
+            $td.append($favoriteBtn, $interviewBtn, $hireBtn);
+            tr.append($td);
+          }
+        });
+      });
+    }
+
     onAuthReady(async () => {
       await fillSpans("Company/Get", "companyId");
-
-      let $tbody = document.getElementById("CompanyFavorite");
-      if ($tbody) {
-        $tbody.addEventListener('tableLoaded', (e) => {
-          let data = e.detail.data;
-          if (!data || data.length === 0 || e.detail.error) { return; }
-
-          let rows = $tbody.querySelectorAll('tr');
-          rows.forEach((tr, index) => {
-            let item = data[index];
-            if (item && item.memberId && item.companyId) {
-              let $favoriteBtn = createFavoriteButton(item.memberId, item.companyId, item.displayName || "Bu aday");
-              let $interviewBtn = createInterviewScheduleButton(item.memberId, item.companyId, item.displayName || "Bu aday");
-              let $hireBtn = createHireCandidateButton(item.memberId, item.companyId, item.displayName || "Bu aday");
-
-              let $td = td();
-              $td.append($favoriteBtn, $interviewBtn, $hireBtn);
-              tr.append($td);
-            }
-          });
-        });
-      }
     });
   </script>
 </body>
