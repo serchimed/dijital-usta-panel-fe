@@ -37,6 +37,10 @@ async function api(callName, data = {}) {
 async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl) {
   btn.disabled = true;
   let $msg = btn.nextElementSibling;
+  if (!$msg) {
+    $msg = document.createElement("p");
+    btn.after($msg);
+  }
   $msg.textContent = LOADING_MESSAGE_WAIT;
 
   let result = await api(endpoint, data);

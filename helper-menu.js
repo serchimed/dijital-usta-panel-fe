@@ -75,6 +75,8 @@ function buildRoleMenu() {
   if (!$m.firstElementChild) { return; }
 
   let items = MENU[USER.role];
+  if (items.length === 1) { window.location.href = items[0].href + ".html"; return; }
+
   items.forEach(i => {
     let $a = a(i.text, i.href + ".html");
     $m.firstElementChild.append($a);
