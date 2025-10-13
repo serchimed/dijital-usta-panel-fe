@@ -53,6 +53,7 @@ let PAGE_ROLES = {
 
   "candidate-profile": ["candidate"],
   "candidate-profile-edit": ["candidate"],
+  "candidate-profile-image": ["candidate"],
   "candidate-company-profile": ["candidate"],
   "candidate-experience-add": ["candidate"],
   "candidate-experience-edit": ["candidate"],
