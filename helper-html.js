@@ -100,6 +100,12 @@ function td(text) {
   return $td;
 }
 
+function th(text) {
+  let $th = document.createElement("th");
+  if (text) { $th.textContent = text; }
+  return $th;
+}
+
 function tda(text, href) {
   let $td = td();
   let $a = a(text, href);

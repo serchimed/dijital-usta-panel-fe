@@ -88,11 +88,17 @@
               ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName)
               : createInterviewAddButton(item.memberId, USER.companyId, companyName, item.displayName);
 
-            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName);
-
             let $td = td();
-            $td.append($favoriteBtn, $interviewBtn, $hireBtn);
+            $td.append($favoriteBtn, $interviewBtn);
+
+            if (item.isInterviewPlanned) {
+              let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName);
+              $td.append($hireBtn);
+            }
+
             tr.append($td);
+
+            $tbody.parentElement.firstElementChild.append(th());
           }
         });
       });

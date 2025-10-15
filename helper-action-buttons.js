@@ -64,6 +64,12 @@ function createFavoriteButton(memberId, companyId, displayName, isFavorited) {
       btn.dataset.isFavorited = isCurrentlyFavorited ? "true" : "false";
       btn.innerText = isCurrentlyFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle";
 
+      setTimeout(() => {
+        if (btn.nextElementSibling && btn.nextElementSibling.tagName === "P") {
+          btn.nextElementSibling.textContent = "";
+        }
+      }, 2345);
+
       if (!isCurrentlyFavorited && btn.closest("tr")) {
         btn.closest("tr").remove();
       }

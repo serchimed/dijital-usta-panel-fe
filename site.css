@@ -341,7 +341,7 @@ summary {
 
 .modal-btn-cancel {
   border: 1px solid #ddd;
-  background: white;
+  background: #fff;
   color: #333;
 }
 
@@ -351,12 +351,8 @@ summary {
 
 .modal-btn-primary {
   border: none;
-  background: #007bff;
-  color: white;
-}
-
-.modal-btn-primary:hover {
-  background: #0056b3;
+  background: #ff6720;
+  color: #fff;
 }
 
 .modal-btn-primary:disabled {

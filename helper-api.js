@@ -51,11 +51,11 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl) {
       errText = result.errors.map(e => `• ${e}`).join("<br>");
     }
     $msg.innerHTML = errText;
-    btn.disabled = false;
   } else {
     $msg.textContent = successMsg;
     if (redirectUrl) { setTimeout(() => { location.href = redirectUrl; }, 1234); }
   }
 
+  btn.disabled = false;
   return result;
 }
