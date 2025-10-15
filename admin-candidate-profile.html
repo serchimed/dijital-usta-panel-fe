@@ -182,7 +182,6 @@
     let companies = [];
     let companiesLoaded = false;
 
-    // Event listener'ları önce ekle
     let $interviewTbody = document.getElementById("CandidateInterview");
     if ($interviewTbody) {
       $interviewTbody.addEventListener("tableLoaded", (e) => {
@@ -315,6 +314,9 @@
           $selectedId.value = "";
         }
       });
+
+      setTimeout(loadTables, 1234);
+      setTimeout(setFilters, 2345);
     });
   </script>
 </body>

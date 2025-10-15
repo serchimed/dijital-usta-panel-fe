@@ -32,8 +32,3 @@ async function initAuth() {
 }
 
 onReady(async () => { await initAuth(); });
-
-onAuthReady(() => {
-  setTimeout(loadTables, 1234);
-  setTimeout(setFilters, 2345);
-});

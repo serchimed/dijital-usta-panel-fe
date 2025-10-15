@@ -75,6 +75,8 @@
         if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
         console.error(errText);
       }
+
+      setTimeout(setFilters, 1234);
     });
   </script>
 </body>

@@ -132,11 +132,12 @@
       }
 
       let infoResult = await api("Candidate/CompanyInfo", { memberId: candidateId, companyId: USER.companyId });
-
       if (!infoResult || !infoResult.isSuccess) {
         document.getElementById("msg").innerText = "Aday bilgileri yüklenemedi.";
         return;
       }
+
+      setTimeout(loadTables, 1234);
 
       let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
       let companyName = USER.name || "Bu firma";
@@ -154,10 +155,21 @@
           if (!confirm("Bu adayı favorilerinize eklemek istediğinizden emin misiniz?")) {
             return;
           }
-          await apiBtn(this, "CompanyFavorite/Add", {
+          let result = await apiBtn(this, "CompanyFavorite/Add", {
             memberId: candidateId,
             companyId: USER.companyId
           }, "Favorilere başarıyla eklendi", "İşlem başarısız oldu, lütfen tekrar deneyiniz.");
+
+          if (result && result.isSuccess) {
+            let $oldMsg = this.nextElementSibling;
+            if ($oldMsg && $oldMsg.tagName === "P") {
+              $oldMsg.remove();
+            }
+            this.remove();
+
+            let $newFavoriteBtn = createFavoriteRemoveButton(candidateId, USER.companyId, candidateName);
+            $actionButtons.prepend($newFavoriteBtn, p());
+          }
         });
       }
 

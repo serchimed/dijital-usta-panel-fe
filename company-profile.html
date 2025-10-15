@@ -58,7 +58,7 @@
           <th id="city">İl</th>
           <th id="county">İlçe</th>
           <th id="birthDate">Doğum Tarihi</th>
-          <th id="sector">Çalışmak İstediği Sektör</th>
+          <th id="willingSector">Çalışmak İstediği Sektör</th>
           <th></th>
         </tr>
       </thead>
@@ -100,6 +100,7 @@
 
     onAuthReady(async () => {
       await fillSpans("Company/Get", "companyId");
+      setTimeout(loadTables, 1234);
     });
   </script>
 </body>

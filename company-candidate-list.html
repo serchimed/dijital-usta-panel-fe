@@ -16,7 +16,6 @@
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
     <h2>Adaylar</h2>
-
     <input type="text" class="tblfilter" placeholder="filtrele" />
     <table>
       <thead>
@@ -62,6 +61,8 @@
         if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
         console.error(errText);
       }
+
+      setTimeout(setFilters, 1234);
     });
   </script>
 </body>

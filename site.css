@@ -161,11 +161,6 @@ td {
   padding-inline: 8px;
 }
 
-td:last-child {
-  text-align: right;
-  padding-right: 21px;
-}
-
 tbody tr td button {
   padding: 5px 5px 3px;
   font-size: 15px;

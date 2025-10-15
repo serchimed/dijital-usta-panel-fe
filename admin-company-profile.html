@@ -102,6 +102,9 @@
 
     onAuthReady(async () => {
       await fillSpans("Company/Get", "companyId");
+
+      setTimeout(loadTables, 1234);
+      setTimeout(setFilters, 2345);
     });
   </script>
 </body>
