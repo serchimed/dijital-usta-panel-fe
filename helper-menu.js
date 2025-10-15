@@ -38,7 +38,7 @@ let PAGE_ROLES = {
   "admin-candidate-profile": ["admin", "editor"],
 
   "admin-and-editor-list": ["admin"],
-  "admin-company-add": ["admin"],
+  "admin-company-add": ["admin", "editor"],
   "admin-editor-invite": ["admin"],
   "admin-tobb-add": ["admin"],
   "admin-ai": ["admin"],

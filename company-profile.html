@@ -73,14 +73,17 @@
     let $tbody = document.getElementById("CompanyFavorite");
     if ($tbody) {
       $tbody.addEventListener("tableLoaded", (e) => {
+        console.log(e);
+
         let data = e.detail.data;
         if (!data || data.length === 0) { return; }
 
-        let companyName = document.getElementById("companyName")?.textContent || "Bu firma";
+        let companyName = document.getElementById("companyName")?.textContent;
 
         let rows = e.target.querySelectorAll('tr');
         rows.forEach((tr, index) => {
           let item = data[index];
+          console.log(item);
           if (item && item.memberId && item.companyId) {
             let $favoriteBtn = createFavoriteRemoveButton(item.memberId, item.companyId, item.displayName);
 
