@@ -55,9 +55,7 @@
         if (!req.companyName) { errors.push("Lütfen çalışılan firma adını giriniz."); }
         if (!req.editorNameSurname) { errors.push("Lütfen firma yetkilisi adını ve soyadını giriniz."); }
         if (!req.phone) { errors.push("Lütfen firma yetkilisi telefonunu giriniz."); }
-        else if (!/^(?:\+\s*[1-9](?:\s*\d){1,14}|0\s*[1-9](?:\s*\d){1,14})\s*$/.test(req.phone)) {
-          errors.push("Lütfen geçerli bir telefon numarası giriniz.");
-        }
+        else if (!checkPhone(req.phone)) { errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
         if (!req.email) { errors.push("Lütfen e-posta adresini giriniz."); }
         else if (!checkEmail(req.email)) { errors.push("Lütfen geçerli bir e-posta adresi giriniz."); }
 

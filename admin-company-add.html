@@ -49,6 +49,10 @@
       <input type="url" id="trendyolUrl" />
     </label>
 
+    <label for="driveUrl">Drive Klasör URL
+      <input type="url" id="driveUrl" />
+    </label>
+
     <button>Kaydet</button>
     <p></p>
   </main>
@@ -67,7 +71,8 @@
           city: val("city"),
           sector: val("sector"),
           webUrl: val("webUrl"),
-          trendyolUrl: val("trendyolUrl")
+          trendyolUrl: val("trendyolUrl"),
+          driveUrl: val("driveUrl")
         };
 
         let errors = [];
@@ -75,27 +80,24 @@
         if (!req.displayName) { errors.push("Lütfen firma yetkilisi adı soyadı giriniz."); }
         if (!req.email) { errors.push("Lütfen firma yetkilisi eposta adresini giriniz."); }
 
-        if (req.email) {
-          let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailPattern.test(req.email)) {
-            errors.push("Lütfen geçerli bir e-posta adresi giriniz.");
-          }
+        if (req.email && !checkEmail(req.email)) {
+          errors.push("Lütfen geçerli bir e-posta adresi giriniz.");
         }
 
-        if (req.webUrl) {
-          try {
-            new URL(req.webUrl);
-          } catch {
-            errors.push("Lütfen geçerli bir web sitesi URL'si giriniz.");
-          }
+        if (req.phone && !checkPhone(req.phone)) {
+          errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788).");
         }
 
-        if (req.trendyolUrl) {
-          try {
-            new URL(req.trendyolUrl);
-          } catch {
-            errors.push("Lütfen geçerli bir Trendyol profil URL'si giriniz.");
-          }
+        if (req.webUrl && !checkUrl(req.webUrl)) {
+          errors.push("Lütfen geçerli bir web sitesi URL'si giriniz.");
+        }
+
+        if (req.trendyolUrl && !checkUrl(req.trendyolUrl)) {
+          errors.push("Lütfen geçerli bir Trendyol profil URL'si giriniz.");
+        }
+
+        if (req.driveUrl && !checkUrl(req.driveUrl)) {
+          errors.push("Lütfen geçerli bir Drive klasör URL'si giriniz.");
         }
 
         if (errors.length) {

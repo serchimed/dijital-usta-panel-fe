@@ -51,6 +51,7 @@
         if (!req.companyName) { errors.push("Lütfen organizasyon adını giriniz."); }
         if (!req.displayName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
         if (!req.phone) { errors.push("Lütfen telefon numarası giriniz."); }
+        else if (!checkPhone(req.phone)) { errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
         if (errors.length) {
           let p = this.nextElementSibling;
           p.innerHTML = errors.join("<br>");

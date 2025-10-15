@@ -77,6 +77,7 @@
         if (!req.companyName) { errors.push("Lütfen firma adını giriniz."); }
         if (!req.responsibleMemberName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
         if (!req.phone) { errors.push("Lütfen telefon numarası giriniz."); }
+        else if (!checkPhone(req.phone)) { errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
         if (!req.email) { errors.push("Lütfen eposta adresini giriniz."); }
         else if (!checkEmail(req.email)) { errors.push("Lütfen geçerli eposta adresini giriniz."); }
         if (!req.city) { errors.push("Lütfen il bilgisini giriniz."); }

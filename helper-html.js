@@ -138,6 +138,11 @@ function checkEmail(email) {
   return email.includes("@") && email.includes(".") && email.indexOf("@") < email.lastIndexOf(".") && email.indexOf(" ") < 0 && email.length >= 5;
 }
 
+function checkPhone(phone) {
+  if (!phone || typeof phone !== "string") return false;
+  return /^0\d{10}$/.test(phone);
+}
+
 function checkUrl(url) {
   if (!url || typeof url !== "string") return false;
   try {
