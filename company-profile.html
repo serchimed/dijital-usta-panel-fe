@@ -82,10 +82,11 @@
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.memberId) {
-            let $favoriteBtn = createFavoriteButton(item.memberId, USER.companyId, item.displayName, true);
+            let $msg = p();
+            let $favoriteBtn = createFavoriteButton(item.memberId, USER.companyId, item.displayName, true, $msg);
 
             let $interviewBtn = item.isInterviewPlanned
-              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName)
+              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName, $msg)
               : createInterviewAddButton(item.memberId, USER.companyId, companyName, item.displayName);
 
             let $td = td();
@@ -96,9 +97,10 @@
               $td.append($hireBtn);
             }
 
+            $td.append($msg);
             tr.append($td);
 
-            $tbody.parentElement.firstElementChild.append(th());
+            $tbody.parentElement.firstElementChild.firstElementChild.append(th());
           }
         });
       });

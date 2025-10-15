@@ -84,16 +84,18 @@
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.memberId) {
-            let $favoriteBtn = createFavoriteButton(item.memberId, USER.companyId, item.displayName, true);
+            let $msg = p();
+
+            let $favoriteBtn = createFavoriteButton(item.memberId, USER.companyId, item.displayName, true, $msg);
 
             let $interviewBtn = item.isInterviewPlanned
-              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName)
+              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName, $msg)
               : createInterviewAddButton(item.memberId, USER.companyId, companyName, item.displayName);
 
             let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName);
 
             let $td = td();
-            $td.append($favoriteBtn, $interviewBtn, $hireBtn);
+            $td.append($favoriteBtn, $interviewBtn, $hireBtn, $msg);
             tr.append($td);
           }
         });

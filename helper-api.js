@@ -34,13 +34,19 @@ async function api(callName, data = {}) {
   }
 }
 
-async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl) {
+async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement) {
   btn.disabled = true;
-  let $msg = btn.nextElementSibling;
+
+  // Eğer özel mesaj elemanı verilmişse onu kullan, yoksa butonun yanındaki p'yi kullan
+  let $msg = $msgElement;
   if (!$msg) {
-    $msg = document.createElement("p");
-    btn.after($msg);
+    $msg = btn.nextElementSibling;
+    if (!$msg || $msg.tagName !== "P") {
+      $msg = document.createElement("p");
+      btn.after($msg);
+    }
   }
+
   $msg.textContent = LOADING_MESSAGE_WAIT;
 
   let result = await api(endpoint, data);

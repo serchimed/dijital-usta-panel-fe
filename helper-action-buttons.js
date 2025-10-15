@@ -35,7 +35,7 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
   return $btn;
 }
 
-function createFavoriteButton(memberId, companyId, displayName, isFavorited) {
+function createFavoriteButton(memberId, companyId, displayName, isFavorited, $msgElement) {
   let $btn = btn(null, isFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle");
   $btn.dataset.memberId = memberId;
   $btn.dataset.companyId = companyId;
@@ -56,7 +56,9 @@ function createFavoriteButton(memberId, companyId, displayName, isFavorited) {
     let result = await apiBtn(btn, "CompanyFavorite/" + endpoint,
       { memberId: btn.dataset.memberId, companyId: btn.dataset.companyId },
       successMessage,
-      errorMessage
+      errorMessage,
+      null,
+      $msgElement
     );
 
     if (result && result.isSuccess) {
@@ -65,8 +67,9 @@ function createFavoriteButton(memberId, companyId, displayName, isFavorited) {
       btn.innerText = isCurrentlyFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle";
 
       setTimeout(() => {
-        if (btn.nextElementSibling && btn.nextElementSibling.tagName === "P") {
-          btn.nextElementSibling.textContent = "";
+        let $msg = $msgElement || btn.nextElementSibling;
+        if ($msg && $msg.tagName === "P") {
+          $msg.textContent = "";
         }
       }, 2345);
 
@@ -79,9 +82,8 @@ function createFavoriteButton(memberId, companyId, displayName, isFavorited) {
   return $btn;
 }
 
-function createInterviewCancelButton(memberId, companyId, displayName) {
+function createInterviewCancelButton(memberId, companyId, displayName, $msgElement) {
   let $btn = btn("action-btn-secondary", "Mülakat İptal");
-  let $msg = p();
 
   $btn.addEventListener(CLICK_EVENT, async function () {
     if (!confirm(`${displayName} ile planlanmış mülakatı iptal etmek istediğinize emin misiniz?`)) { return; }
@@ -89,7 +91,9 @@ function createInterviewCancelButton(memberId, companyId, displayName) {
     await apiBtn(this, "CandidateInterview/Cancel",
       { candidateId: memberId, companyId: companyId },
       "Mülakat iptal edildi.",
-      "Mülakat iptal edilemedi."
+      "Mülakat iptal edilemedi.",
+      null,
+      $msgElement
     );
   });
 

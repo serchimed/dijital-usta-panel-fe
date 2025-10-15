@@ -216,8 +216,10 @@
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.companyId && candidateId) {
+            let $msg = p();
+
             let $favoriteBtn = item.isFavorited
-              ? createFavoriteButton(candidateId, item.companyId, item.companyName, true)
+              ? createFavoriteButton(candidateId, item.companyId, item.companyName, true, $msg)
               : null;
 
             let $interviewBtn = createInterviewAddButton(candidateId, item.companyId, item.companyName, candidateName);
@@ -226,7 +228,7 @@
             if ($favoriteBtn) {
               $td.append($favoriteBtn);
             }
-            $td.append($interviewBtn);
+            $td.append($interviewBtn, $msg);
             tr.append($td);
           }
         });
