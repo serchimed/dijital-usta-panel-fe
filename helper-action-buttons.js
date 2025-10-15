@@ -35,43 +35,38 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
   return $btn;
 }
 
-function createFavoriteButton(memberId, companyId, displayName) {
-  let $btn = btn(null, "Favoriden Çıkar");
+function createFavoriteButton(memberId, companyId, displayName, isFavorited) {
+  let $btn = btn(null, isFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle");
+  $btn.dataset.memberId = memberId;
+  $btn.dataset.companyId = companyId;
+  $btn.dataset.isFavorited = isFavorited ? "true" : "false";
 
   $btn.addEventListener(CLICK_EVENT, async function () {
-    if (!confirm(`${displayName}'i favorilerden çıkarmak istediğinize emin misiniz?`)) { return; }
-
     let btn = this;
-    btn.disabled = true;
-    btn.nextElementSibling.innerText = LOADING_MESSAGE_WAIT;
+    let isCurrentlyFavorited = btn.dataset.isFavorited === "true";
+    let endpoint = isCurrentlyFavorited ? "Remove" : "Add";
+    let confirmMessage = isCurrentlyFavorited
+      ? `${displayName}'i favorilerden çıkarmak istediğinize emin misiniz?`
+      : `${displayName}'i favorilerinize eklemek istediğinizden emin misiniz?`;
+    let successMessage = isCurrentlyFavorited ? "Favorilerden çıkarıldı." : "Favorilere başarıyla eklendi";
+    let errorMessage = isCurrentlyFavorited ? "Favorilerden çıkarılamadı." : ERROR_MESSAGE_DEFAULT;
 
-    let result = await api("CompanyFavorite/Remove", { memberId: memberId, companyId: companyId });
+    if (!confirm(confirmMessage)) { return; }
 
-    if (result && result.isSuccess) {
-      btn.closest("tr").remove();
-    } else {
-      btn.nextElementSibling.innerText = ERROR_MESSAGE_DEFAULT;
-      btn.disabled = false;
-    }
-  });
-
-  return $btn;
-}
-
-function createFavoriteRemoveButton(memberId, companyId, displayName) {
-  let $btn = btn(null, "Favoriden Çıkar");
-
-  $btn.addEventListener(CLICK_EVENT, async function () {
-    if (!confirm(`${displayName}'i favorilerden çıkarmak istediğinize emin misiniz?`)) { return; }
-
-    await apiBtn(this, "CompanyFavorite/Remove",
-      { memberId: memberId, companyId: companyId },
-      "Favorilerden çıkarıldı.",
-      "Favorilerden çıkarılamadı."
+    let result = await apiBtn(btn, "CompanyFavorite/" + endpoint,
+      { memberId: btn.dataset.memberId, companyId: btn.dataset.companyId },
+      successMessage,
+      errorMessage
     );
 
-    if (this.closest("tr")) {
-      this.closest("tr").remove();
+    if (result && result.isSuccess) {
+      isCurrentlyFavorited = !isCurrentlyFavorited;
+      btn.dataset.isFavorited = isCurrentlyFavorited ? "true" : "false";
+      btn.innerText = isCurrentlyFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle";
+
+      if (!isCurrentlyFavorited && btn.closest("tr")) {
+        btn.closest("tr").remove();
+      }
     }
   });
 

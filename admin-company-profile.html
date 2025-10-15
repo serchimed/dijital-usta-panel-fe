@@ -83,14 +83,14 @@
         let rows = $tbody.querySelectorAll('tr');
         rows.forEach((tr, index) => {
           let item = data[index];
-          if (item && item.memberId && item.companyId) {
-            let $favoriteBtn = createFavoriteRemoveButton(item.memberId, item.companyId, item.displayName);
+          if (item && item.memberId) {
+            let $favoriteBtn = createFavoriteButton(item.memberId, USER.companyId, item.displayName, true);
 
             let $interviewBtn = item.isInterviewPlanned
-              ? createInterviewCancelButton(item.memberId, item.companyId, item.displayName)
-              : createInterviewAddButton(item.memberId, item.companyId, companyName, item.displayName);
+              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName)
+              : createInterviewAddButton(item.memberId, USER.companyId, companyName, item.displayName);
 
-            let $hireBtn = createHireCandidateButton(item.memberId, item.companyId, item.displayName);
+            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName);
 
             let $td = td();
             $td.append($favoriteBtn, $interviewBtn, $hireBtn);

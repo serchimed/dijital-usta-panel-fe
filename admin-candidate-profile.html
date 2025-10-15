@@ -217,7 +217,7 @@
           let item = data[index];
           if (item && item.companyId && candidateId) {
             let $favoriteBtn = item.isFavorited
-              ? createFavoriteRemoveButton(candidateId, item.companyId, item.companyName)
+              ? createFavoriteButton(candidateId, item.companyId, item.companyName, true)
               : null;
 
             let $interviewBtn = createInterviewAddButton(candidateId, item.companyId, item.companyName, candidateName);
@@ -306,7 +306,7 @@
         let result = await apiBtn(this, "CompanyFavorite/Add", {
           memberId: candidateId,
           companyId: companyId
-        }, "Favorilere başarıyla eklendi", "İşlem başarısız oldu, lütfen tekrar deneyiniz.");
+        }, "Favorilere başarıyla eklendi", ERROR_MESSAGE_DEFAULT);
 
         if (result && result.isSuccess) {
           $search.value = "";
