@@ -82,19 +82,24 @@ function createFavoriteButton(memberId, companyId, displayName, isFavorited, $ms
   return $btn;
 }
 
-function createInterviewCancelButton(memberId, companyId, displayName, $msgElement) {
+function createInterviewCancelButton(memberId, companyId, displayName, companyName, $msgElement) {
   let $btn = btn("action-btn-secondary", "Mülakat İptal");
 
   $btn.addEventListener(CLICK_EVENT, async function () {
     if (!confirm(`${displayName} ile planlanmış mülakatı iptal etmek istediğinize emin misiniz?`)) { return; }
 
-    await apiBtn(this, "CandidateInterview/Cancel",
+    let result = await apiBtn(this, "CandidateInterview/Cancel",
       { candidateId: memberId, companyId: companyId },
       "Mülakat iptal edildi.",
       "Mülakat iptal edilemedi.",
       null,
       $msgElement
     );
+
+    if (result && result.isSuccess) {
+      let $newBtn = createInterviewAddButton(memberId, companyId, companyName, displayName);
+      this.replaceWith($newBtn);
+    }
   });
 
   return $btn;

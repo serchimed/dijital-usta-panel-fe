@@ -86,7 +86,7 @@
             let $favoriteBtn = createFavoriteButton(item.memberId, USER.companyId, item.displayName, true, $msg);
 
             let $interviewBtn = item.isInterviewPlanned
-              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName, $msg)
+              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName, companyName, $msg)
               : createInterviewAddButton(item.memberId, USER.companyId, companyName, item.displayName);
 
             let $td = td();

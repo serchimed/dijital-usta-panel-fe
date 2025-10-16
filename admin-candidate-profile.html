@@ -159,7 +159,7 @@
       </table>
     </details>
 
-    <details id="favoriteDetails">
+    <details id="favoriteDetails" open>
       <summary>Firma Favorilerine Ekle</summary>
 
       <label for="companySearch">Firma Ara
@@ -194,7 +194,7 @@
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.companyId && candidateId) {
-            let $cancelBtn = createInterviewCancelButton(candidateId, item.companyId, item.companyName || "Bu firma");
+            let $cancelBtn = createInterviewCancelButton(candidateId, item.companyId, candidateName, item.companyName || "Bu firma");
 
             let $td = td();
             $td.append($cancelBtn);

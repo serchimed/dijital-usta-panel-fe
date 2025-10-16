@@ -148,7 +148,7 @@
 
       let $favoriteBtn = createFavoriteButton(candidateId, USER.companyId, candidateName, isFavorited);
       let $interviewBtn = isInterviewPlanned
-        ? createInterviewCancelButton(candidateId, USER.companyId, candidateName)
+        ? createInterviewCancelButton(candidateId, USER.companyId, candidateName, companyName)
         : createInterviewAddButton(candidateId, USER.companyId, companyName, candidateName);
 
       $actionButtons.append($favoriteBtn, p(), $interviewBtn, p());
