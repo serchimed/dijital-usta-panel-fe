@@ -5,7 +5,8 @@ let MENU = {
     { text: "Adminler ve Editörler", href: "admin-and-editor-list" },
     { text: "TOBB Eğitimden Geçen Adayları Davet Et", href: "admin-tobb-add" },
     { text: "Yapay Zeka İşlemleri", href: "admin-ai" },
-    { text: "Data İşlemleri", href: "admin-data" }
+    { text: "Data İşlemleri", href: "admin-data" },
+    { text: "İstatistikler", href: "admin-statistics" }
   ],
   "company": [
     { text: "Profil", href: "company-profile" },
@@ -43,6 +44,7 @@ let PAGE_ROLES = {
   "admin-tobb-add": ["admin"],
   "admin-ai": ["admin"],
   "admin-data": ["admin"],
+  "admin-statistics": ["admin"],
   "admin-profile": ["admin"],
   "admin-profile-edit": ["admin"],
 

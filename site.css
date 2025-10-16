@@ -87,6 +87,19 @@ label span {
   font-weight: bold;
 }
 
+.label-warn {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 0.5em;
+  font-weight: normal;
+}
+
+.label-warn ul {
+  margin-top: 0.5em;
+  padding-left: 1.5em;
+  list-style-type: disc;
+}
+
 label img {
   width: 222px;
   border: 1px solid #777;
@@ -405,4 +418,60 @@ summary {
 
 .action-btn-secondary {
   margin-left: 8px;
+}
+
+/* Searchable select component */
+label.sel {
+  position: relative;
+}
+
+label.sel input {
+  width: 555px;
+}
+
+label.sel div {
+  display: none;
+  position: absolute;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #777;
+  border-radius: 3px;
+  background: white;
+  width: 555px;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+label.sel div.show {
+  display: block;
+}
+
+label.sel div div {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  display: block;
+  position: static;
+  max-height: none;
+  overflow: visible;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  width: auto;
+  z-index: auto;
+  border-bottom: 1px solid #eee;
+}
+
+label.sel div div:last-child {
+  border-bottom: none;
+}
+
+label.sel div div:hover {
+  background-color: #f0f0f0;
+}
+
+label.sel div div.selected {
+  background-color: #e6f2ff;
+  font-weight: bold;
 }

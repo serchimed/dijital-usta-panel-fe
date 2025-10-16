@@ -54,7 +54,7 @@
       <span id="driveUrl"></span>
     </label>
 
-    <label>Favori Adaylar</label>
+    <label>Kısa Listeye Eklenen Adaylar</label>
     <table class="load">
       <thead>
         <tr>
@@ -66,13 +66,13 @@
           <th></th>
         </tr>
       </thead>
-      <tbody id="CompanyFavorite"></tbody>
+      <tbody id="CompanyShortlist"></tbody>
     </table>
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    let $tbody = document.getElementById("CompanyFavorite");
+    let $tbody = document.getElementById("CompanyShortlist");
     if ($tbody) {
       $tbody.addEventListener("tableLoaded", (e) => {
         let data = e.detail.data;
@@ -86,7 +86,7 @@
           if (item && item.memberId) {
             let $msg = p();
 
-            let $favoriteBtn = createFavoriteButton(item.memberId, USER.companyId, item.displayName, true, $msg);
+            let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, true, $msg);
 
             let $interviewBtn = item.isInterviewPlanned
               ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName, companyName, $msg)
@@ -95,7 +95,7 @@
             let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName);
 
             let $td = td();
-            $td.append($favoriteBtn, $interviewBtn, $hireBtn, $msg);
+            $td.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
             tr.append($td);
           }
         });

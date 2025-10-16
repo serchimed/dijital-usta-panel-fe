@@ -34,9 +34,12 @@
       <input type="text" id="educationLevel" />
     </label>
 
-    <label>Üniversite Adı
-      <input type="text" id="university" />
+    <label class="sel">Üniversite Adı
+      <input type="text" id="university" placeholder="Üniversite ara..." autocomplete="off" />
+      <div id="universityList"></div>
     </label>
+
+    <input type="text" id="customUniversity" placeholder="Üniversite adını manuel girin..." style="display: none; margin-top: 8px;" />
 
     <label>Bölümü
       <input type="text" id="major" />
@@ -68,17 +71,115 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
+    let universities = [];
+    let $university = document.getElementById("university");
+    let $universityList = document.getElementById("universityList");
+
+    // Üniversite listesini yükle
+    async function loadUniversities() {
+      let hashResult = await api("University/Hash", {});
+      let currentHash = hashResult?.data || "";
+      let storedHash = localStorage.getItem("universitiesHash");
+      let storedUniversities = localStorage.getItem("universities");
+
+      if (currentHash && storedHash === currentHash && storedUniversities) {
+        // Local'den yükle
+        universities = JSON.parse(storedUniversities);
+      } else {
+        // API'den yükle
+        let result = await api("University/GetAll", {});
+        if (result && result.isSuccess && Array.isArray(result.data)) {
+          universities = result.data;
+          localStorage.setItem("universities", JSON.stringify(universities));
+          localStorage.setItem("universitiesHash", currentHash);
+        }
+      }
+    }
+
+    let $customUniversity = document.getElementById("customUniversity");
+
+    // Üniversite listesini filtrele ve göster
+    function filterUniversities(searchText) {
+      $universityList.innerHTML = "";
+
+      if (!searchText) {
+        $universityList.classList.remove("show");
+        return;
+      }
+
+      let filtered = universities.filter(u =>
+        u.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        $universityList.classList.remove("show");
+        return;
+      }
+
+      filtered.forEach(u => {
+        let $item = document.createElement("div");
+        $item.textContent = u.name;
+        $item.addEventListener(CLICK_EVENT, function () {
+          $university.value = u.name;
+          $universityList.classList.remove("show");
+          $customUniversity.style.display = "none";
+          $customUniversity.value = "";
+        });
+        $universityList.appendChild($item);
+      });
+
+      // "Üniversitem listede yok" seçeneği ekle
+      let $notInList = document.createElement("div");
+      $notInList.textContent = "Üniversitem listede yok";
+      $notInList.style.fontStyle = "italic";
+      $notInList.style.color = "#666";
+      $notInList.addEventListener(CLICK_EVENT, function () {
+        $university.value = "";
+        $universityList.classList.remove("show");
+        $customUniversity.style.display = "block";
+        $customUniversity.focus();
+      });
+      $universityList.appendChild($notInList);
+
+      $universityList.classList.add("show");
+    }
+
+    // Input'a yazıldığında filtrele
+    $university.addEventListener("input", function () {
+      filterUniversities(this.value.trim());
+    });
+
+    // Input'a focus olduğunda listeyi göster
+    $university.addEventListener("focus", function () {
+      if (this.value.trim()) {
+        filterUniversities(this.value.trim());
+      }
+    });
+
+    // Dışarıya tıklandığında listeyi kapat
+    document.addEventListener(CLICK_EVENT, function (e) {
+      if (!e.target.closest(".sel")) {
+        $universityList.classList.remove("show");
+      }
+    });
+
     onAuthReady(async () => {
+      await loadUniversities();
       let id = await fillInputs("Candidate/Get");
 
       document.querySelector("button").addEventListener(CLICK_EVENT, async function () {
+        // Custom university doluysa onu kullan, değilse normal university inputunu kullan
+        let universityValue = $customUniversity.style.display === "block" && $customUniversity.value.trim()
+          ? $customUniversity.value.trim()
+          : val("university");
+
         let req = {
           memberId: id,
           displayName: val("displayName"),
           birthDate: val("birthDate"),
           gender: val("gender"),
           educationLevel: val("educationLevel"),
-          university: val("university"),
+          university: universityValue,
           major: val("major"),
           classYear: val("classYear") || "",
           city: val("city"),

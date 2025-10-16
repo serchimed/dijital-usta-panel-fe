@@ -16,6 +16,10 @@
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
     <h2>Firma Listesi</h2>
+
+    <button id="exportBtn">CSV Olarak Dışa Aktar</button>
+    <p id="exportMsg"></p>
+
     <input type="text" class="tblfilter" placeholder="filtrele" />
     <table>
       <thead>
@@ -35,6 +39,48 @@
   <script src="site.js"></script>
   <script>
     onAuthReady(async () => {
+      // CSV Export butonu
+      let $exportBtn = document.getElementById("exportBtn");
+      let $exportMsg = document.getElementById("exportMsg");
+
+      $exportBtn.addEventListener(CLICK_EVENT, async function () {
+        this.disabled = true;
+        $exportMsg.textContent = "CSV hazırlanıyor...";
+
+        try {
+          let response = await fetch(`${API}Company/Export`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({})
+          });
+
+          if (!response.ok) {
+            $exportMsg.textContent = "CSV oluşturulamadı.";
+            this.disabled = false;
+            return;
+          }
+
+          let blob = await response.blob();
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "firmalar_" + new Date().toISOString().split('T')[0] + ".csv";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+
+          $exportMsg.textContent = "CSV başarıyla indirildi.";
+        } catch (error) {
+          $exportMsg.textContent = "Bir hata oluştu.";
+          console.error("Export error:", error);
+        }
+
+        this.disabled = false;
+      });
+
+      // Firma listesini yükle
       let result = await api("Company/GetAll", {});
       if (result && result.isSuccess) {
         let tbody = document.querySelector("table tbody");

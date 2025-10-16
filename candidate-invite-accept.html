@@ -21,9 +21,11 @@
       <input type="email" id="email" />
     </label>
 
-    <label for="letter">Mektup (max 500 kelime)
-      <textarea id="letter"></textarea>
-    </label>
+    <div id="companiesContainer">
+      <label>Profil bilgilerinizin paylaşılacağı firmalar</label>
+      <p class="label-warn">Profilinizi görmesini istemediğiniz firmalar var ise seçimi kaldırınız.</p>
+      <div id="companiesList"></div>
+    </div>
 
     <button>Kaydet ve Giriş Yap</button>
     <p></p>
@@ -31,18 +33,58 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onAuthReady(() => {
+    onAuthReady(async () => {
       let prms = new URLSearchParams(window.location.search);
       let token = prms.get("ref");
       if (!token) { window.location.href = "index.html"; }
 
+      // Firma listesini yükle
+      let $companiesList = document.getElementById("companiesList");
+      $companiesList.innerHTML = "<p>Firmalar yükleniyor...</p>";
+
+      let companiesResult = await api("Company/GetForCandidateCity", {});
+
+      if (!companiesResult || companiesResult.error || !companiesResult.isSuccess || !Array.isArray(companiesResult.data)) {
+        $companiesList.innerHTML = "<p style='color: #d9534f;'>Firmalar yüklenemedi. Lütfen sayfayı yenileyin.</p>";
+      } else if (companiesResult.data.length === 0) {
+        $companiesList.innerHTML = "<p>Şehrinizde henüz firma bulunmamaktadır.</p>";
+      } else {
+        $companiesList.innerHTML = "";
+        companiesResult.data.forEach(company => {
+          let $label = document.createElement("label");
+          $label.style.display = "flex";
+          $label.style.alignItems = "center";
+          $label.style.marginBottom = "8px";
+
+          let $checkbox = document.createElement("input");
+          $checkbox.type = "checkbox";
+          $checkbox.value = company.id;
+          $checkbox.checked = true;
+          $checkbox.style.width = "auto";
+          $checkbox.style.margin = "0 8px 0 0";
+
+          let $span = document.createElement("span");
+          $span.textContent = company.name;
+          $span.style.margin = "0";
+
+          $label.appendChild($checkbox);
+          $label.appendChild($span);
+          $companiesList.appendChild($label);
+        });
+      }
+
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
       $btn.addEventListener(CLICK_EVENT, async function () {
+        // Seçili firma ID'lerini topla
+        let selectedCompanyIds = Array.from(
+          document.querySelectorAll('#companiesList input[type="checkbox"]:checked')
+        ).map(cb => cb.value);
+
         let req = {
           token: token,
           email: val("email"),
-          letter: val("letter")
+          companyIds: selectedCompanyIds
         };
 
         let errors = [];
@@ -52,11 +94,8 @@
           errors.push("Lütfen geçerli bir e-posta adresi giriniz.");
         }
 
-        if (req.letter) {
-          let wordCount = req.letter.split(/\s+/).filter(Boolean).length;
-          if (wordCount > 500) {
-            errors.push(`Mektup en fazla 500 kelime olmalıdır. (Şu an: ${wordCount})`);
-          }
+        if (selectedCompanyIds.length === 0) {
+          errors.push("En az bir firma seçmelisiniz.");
         }
 
         if (errors.length) {

@@ -142,8 +142,8 @@
       </table>
     </details>
 
-    <details open>
-      <summary>Profili İnceleyen Firmalar</summary>
+    <details>
+      <summary>Adayın Profilini Görüntüleyebilme İzni Alan Firmalar</summary>
       <input type="text" class="tblfilter" placeholder="filtrele" />
       <table class="load">
         <thead>
@@ -155,23 +155,22 @@
             <th></th>
           </tr>
         </thead>
-        <tbody id="CandidateProfileView"></tbody>
+        <tbody id="CandidateCompany"></tbody>
       </table>
     </details>
 
-    <details id="favoriteDetails" open>
-      <summary>Firma Favorilerine Ekle</summary>
+    <details id="shortlistDetails" open>
+      <summary>Firma Kısa Listesine Ekle</summary>
 
-      <label for="companySearch">Firma Ara
-        <input type="text" id="companySearch" placeholder="Firma adı yazın..." />
+      <label class="sel">Firma Ara
+        <input type="text" id="companySearch" placeholder="Firma adı yazın..." autocomplete="off" />
+        <div id="companyResults"></div>
       </label>
-
-      <div id="companyResults"></div>
 
       <input type="hidden" id="selectedCompanyId" />
 
-      <button id="addFavoriteBtn" disabled>Favorilere Ekle</button>
-      <p id="favoriteMsg"></p>
+      <button id="addShortlistBtn" disabled>Kısa Listeye Ekle</button>
+      <p id="shortlistMsg"></p>
     </details>
 
   </main>
@@ -218,15 +217,15 @@
           if (item && item.companyId && candidateId) {
             let $msg = p();
 
-            let $favoriteBtn = item.isFavorited
-              ? createFavoriteButton(candidateId, item.companyId, item.companyName, true, $msg)
+            let $shortlistBtn = item.isShortlisted
+              ? createShortlistButton(candidateId, item.companyId, item.companyName, true, $msg)
               : null;
 
             let $interviewBtn = createInterviewAddButton(candidateId, item.companyId, item.companyName, candidateName);
 
             let $td = td();
-            if ($favoriteBtn) {
-              $td.append($favoriteBtn);
+            if ($shortlistBtn) {
+              $td.append($shortlistBtn);
             }
             $td.append($interviewBtn, $msg);
             tr.append($td);
@@ -238,14 +237,14 @@
     onAuthReady(async () => {
       candidateId = await fillSpans("Candidate/Get");
 
-      let $favoriteDetails = document.getElementById("favoriteDetails");
+      let $shortlistDetails = document.getElementById("shortlistDetails");
       let $search = document.getElementById("companySearch");
       let $results = document.getElementById("companyResults");
       let $selectedId = document.getElementById("selectedCompanyId");
-      let $addBtn = document.getElementById("addFavoriteBtn");
-      let $msg = document.getElementById("favoriteMsg");
+      let $addBtn = document.getElementById("addShortlistBtn");
+      let $msg = document.getElementById("shortlistMsg");
 
-      $favoriteDetails.addEventListener("toggle", async function () {
+      $shortlistDetails.addEventListener("toggle", async function () {
         if (this.open && !companiesLoaded) {
           $results.innerHTML = "<p style='color:gray;'>Firmalar yükleniyor...</p>";
           let companyResult = await api("Company/GetAll", {});
@@ -259,42 +258,57 @@
         }
       });
 
-      $search.addEventListener("input", function () {
-        let searchTerm = this.value.toLowerCase().trim();
+      // Firma filtreleme
+      function filterCompanies(searchText) {
+        $results.innerHTML = "";
+        $results.classList.remove("show");
         $selectedId.value = "";
         $addBtn.disabled = true;
-        $results.innerHTML = "";
 
-        if (!searchTerm) { return; }
-
-        let filtered = companies.filter(c =>
-          c.companyName.toLowerCase().includes(searchTerm)
-        );
-
-        if (filtered.length === 0) {
-          $results.innerHTML = "<p style='color:gray;'>Firma bulunamadı</p>";
+        if (!searchText) {
           return;
         }
 
-        let $list = ul();
-        for (let company of filtered) {
-          let $li = li();
-          $li.style.padding = "8px";
-          $li.style.cursor = "pointer";
-          $li.style.borderBottom = "1px solid #eee";
-          $li.innerHTML = `<strong>${company.companyName}</strong> - ${company.city}`;
+        let filtered = companies.filter(c =>
+          c.companyName.toLowerCase().includes(searchText.toLowerCase())
+        );
 
-          $li.addEventListener(CLICK_EVENT, function () {
+        if (filtered.length === 0) {
+          return;
+        }
+
+        filtered.forEach(company => {
+          let $item = document.createElement("div");
+          $item.innerHTML = `<strong>${company.companyName}</strong> - ${company.city}`;
+
+          $item.addEventListener(CLICK_EVENT, function () {
             $search.value = company.companyName;
             $selectedId.value = company.id;
             $addBtn.disabled = false;
-            $results.innerHTML = `<p style='color:green;'>✓ ${company.companyName} seçildi</p>`;
+            $results.classList.remove("show");
           });
 
-          $list.append($li);
-        }
+          $results.appendChild($item);
+        });
 
-        $results.append($list);
+        $results.classList.add("show");
+      }
+
+      $search.addEventListener("input", function () {
+        filterCompanies(this.value.trim());
+      });
+
+      $search.addEventListener("focus", function () {
+        if (this.value.trim()) {
+          filterCompanies(this.value.trim());
+        }
+      });
+
+      // Dışarıya tıklandığında listeyi kapat
+      document.addEventListener(CLICK_EVENT, function (e) {
+        if (!e.target.closest(".sel")) {
+          $results.classList.remove("show");
+        }
       });
 
       $addBtn.addEventListener(CLICK_EVENT, async function () {
@@ -305,15 +319,17 @@
         }
 
         $msg.textContent = "";
-        let result = await apiBtn(this, "CompanyFavorite/Add", {
+        let result = await apiBtn(this, "CompanyShortlist/Add", {
           memberId: candidateId,
           companyId: companyId
-        }, "Favorilere başarıyla eklendi", ERROR_MESSAGE_DEFAULT);
+        }, "Kısa listeye başarıyla eklendi", ERROR_MESSAGE_DEFAULT);
 
         if (result && result.isSuccess) {
           $search.value = "";
           $results.innerHTML = "";
+          $results.classList.remove("show");
           $selectedId.value = "";
+          $addBtn.disabled = true;
         }
       });
 

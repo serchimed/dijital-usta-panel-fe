@@ -144,17 +144,18 @@
     </details>
 
     <details open>
-      <summary>Profilinizi İnceleyen Firmalar</summary>
+      <summary>Profilinizin Görüntülenmesine İzin Verdiğiniz Firmalar</summary>
       <table class="load">
         <thead>
           <tr>
             <th id="companyName" data-url="candidate-company-profile.html?id={companyId}">Firma</th>
             <th id="city">İl</th>
-            <th id="trendyol" data-url="trendyol">Trendyol Profili</th>
-            <th id="web" data-url="web">Web Sitesi</th>
+            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+            <th id="webUrl" data-url="webUrl">Web Sitesi</th>
+            <th>İşlem</th>
           </tr>
         </thead>
-        <tbody id="CandidateProfileView"></tbody>
+        <tbody id="CandidateCompany"></tbody>
       </table>
     </details>
 
@@ -163,6 +164,34 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
+    let $candidateCompanyTable = document.getElementById("CandidateCompany");
+    $candidateCompanyTable.addEventListener("tableLoaded", function (event) {
+      if (event.detail.error || !event.detail.data || event.detail.data.length === 0) {
+        return;
+      }
+
+      let rows = this.querySelectorAll("tr");
+      event.detail.data.forEach((item, index) => {
+        let $row = rows[index];
+        if (!$row) {
+          return;
+        }
+
+        // Engelle/Engeli Kaldır butonu oluştur
+        let $btn = createBlockButton(
+          item.companyId,
+          item.isBlocked,
+          item.companyName,
+          "CandidateCompany/Block",
+          "CandidateCompany/Unblock",
+          "companyId"
+        );
+
+        let $td = tdbtn($btn);
+        $row.appendChild($td);
+      });
+    });
+
     onAuthReady(async () => {
       await fillSpans("Candidate/Get");
       setTimeout(loadTables, 1234);

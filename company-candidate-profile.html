@@ -141,17 +141,17 @@
 
       let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
       let companyName = USER.name || "Bu firma";
-      let isFavorited = infoResult.data?.isFavorited || false;
+      let isShortlisted = infoResult.data?.isShortlisted || false;
       let isInterviewPlanned = infoResult.data?.isInterviewPlanned || false;
 
       let $actionButtons = document.getElementById("actionButtons");
 
-      let $favoriteBtn = createFavoriteButton(candidateId, USER.companyId, candidateName, isFavorited);
+      let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted);
       let $interviewBtn = isInterviewPlanned
         ? createInterviewCancelButton(candidateId, USER.companyId, candidateName, companyName)
         : createInterviewAddButton(candidateId, USER.companyId, companyName, candidateName);
 
-      $actionButtons.append($favoriteBtn, p(), $interviewBtn, p());
+      $actionButtons.append($shortlistBtn, p(), $interviewBtn, p());
     });
   </script>
 </body>

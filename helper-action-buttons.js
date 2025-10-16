@@ -35,25 +35,25 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
   return $btn;
 }
 
-function createFavoriteButton(memberId, companyId, displayName, isFavorited, $msgElement) {
-  let $btn = btn(null, isFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle");
+function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement) {
+  let $btn = btn(null, isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
   $btn.dataset.memberId = memberId;
   $btn.dataset.companyId = companyId;
-  $btn.dataset.isFavorited = isFavorited ? "true" : "false";
+  $btn.dataset.isShortlisted = isShortlisted ? "true" : "false";
 
   $btn.addEventListener(CLICK_EVENT, async function () {
     let btn = this;
-    let isCurrentlyFavorited = btn.dataset.isFavorited === "true";
-    let endpoint = isCurrentlyFavorited ? "Remove" : "Add";
-    let confirmMessage = isCurrentlyFavorited
-      ? `${displayName}'i favorilerden çıkarmak istediğinize emin misiniz?`
-      : `${displayName}'i favorilerinize eklemek istediğinizden emin misiniz?`;
-    let successMessage = isCurrentlyFavorited ? "Favorilerden çıkarıldı." : "Favorilere başarıyla eklendi";
-    let errorMessage = isCurrentlyFavorited ? "Favorilerden çıkarılamadı." : ERROR_MESSAGE_DEFAULT;
+    let isCurrentlyShortlisted = btn.dataset.isShortlisted === "true";
+    let endpoint = isCurrentlyShortlisted ? "Remove" : "Add";
+    let confirmMessage = isCurrentlyShortlisted
+      ? `${displayName}'i kısa listeden çıkarmak istediğinize emin misiniz?`
+      : `${displayName}'i kısa listenize eklemek istediğinizden emin misiniz?`;
+    let successMessage = isCurrentlyShortlisted ? "Kısa listeden çıkarıldı." : "Kısa listeye başarıyla eklendi";
+    let errorMessage = isCurrentlyShortlisted ? "Kısa listeden çıkarılamadı." : ERROR_MESSAGE_DEFAULT;
 
     if (!confirm(confirmMessage)) { return; }
 
-    let result = await apiBtn(btn, "CompanyFavorite/" + endpoint,
+    let result = await apiBtn(btn, "CompanyShortlist/" + endpoint,
       { memberId: btn.dataset.memberId, companyId: btn.dataset.companyId },
       successMessage,
       errorMessage,
@@ -62,9 +62,9 @@ function createFavoriteButton(memberId, companyId, displayName, isFavorited, $ms
     );
 
     if (result && result.isSuccess) {
-      isCurrentlyFavorited = !isCurrentlyFavorited;
-      btn.dataset.isFavorited = isCurrentlyFavorited ? "true" : "false";
-      btn.innerText = isCurrentlyFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle";
+      isCurrentlyShortlisted = !isCurrentlyShortlisted;
+      btn.dataset.isShortlisted = isCurrentlyShortlisted ? "true" : "false";
+      btn.innerText = isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle";
 
       setTimeout(() => {
         let $msg = $msgElement || btn.nextElementSibling;
@@ -73,7 +73,7 @@ function createFavoriteButton(memberId, companyId, displayName, isFavorited, $ms
         }
       }, 2345);
 
-      if (!isCurrentlyFavorited && btn.closest("tr")) {
+      if (!isCurrentlyShortlisted && btn.closest("tr")) {
         btn.closest("tr").remove();
       }
     }
