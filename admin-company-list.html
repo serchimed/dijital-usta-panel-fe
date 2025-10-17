@@ -39,7 +39,6 @@
   <script src="site.js"></script>
   <script>
     onAuthReady(async () => {
-      // CSV Export butonu
       let $exportBtn = document.getElementById("exportBtn");
       let $exportMsg = document.getElementById("exportMsg");
 
@@ -66,7 +65,7 @@
           let link = document.createElement("a");
           link.href = url;
           link.download = "firmalar_" + new Date().toISOString().split('T')[0] + ".csv";
-          document.body.appendChild(link);
+          document.body.append(link);
           link.click();
           document.body.removeChild(link);
           URL.revokeObjectURL(url);

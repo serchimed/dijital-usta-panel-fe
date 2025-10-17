@@ -24,7 +24,10 @@ let MENU = {
 let PUBLIC_PAGES = [
   "login",
   "demand-password",
-  "access-denied"
+  "access-denied",
+  "error-client",
+  "error-server",
+  "candidate-invite-accept"
 ];
 
 let PAGE_ROLES = {
@@ -33,8 +36,6 @@ let PAGE_ROLES = {
 
   "admin-company-list": ["admin", "editor"],
   "admin-company-profile": ["admin", "editor"],
-  "admin-company-block": ["admin", "editor"],
-  "admin-company-unblock": ["admin", "editor"],
   "admin-candidate-list": ["admin", "editor"],
   "admin-candidate-profile": ["admin", "editor"],
 
@@ -57,6 +58,7 @@ let PAGE_ROLES = {
   "candidate-profile-edit": ["candidate"],
   "candidate-profile-image": ["candidate"],
   "candidate-company-profile": ["candidate"],
+  "candidate-letter-add": ["candidate"],
   "candidate-experience-add": ["candidate"],
   "candidate-experience-edit": ["candidate"],
   "candidate-certificate-add": ["candidate"],

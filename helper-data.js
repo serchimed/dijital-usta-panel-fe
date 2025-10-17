@@ -1,3 +1,5 @@
+let CITIES = ["Balıkesir", "Denizli", "Gaziantep", "Nevşehir", "Ordu"];
+let INTERVIEW_RESULTS = ["Olumlu", "Olumsuz - Adayı Beğenmedik", "Olumsuz - Mülakatı İptal Ettik", "Olumsuz - Adayı Mülakata Katılmadı", "Olumsuz - Aday Teklifi Reddetti"];
 function setFilters() {
   let $fis = document.querySelectorAll('.tblfilter');
   $fis.forEach($i => {
@@ -42,7 +44,7 @@ async function loadTables() {
 
     let data = result.data;
     if (!Array.isArray(data) || data.length === 0) {
-      tbody.innerHTML = getMsgLine("Veri bulunamadı");
+      tbody.innerHTML = getMsgLine("Veri yok");
       tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: [], error: false } }));
       continue;
     }
@@ -102,7 +104,7 @@ async function fillSpans(url, key = "memberId") {
       let $s = document.getElementById(prop);
       if ($s) {
         let v = result.data[prop] ?? "-";
-        if ((prop === "birthDate" || prop.toLowerCase().includes("date")) && v && v !== "-") {
+        if ((prop === "start" || prop === "end" || prop.toLowerCase().includes("date")) && v && v !== "-") {
           v = formatDateLong(v);
         }
 

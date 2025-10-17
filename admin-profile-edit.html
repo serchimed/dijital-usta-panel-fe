@@ -58,7 +58,7 @@
           return;
         }
 
-        await apiBtn(this, "Member/AdminEdit", req, "Güncelleme başarılı.", "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "admin-profile.html?id=" + id);
+        await apiBtn(this, "Member/AdminEdit", req, "Güncelleme başarılı.", ERROR_MESSAGE_UPDATE_DEFAULT, "admin-profile.html?id=" + id);
       });
     });
   </script>

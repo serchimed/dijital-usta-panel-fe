@@ -100,7 +100,7 @@
       <table class="load">
         <thead>
           <tr>
-            <th id="company">Önceki Çalıştığı Firma</th>
+            <th id="companyName">Önceki Çalıştığı Firma</th>
             <th id="start">Başlangıç Tarihi</th>
             <th id="end">Bitiş Tarihi</th>
             <th id="position">Pozisyon</th>
@@ -117,7 +117,7 @@
         <thead>
           <tr>
             <th id="name">Sertifika</th>
-            <th id="organization">Veren Kurum</th>
+            <th id="company">Veren Kurum</th>
             <th id="year">Alındığı Yıl</th>
             <th id="description">Açıklama</th>
           </tr>
@@ -187,16 +187,18 @@
         let data = e.detail.data;
         if (!data || data.length === 0) { return; }
 
-        let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
+        let candidateName = document.getElementById("displayName")?.textContent;
 
         let rows = e.target.querySelectorAll('tr');
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.companyId && candidateId) {
-            let $cancelBtn = createInterviewCancelButton(candidateId, item.companyId, candidateName, item.companyName || "Bu firma");
+            let $reportBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, item.companyName);
+
+            let $hireBtn = createHireCandidateButton(candidateId, item.companyId, candidateName, item.isInterviewResulted);
 
             let $td = td();
-            $td.append($cancelBtn);
+            $td.append($reportBtn, $hireBtn);
             tr.append($td);
           }
         });
@@ -209,7 +211,7 @@
         let data = e.detail.data;
         if (!data || data.length === 0) { return; }
 
-        let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
+        let candidateName = document.getElementById("displayName")?.textContent;
 
         let rows = e.target.querySelectorAll('tr');
         rows.forEach((tr, index) => {
@@ -218,16 +220,18 @@
             let $msg = p();
 
             let $shortlistBtn = item.isShortlisted
-              ? createShortlistButton(candidateId, item.companyId, item.companyName, true, $msg)
+              ? createShortlistButton(candidateId, item.companyId, item.companyName, item.isShortlisted, $msg)
               : null;
 
-            let $interviewBtn = createInterviewAddButton(candidateId, item.companyId, item.companyName, candidateName);
+            let $reportBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, item.companyName);
+
+            let $hireBtn = createHireCandidateButton(candidateId, item.companyId, candidateName, item.isInterviewResulted);
 
             let $td = td();
             if ($shortlistBtn) {
               $td.append($shortlistBtn);
             }
-            $td.append($interviewBtn, $msg);
+            $td.append($reportBtn, $hireBtn, $msg);
             tr.append($td);
           }
         });
@@ -288,7 +292,7 @@
             $results.classList.remove("show");
           });
 
-          $results.appendChild($item);
+          $results.append($item);
         });
 
         $results.classList.add("show");

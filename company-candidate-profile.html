@@ -91,7 +91,7 @@
       <table class="load">
         <thead>
           <tr>
-            <th id="company">Önceki Çalıştığı Firma</th>
+            <th id="companyName">Önceki Çalıştığı Firma</th>
             <th id="start">Başlangıç Tarihi</th>
             <th id="end">Bitiş Tarihi</th>
             <th id="position">Pozisyon</th>
@@ -108,7 +108,7 @@
         <thead>
           <tr>
             <th id="name">Sertifika</th>
-            <th id="organization">Veren Kurum</th>
+            <th id="company">Veren Kurum</th>
             <th id="year">Alındığı Yıl</th>
             <th id="description">Açıklama</th>
           </tr>
@@ -139,19 +139,17 @@
 
       setTimeout(loadTables, 1234);
 
-      let candidateName = document.getElementById("displayName")?.textContent || "Bu aday";
-      let companyName = USER.name || "Bu firma";
-      let isShortlisted = infoResult.data?.isShortlisted || false;
-      let isInterviewPlanned = infoResult.data?.isInterviewPlanned || false;
+      let candidateName = document.getElementById("displayName")?.textContent;
+      let companyName = infoResult.data.companyName;
+      let isShortlisted = infoResult.data.isShortlisted || false;
+      let isInterviewResulted = infoResult.data.isInterviewResulted || false;
 
+      let $msg = p();
+      let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg);
+      let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, companyName);
+      let $hireBtn = createHireCandidateButton(candidateId, USER.companyId, candidateName, isInterviewResulted);
       let $actionButtons = document.getElementById("actionButtons");
-
-      let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted);
-      let $interviewBtn = isInterviewPlanned
-        ? createInterviewCancelButton(candidateId, USER.companyId, candidateName, companyName)
-        : createInterviewAddButton(candidateId, USER.companyId, companyName, candidateName);
-
-      $actionButtons.append($shortlistBtn, p(), $interviewBtn, p());
+      $actionButtons.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
     });
   </script>
 </body>

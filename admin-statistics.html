@@ -43,7 +43,6 @@
       $tbody.innerHTML = getMsgLine("Yükleniyor...");
 
       let result = await api("Stats/GetAll", {});
-
       if (!result || result.error || !result.isSuccess) {
         $tbody.innerHTML = getMsgLine("Veri yüklenemedi");
         return;
@@ -51,7 +50,7 @@
 
       let data = result.data;
       if (!Array.isArray(data) || data.length === 0) {
-        $tbody.innerHTML = getMsgLine("Veri bulunamadı");
+        $tbody.innerHTML = getMsgLine("Veri yok");
         return;
       }
 

@@ -62,7 +62,7 @@
           <th id="city">İl</th>
           <th id="county">İlçe</th>
           <th id="birthDate">Doğum Tarihi</th>
-          <th id="sector">Çalışmak İstediği Sektör</th>
+          <th id="willingSector">Çalışmak İstediği Sektör</th>
           <th></th>
         </tr>
       </thead>
@@ -78,21 +78,16 @@
         let data = e.detail.data;
         if (!data || data.length === 0 || e.detail.error) { return; }
 
-        let companyName = document.getElementById("companyName")?.textContent || "Bu firma";
+        let companyName = document.getElementById("companyName")?.textContent;
 
         let rows = $tbody.querySelectorAll('tr');
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.memberId) {
             let $msg = p();
-
             let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, true, $msg);
-
-            let $interviewBtn = item.isInterviewPlanned
-              ? createInterviewCancelButton(item.memberId, USER.companyId, item.displayName, companyName, $msg)
-              : createInterviewAddButton(item.memberId, USER.companyId, companyName, item.displayName);
-
-            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName);
+            let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, companyName);
+            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted);
 
             let $td = td();
             $td.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);

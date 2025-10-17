@@ -1,5 +1,6 @@
 let API = "https://api.dijitalusta.net/";
 let ERROR_MESSAGE_DEFAULT = "İşlem başarısız oldu, lütfen tekrar deneyiniz.";
+let ERROR_MESSAGE_UPDATE_DEFAULT = "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.";
 let LOADING_MESSAGE = "İşlem yapılıyor...";
 let LOADING_MESSAGE_WAIT = "İşlem yapılıyor, lütfen bekleyiniz.";
 

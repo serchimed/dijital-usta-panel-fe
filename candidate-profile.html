@@ -16,15 +16,18 @@
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
     <div id="msg"></div>
-    <h2>Aday Profili</h2>
+    <h2><span id="displayName"></span></h2>
+
+    <div id="motivationLetterWarning">
+      <p><strong>Motivasyon mektubunuzu henüz yazmadınız!</strong></p>
+      <p>Profilinizi güçlendirmek ve firmalara kendinizi daha iyi tanıtmak için motivasyon mektubu yazmanızı öneririz.
+      </p>
+      <a href="candidate-letter-add.html" class="qs">Motivasyon Mektubu Ekle</a>
+    </div>
 
     <label for="image">
       <img id="image" />
-      <a href="candidate-profile-image.html" class="qs">Değiştir</a>
-    </label>
-
-    <label>Adı Soyadı
-      <span id="displayName"></span>
+      <a href="candidate-profile-image.html" class="qs">Fotoğrafı Güncelle</a>
     </label>
 
     <details open>
@@ -91,21 +94,23 @@
       </label>
 
       <label>Motivasyon Mektubu
+        <a href="candidate-letter-add.html" class="qs">Mektup Ekle</a>
         <textarea readonly id="motivationLetter"></textarea>
       </label>
     </details>
 
     <details open>
       <summary>Deneyimler</summary>
+      <a href="candidate-experience-add.html" class="qs">İş Deneyimi Ekle</a>
       <table class="load">
         <thead>
           <tr>
-            <th id="company">Önceki Çalıştığı Firma</th>
+            <th id="companyName">Önceki Çalıştığı Firma</th>
             <th id="start">Başlangıç Tarihi</th>
             <th id="end">Bitiş Tarihi</th>
             <th id="position">Pozisyon</th>
             <th id="description">Açıklama</th>
-            <th><a href="candidate-experience-add.html" class="qs">İş Deneyimi Ekle</a></th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="CandidateExperience"></tbody>
@@ -114,14 +119,15 @@
 
     <details open>
       <summary>Sertifikalar</summary>
+      <a href="candidate-certificate-add.html" class="qs">Sertifika Ekle</a>
       <table class="load">
         <thead>
           <tr>
             <th id="name">Sertifika</th>
-            <th id="organization">Veren Kurum</th>
+            <th id="company">Veren Kurum</th>
             <th id="year">Alındığı Yıl</th>
             <th id="description">Açıklama</th>
-            <th><a href="candidate-certificate-add.html" class="qs">Sertifika Ekle</a></th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="CandidateCertificate"></tbody>
@@ -143,8 +149,8 @@
       </table>
     </details>
 
-    <details open>
-      <summary>Profilinizin Görüntülenmesine İzin Verdiğiniz Firmalar</summary>
+    <details>
+      <summary>Profilinizi Görmesine İzin Verdiğiniz Firmalar</summary>
       <table class="load">
         <thead>
           <tr>
@@ -152,7 +158,6 @@
             <th id="city">İl</th>
             <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
             <th id="webUrl" data-url="webUrl">Web Sitesi</th>
-            <th>İşlem</th>
           </tr>
         </thead>
         <tbody id="CandidateCompany"></tbody>
@@ -166,18 +171,13 @@
   <script>
     let $candidateCompanyTable = document.getElementById("CandidateCompany");
     $candidateCompanyTable.addEventListener("tableLoaded", function (event) {
-      if (event.detail.error || !event.detail.data || event.detail.data.length === 0) {
-        return;
-      }
+      if (event.detail.error || !event.detail.data || event.detail.data.length === 0) { return; }
 
       let rows = this.querySelectorAll("tr");
       event.detail.data.forEach((item, index) => {
         let $row = rows[index];
-        if (!$row) {
-          return;
-        }
+        if (!$row) { return; }
 
-        // Engelle/Engeli Kaldır butonu oluştur
         let $btn = createBlockButton(
           item.companyId,
           item.isBlocked,
@@ -188,12 +188,32 @@
         );
 
         let $td = tdbtn($btn);
-        $row.appendChild($td);
+        $row.append($td);
+
+        $row.closest("thead tr").appendChild(th());
       });
     });
 
     onAuthReady(async () => {
       await fillSpans("Candidate/Get");
+
+      let $motivationLetter = document.getElementById("motivationLetter");
+      let $addLetterLinks = document.querySelectorAll('a[href*="candidate-letter-add.html"]');
+      let $warning = document.getElementById("motivationLetterWarning");
+
+      if ($motivationLetter && $motivationLetter.value.trim()) {
+        if ($addLetterLinks) {
+          $addLetterLinks.forEach(link => link.remove());
+        }
+      } else {
+        if ($motivationLetter) {
+          $motivationLetter.remove();
+        }
+        if ($warning) {
+          $warning.style.display = "block";
+        }
+      }
+
       setTimeout(loadTables, 1234);
     });
   </script>

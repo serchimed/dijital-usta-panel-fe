@@ -16,7 +16,8 @@
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
     <h2>Çıkış Yapıldı</h2>
-    <p>Panele erişmek için hesabınıza <a href="demand-password.html">yeniden şifre isteyerek giriş yapabilirsiniz</a>.</p>
+    <p>Panele erişmek için hesabınıza <a href="demand-password.html">yeniden şifre isteyerek giriş yapabilirsiniz</a>.
+    </p>
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
@@ -27,6 +28,8 @@
       let result = await api("Member/Logout", {});
       if (result && result === true) {
         showContent();
+        if (document.querySelector("menu")) { document.querySelector("menu").remove(); }
+
       } else {
         console.error("Logout failed", result);
       }

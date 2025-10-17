@@ -93,7 +93,7 @@
           return;
         }
 
-        await apiBtn(this, "Company/Update", req, "Güncelleme başarılı.", "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.", "company-profile.html?id=" + id);
+        await apiBtn(this, "Company/Update", req, "Güncelleme başarılı.", ERROR_MESSAGE_UPDATE_DEFAULT, "company-profile.html?id=" + id);
       });
     });
   </script>

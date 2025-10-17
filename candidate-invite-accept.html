@@ -38,7 +38,6 @@
       let token = prms.get("ref");
       if (!token) { window.location.href = "index.html"; }
 
-      // Firma listesini yükle
       let $companiesList = document.getElementById("companiesList");
       $companiesList.innerHTML = "<p>Firmalar yükleniyor...</p>";
 
@@ -67,16 +66,15 @@
           $span.textContent = company.name;
           $span.style.margin = "0";
 
-          $label.appendChild($checkbox);
-          $label.appendChild($span);
-          $companiesList.appendChild($label);
+          $label.append($checkbox);
+          $label.append($span);
+          $companiesList.append($label);
         });
       }
 
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
       $btn.addEventListener(CLICK_EVENT, async function () {
-        // Seçili firma ID'lerini topla
         let selectedCompanyIds = Array.from(
           document.querySelectorAll('#companiesList input[type="checkbox"]:checked')
         ).map(cb => cb.value);

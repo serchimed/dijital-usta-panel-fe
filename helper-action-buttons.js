@@ -10,26 +10,47 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
     let confirmMessage = isCurrentlyBlocked
       ? `${displayName}'in engelini kaldırmak istediğinize emin misiniz?`
       : `${displayName}'i engellemek istediğinize emin misiniz?`;
+    let actionText = isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle";
 
-    if (!confirm(confirmMessage)) { return; }
+    let $mbody = div();
+    let $confirmLabel = p(confirmMessage);
+    $confirmLabel.style.marginBottom = "1em";
 
-    btn.disabled = true;
-    btn.nextElementSibling.innerText = LOADING_MESSAGE_WAIT;
+    let $msgDiv = div(CSS_CLASSES.modalMessage);
+    let $modal;
 
-    let req = {};
-    req[idKey] = btn.dataset.entityId;
-    let result = await api(endpoint, req);
+    let handleBlock = async function () {
+      setButtonLoading(buttons.submitBtn, true, actionText);
 
-    if (result && result.isSuccess) {
-      isCurrentlyBlocked = !isCurrentlyBlocked;
-      btn.dataset.isBlocked = isCurrentlyBlocked ? "true" : "false";
-      btn.innerText = isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle";
-      btn.nextElementSibling.innerText = "";
-    } else {
-      btn.nextElementSibling.innerText = ERROR_MESSAGE_DEFAULT;
-    }
+      btn.disabled = true;
+      btn.nextElementSibling.innerText = LOADING_MESSAGE_WAIT;
 
-    btn.disabled = false;
+      let req = {};
+      req[idKey] = btn.dataset.entityId;
+      let result = await api(endpoint, req);
+
+      if (result && result.isSuccess) {
+        isCurrentlyBlocked = !isCurrentlyBlocked;
+        btn.dataset.isBlocked = isCurrentlyBlocked ? "true" : "false";
+        btn.innerText = isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle";
+        btn.nextElementSibling.innerText = "";
+        closeModal($modal);
+      } else {
+        btn.nextElementSibling.innerText = ERROR_MESSAGE_DEFAULT;
+        showModalMessage($msgDiv, "error", ERROR_MESSAGE_DEFAULT);
+        setButtonLoading(buttons.submitBtn, false, actionText);
+      }
+
+      btn.disabled = false;
+    };
+
+    let buttons = createModalButtons("İptal", actionText,
+      () => closeModal($modal),
+      handleBlock
+    );
+
+    $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+    $modal = createModal("Onay", $mbody);
   });
 
   return $btn;
@@ -50,130 +71,177 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
       : `${displayName}'i kısa listenize eklemek istediğinizden emin misiniz?`;
     let successMessage = isCurrentlyShortlisted ? "Kısa listeden çıkarıldı." : "Kısa listeye başarıyla eklendi";
     let errorMessage = isCurrentlyShortlisted ? "Kısa listeden çıkarılamadı." : ERROR_MESSAGE_DEFAULT;
+    let actionText = isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle";
 
-    if (!confirm(confirmMessage)) { return; }
-
-    let result = await apiBtn(btn, "CompanyShortlist/" + endpoint,
-      { memberId: btn.dataset.memberId, companyId: btn.dataset.companyId },
-      successMessage,
-      errorMessage,
-      null,
-      $msgElement
-    );
-
-    if (result && result.isSuccess) {
-      isCurrentlyShortlisted = !isCurrentlyShortlisted;
-      btn.dataset.isShortlisted = isCurrentlyShortlisted ? "true" : "false";
-      btn.innerText = isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle";
-
-      setTimeout(() => {
-        let $msg = $msgElement || btn.nextElementSibling;
-        if ($msg && $msg.tagName === "P") {
-          $msg.textContent = "";
-        }
-      }, 2345);
-
-      if (!isCurrentlyShortlisted && btn.closest("tr")) {
-        btn.closest("tr").remove();
-      }
-    }
-  });
-
-  return $btn;
-}
-
-function createInterviewCancelButton(memberId, companyId, displayName, companyName, $msgElement) {
-  let $btn = btn("action-btn-secondary", "Mülakat İptal");
-
-  $btn.addEventListener(CLICK_EVENT, async function () {
-    if (!confirm(`${displayName} ile planlanmış mülakatı iptal etmek istediğinize emin misiniz?`)) { return; }
-
-    let result = await apiBtn(this, "CandidateInterview/Cancel",
-      { candidateId: memberId, companyId: companyId },
-      "Mülakat iptal edildi.",
-      "Mülakat iptal edilemedi.",
-      null,
-      $msgElement
-    );
-
-    if (result && result.isSuccess) {
-      let $newBtn = createInterviewAddButton(memberId, companyId, companyName, displayName);
-      this.replaceWith($newBtn);
-    }
-  });
-
-  return $btn;
-}
-
-function createInterviewAddButton(candidateId, companyId, companyName, candidateName) {
-  let $btn = btn(null, "Mülakata Davet Et");
-
-  $btn.addEventListener(CLICK_EVENT, async function () {
     let $mbody = div();
-
-    let $warningText = p("E-posta bildirimi gönderilecektir, emin olmadan durumu güncellemeyin.");
-    $warningText.style.color = "#d9534f";
-    $warningText.style.fontSize = "0.9em";
-    $warningText.style.fontWeight = "bold";
-    $warningText.style.marginBottom = "1em";
-
-    let $infoLabel = lbl(`${candidateName} adayına ${companyName} firması için mülakat planlamak üzeresiniz.`);
-    $infoLabel.className = "modal-subdued";
-
-    let $dateLabel = lbl("Tahmini Mülakat Tarihi");
-    let $dateInput = date(getTomorrow());
-    $dateInput.required = true;
-    $dateInput.min = new Date().toISOString().split('T')[0];
-    $dateLabel.append($dateInput);
+    let $confirmLabel = p(confirmMessage);
+    $confirmLabel.style.marginBottom = "1em";
 
     let $msgDiv = div(CSS_CLASSES.modalMessage);
     let $modal;
 
-    let handleAdd = async function () {
+    let handleShortlist = async function () {
+      setButtonLoading(buttons.submitBtn, true, actionText);
+
+      btn.disabled = true;
+      let $externalMsg = $msgElement || btn.nextElementSibling;
+      if ($externalMsg && $externalMsg.tagName === "P") {
+        $externalMsg.textContent = LOADING_MESSAGE_WAIT;
+      }
+
+      let result = await api("CompanyShortlist/" + endpoint,
+        { memberId: btn.dataset.memberId, companyId: btn.dataset.companyId }
+      );
+
+      if (result && result.isSuccess) {
+        isCurrentlyShortlisted = !isCurrentlyShortlisted;
+        btn.dataset.isShortlisted = isCurrentlyShortlisted ? "true" : "false";
+        btn.innerText = isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle";
+
+        if ($externalMsg && $externalMsg.tagName === "P") {
+          $externalMsg.textContent = successMessage;
+        }
+
+        closeModal($modal);
+
+        setTimeout(() => {
+          if ($externalMsg && $externalMsg.tagName === "P") {
+            $externalMsg.textContent = "";
+          }
+        }, 2345);
+
+        if (!isCurrentlyShortlisted && btn.closest("tr")) {
+          btn.closest("tr").remove();
+        }
+      } else {
+        if ($externalMsg && $externalMsg.tagName === "P") {
+          $externalMsg.textContent = errorMessage;
+        }
+        showModalMessage($msgDiv, "error", errorMessage);
+        setButtonLoading(buttons.submitBtn, false, actionText);
+      }
+
+      btn.disabled = false;
+    };
+
+    let buttons = createModalButtons("İptal", actionText,
+      () => closeModal($modal),
+      handleShortlist
+    );
+
+    $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+    $modal = createModal("Onay", $mbody);
+  });
+
+  return $btn;
+}
+
+function createInterviewReportButton(candidateId, companyId, displayName, companyName) {
+  let $btn = btn("action-btn-secondary", "Mülakat Sonucu Bildir");
+
+  $btn.addEventListener(CLICK_EVENT, async function () {
+    let $mbody = div();
+
+    let $candidateLabel = lbl(`Aday: ${displayName}`);
+    $candidateLabel.className = "modal-subdued";
+
+    let $dateLabel = lbl("Mülakat Yapıldığı Tarih");
+    let $dateInput = date(new Date().toISOString().split('T')[0]);
+    $dateInput.required = true;
+    $dateInput.max = new Date().toISOString().split('T')[0];
+    $dateLabel.append($dateInput);
+
+    let $resultLabel = lbl("Mülakat Sonucu");
+    $resultLabel.className = "sel";
+    let $resultInput = inp();
+    $resultInput.placeholder = "Sonuç seçiniz...";
+    $resultInput.required = true;
+    $resultInput.readOnly = true;
+    let $resultList = div();
+    $resultList.id = "resultList";
+    $resultLabel.append($resultInput, $resultList);
+
+    let selectedResult = "";
+
+    $resultInput.addEventListener(CLICK_EVENT, function () {
+      if ($resultList.children.length === 0) {
+        INTERVIEW_RESULTS.forEach(r => {
+          let $item = div();
+          $item.textContent = r;
+          $item.addEventListener(CLICK_EVENT, function () {
+            $resultInput.value = r;
+            selectedResult = r;
+            $resultList.classList.remove("show");
+          });
+          $resultList.appendChild($item);
+        });
+      }
+      $resultList.classList.toggle("show");
+    });
+
+    let $msgDiv = div(CSS_CLASSES.modalMessage);
+    let $modal;
+
+    let handleReport = async function () {
       let dateValue = $dateInput.value;
       if (!dateValue) {
-        showModalMessage($msgDiv, "error", "Lütfen tarih seçiniz.");
+        showModalMessage($msgDiv, "error", "Lütfen mülakat tarihini giriniz.");
+        return;
+      }
+
+      if (!selectedResult) {
+        showModalMessage($msgDiv, "error", "Lütfen mülakat sonucunu seçiniz.");
         return;
       }
 
       let selectedDate = new Date(dateValue);
       let today = new Date();
-      today.setHours(0, 0, 0, 0);
-      if (selectedDate < today) {
-        showModalMessage($msgDiv, "error", "Geçmiş bir tarih seçemezsiniz.");
+      today.setHours(23, 59, 59, 999);
+      if (selectedDate > today) {
+        showModalMessage($msgDiv, "error", "Gelecek bir tarih seçemezsiniz.");
         return;
       }
 
       setButtonLoading(buttons.submitBtn, true);
 
-      let result = await apiBtn(buttons.submitBtn, "CandidateInterview/Add", {
+      let result = await api("CandidateInterview/Report", {
         candidateId: candidateId,
         companyId: companyId,
-        scheduledAt: dateValue
-      }, `Mülakat daveti gönderildi. Tahmini tarih: ${dateValue}`, ERROR_MESSAGE_DEFAULT);
+        interviewedAt: dateValue,
+        result: selectedResult
+      });
 
       if (result && result.isSuccess) {
+        showModalMessage($msgDiv, "success", "Mülakat sonucu başarıyla bildirildi!");
         setTimeout(() => { closeModal($modal); }, MODAL_AUTO_CLOSE_DELAY);
       } else {
-        setButtonLoading(buttons.submitBtn, false, "Mülakata Davet Et");
+        showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
+        setButtonLoading(buttons.submitBtn, false, "Sonucu Bildir");
       }
     };
 
-    let buttons = createModalButtons("İptal", "Mülakata Davet Et",
+    let buttons = createModalButtons("İptal", "Sonucu Bildir",
       () => closeModal($modal),
-      handleAdd
+      handleReport
     );
 
-    $mbody.append($warningText, $infoLabel, $dateLabel, buttons.buttonsDiv, $msgDiv);
+    $mbody.append($candidateLabel, $dateLabel, $resultLabel, buttons.buttonsDiv, $msgDiv);
 
-    $modal = createModal("Mülakat Daveti Gönder", $mbody);
+    $modal = createModal("Mülakat Sonucu Bildir", $mbody);
   });
 
   return $btn;
 }
 
-function createHireCandidateButton(memberId, companyId, displayName) {
+
+function createHireCandidateButton(memberId, companyId, displayName, isInterviewResulted) {
   let $btn = btn("action-btn-secondary", "İşe Al");
+
+  if (!isInterviewResulted) {
+    $btn.disabled = true;
+    $btn.title = "Mülakat sonucu bildirilmeden işe alınamaz";
+  }
+
   $btn.addEventListener(CLICK_EVENT, async function () {
     let $mbody = div();
 
