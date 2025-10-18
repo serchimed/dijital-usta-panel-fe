@@ -15,15 +15,10 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
-    <h2>Aday Profili</h2>
+    <h2><span id="displayName"></span></h2>
 
     <label for="image">
       <img id="image" />
-    </label>
-
-    <label>Adı Soyadı
-      <span id="displayName"></span>
     </label>
 
     <details open>
@@ -93,52 +88,92 @@
       <label>Motivasyon Mektubu
         <textarea readonly id="motivationLetter"></textarea>
       </label>
+
+      <label>Deneyimler
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="companyName">Önceki Çalıştığı Firma</th>
+              <th id="start">Başlangıç Tarihi</th>
+              <th id="end">Bitiş Tarihi</th>
+              <th id="position">Pozisyon</th>
+              <th id="description">Açıklama</th>
+            </tr>
+          </thead>
+          <tbody id="CandidateExperience"></tbody>
+        </table>
+      </label>
+
+      <label>Sertifikalar
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="name">Sertifika</th>
+              <th id="company">Veren Kurum</th>
+              <th id="year">Alındığı Yıl</th>
+              <th id="description">Açıklama</th>
+            </tr>
+          </thead>
+          <tbody id="CandidateCertificate"></tbody>
+        </table>
+      </label>
     </details>
 
     <details open>
-      <summary>Deneyimler</summary>
+      <summary>Aday İşlem Geçmişi ve Durumu</summary>
+
+      <label for="status">
+        Durum
+        <span id="status"></span>
+      </label>
+
+      <label for="pointOnlineExam">
+        Online Sınav Puanı
+        <span id="pointOnlineExam"></span>
+      </label>
+
+      <label for="pointA">
+        Başarı Puanı A
+        <span id="pointA"></span>
+      </label>
+
+      <label for="pointTobb">
+        TOBB Puanı
+        <span id="pointTobb"></span>
+      </label>
+
+      <label for="pointB">
+        Başarı Puanı B
+        <span id="pointB"></span>
+      </label>
+
       <table class="load">
         <thead>
           <tr>
-            <th id="companyName">Önceki Çalıştığı Firma</th>
-            <th id="start">Başlangıç Tarihi</th>
-            <th id="end">Bitiş Tarihi</th>
-            <th id="position">Pozisyon</th>
-            <th id="description">Açıklama</th>
+            <th id="actingMemberName">İşlemi Yapan</th>
+            <th id="companyName" data-url="admin-company-profile.html?id={companyId}">Firma</th>
+            <th id="action">İşlem</th>
+            <th id="createdAt">Zaman</th>
           </tr>
         </thead>
-        <tbody id="CandidateExperience"></tbody>
+        <tbody id="CandidateHistory"></tbody>
       </table>
     </details>
 
     <details open>
-      <summary>Sertifikalar</summary>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="name">Sertifika</th>
-            <th id="company">Veren Kurum</th>
-            <th id="year">Alındığı Yıl</th>
-            <th id="description">Açıklama</th>
-          </tr>
-        </thead>
-        <tbody id="CandidateCertificate"></tbody>
-      </table>
-    </details>
-
-    <details open>
-      <summary>Mülakata Davet Eden Firmalar</summary>
+      <summary>Kısa Listeye Ekleyen Firmalar</summary>
       <table class="load">
         <thead>
           <tr>
             <th id="companyName" data-url="admin-company-profile.html?id={companyId}">Firma</th>
             <th id="city">İl</th>
-            <th id="trendyol" data-url="trendyol">Trendyol Profili</th>
-            <th id="web" data-url="web">Web Sitesi</th>
+            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+            <th id="webUrl" data-url="webUrl">Web Sitesi</th>
+            <th id="createdAt">Zaman</th>
             <th></th>
           </tr>
         </thead>
-        <tbody id="CandidateInterview"></tbody>
+        <tbody id="CandidateShortlisted"></tbody>
       </table>
     </details>
 
@@ -150,8 +185,8 @@
           <tr>
             <th id="companyName" data-url="admin-company-profile.html?id={companyId}">Firma</th>
             <th id="city">İl</th>
-            <th id="trendyol" data-url="trendyol">Trendyol Profili</th>
-            <th id="web" data-url="web">Web Sitesi</th>
+            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+            <th id="webUrl" data-url="webUrl">Web Sitesi</th>
             <th></th>
           </tr>
         </thead>
@@ -173,6 +208,7 @@
       <p id="shortlistMsg"></p>
     </details>
 
+    <a href="admin-company-profile-edit.html" class="qs">Profili Güncelle</a>
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
@@ -181,9 +217,9 @@
     let companies = [];
     let companiesLoaded = false;
 
-    let $interviewTbody = document.getElementById("CandidateInterview");
-    if ($interviewTbody) {
-      $interviewTbody.addEventListener("tableLoaded", (e) => {
+    let $shortlistTbody = document.getElementById("CandidateShortlisted");
+    if ($shortlistTbody) {
+      $shortlistTbody.addEventListener("tableLoaded", (e) => {
         let data = e.detail.data;
         if (!data || data.length === 0) { return; }
 
@@ -193,45 +229,12 @@
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.companyId && candidateId) {
-            let $reportBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, item.companyName);
+            let $reportBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, item.companyName, item.isShortlisted, null, item.isInterviewResulted);
 
             let $hireBtn = createHireCandidateButton(candidateId, item.companyId, candidateName, item.isInterviewResulted);
 
             let $td = td();
             $td.append($reportBtn, $hireBtn);
-            tr.append($td);
-          }
-        });
-      });
-    }
-
-    let $profileViewTbody = document.getElementById("CandidateProfileView");
-    if ($profileViewTbody) {
-      $profileViewTbody.addEventListener("tableLoaded", (e) => {
-        let data = e.detail.data;
-        if (!data || data.length === 0) { return; }
-
-        let candidateName = document.getElementById("displayName")?.textContent;
-
-        let rows = e.target.querySelectorAll('tr');
-        rows.forEach((tr, index) => {
-          let item = data[index];
-          if (item && item.companyId && candidateId) {
-            let $msg = p();
-
-            let $shortlistBtn = item.isShortlisted
-              ? createShortlistButton(candidateId, item.companyId, item.companyName, item.isShortlisted, $msg)
-              : null;
-
-            let $reportBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, item.companyName);
-
-            let $hireBtn = createHireCandidateButton(candidateId, item.companyId, candidateName, item.isInterviewResulted);
-
-            let $td = td();
-            if ($shortlistBtn) {
-              $td.append($shortlistBtn);
-            }
-            $td.append($reportBtn, $hireBtn, $msg);
             tr.append($td);
           }
         });
@@ -251,7 +254,7 @@
       $shortlistDetails.addEventListener("toggle", async function () {
         if (this.open && !companiesLoaded) {
           $results.innerHTML = "<p style='color:gray;'>Firmalar yükleniyor...</p>";
-          let companyResult = await api("Company/GetAll", {});
+          let companyResult = await api("CandidateCompany/GetAll", { memberId: candidateId });
           if (companyResult && companyResult.isSuccess) {
             companies = companyResult.data;
             companiesLoaded = true;
@@ -262,7 +265,6 @@
         }
       });
 
-      // Firma filtreleme
       function filterCompanies(searchText) {
         $results.innerHTML = "";
         $results.classList.remove("show");
@@ -308,7 +310,6 @@
         }
       });
 
-      // Dışarıya tıklandığında listeyi kapat
       document.addEventListener(CLICK_EVENT, function (e) {
         if (!e.target.closest(".sel")) {
           $results.classList.remove("show");
@@ -318,7 +319,7 @@
       $addBtn.addEventListener(CLICK_EVENT, async function () {
         let companyId = $selectedId.value;
         if (!companyId || !candidateId) {
-          $msg.innerText = "Lütfen bir firma seçiniz.";
+          $msg.innerText = "Bir firma seçiniz.";
           return;
         }
 

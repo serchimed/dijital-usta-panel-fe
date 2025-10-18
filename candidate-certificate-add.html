@@ -61,9 +61,9 @@
         };
 
         let errors = [];
-        if (!req.name) { errors.push("Lütfen sertifika adını giriniz."); }
-        if (!req.organization) { errors.push("Lütfen veren kurum bilgisini giriniz."); }
-        if (!req.year) { errors.push("Lütfen yıl bilgisini giriniz."); }
+        if (!req.name) { errors.push("Sertifika adını giriniz."); }
+        if (!req.organization) { errors.push("Sertifikayı veren kurum bilgisini giriniz."); }
+        if (!req.year) { errors.push("Yıl bilgisini giriniz."); }
 
         if (req.year) {
           let yearNum = parseInt(req.year);
@@ -86,7 +86,7 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "CandidateCertificate/Add", req, "Sertifika başarıyla eklendi.", "Sertifika ekleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html?id=" + id);
+        await apiBtn(this, "CandidateCertificate/Add", req, "Sertifika başarıyla eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html?id=" + id);
       });
     });
   </script>

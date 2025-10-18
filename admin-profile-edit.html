@@ -15,7 +15,6 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
     <h2>Admin Profili Güncelle</h2>
 
     <label>Adı Soyadı
@@ -48,17 +47,17 @@
         };
 
         let errors = [];
-        if (!req.companyName) { errors.push("Lütfen organizasyon adını giriniz."); }
-        if (!req.displayName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
-        if (!req.phone) { errors.push("Lütfen telefon numarası giriniz."); }
-        else if (!checkPhone(req.phone)) { errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
+        if (!req.companyName) { errors.push("Organizasyon adını giriniz."); }
+        if (!req.displayName) { errors.push("Ad ve soyad bilgisini giriniz."); }
+        if (!req.phone) { errors.push("Telefon numarası giriniz."); }
+        else if (!checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
         if (errors.length) {
           let p = this.nextElementSibling;
           p.innerHTML = errors.join("<br>");
           return;
         }
 
-        await apiBtn(this, "Member/AdminEdit", req, "Güncelleme başarılı.", ERROR_MESSAGE_UPDATE_DEFAULT, "admin-profile.html?id=" + id);
+        await apiBtn(this, "Member/AdminEdit", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "admin-profile.html?id=" + id);
       });
     });
   </script>

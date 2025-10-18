@@ -15,59 +15,65 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
-    <h2>Firma Profili</h2>
+    <h2><span id="companyName"></span></h2>
 
-    <label>Firma Adı
-      <span id="companyName"></span>
-    </label>
+    <details open>
+      <summary>Firma Bilgileri</summary>
 
-    <label>İl
-      <span id="city"></span>
-    </label>
+      <label>İl
+        <span id="city"></span>
+      </label>
 
-    <label>Sektör
-      <span id="sector"></span>
-    </label>
+      <label>Sektör
+        <span id="sector"></span>
+      </label>
 
-    <label>Yetkili Adı
-      <span id="responsibleMemberName"></span>
-    </label>
+      <label>Web Sitesi
+        <span id="webUrl"></span>
+      </label>
 
-    <label>Telefon
-      <span id="phone"></span>
-    </label>
+      <label>Trendyol Satıcı Profili
+        <span id="trendyolUrl"></span>
+      </label>
 
-    <label>Eposta
-      <span id="email"></span>
-    </label>
+      <label>Resmi Evrakların Bulunduğu Klasör
+        <span id="driveUrl"></span>
+      </label>
+    </details>
 
-    <label>Web Sitesi
-      <span id="webUrl"></span>
-    </label>
+    <details open>
+      <summary>Yetkili Bilgileri</summary>
 
-    <label>Trendyol Satıcı Profili
-      <span id="trendyolUrl"></span>
-    </label>
+      <label>Yetkili Adı Soyadı
+        <span id="responsibleMemberName"></span>
+      </label>
 
-    <label>Resmi Evrakların Bulunduğu Klasör
-      <span id="driveUrl"></span>
-    </label>
+      <label>Yetkili Eposta Adresi
+        <span id="email"></span>
+      </label>
 
-    <label>Kısa Listeye Eklenen Adaylar</label>
-    <table class="load">
-      <thead>
-        <tr>
-          <th id="displayName" data-url="admin-candidate-profile.html?id={memberId}">Aday</th>
-          <th id="city">İl</th>
-          <th id="county">İlçe</th>
-          <th id="birthDate">Doğum Tarihi</th>
-          <th id="willingSector">Çalışmak İstediği Sektör</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="CompanyShortlist"></tbody>
-    </table>
+      <label>Yetkili Telefonu
+        <span id="phone"></span>
+      </label>
+    </details>
+
+    <details open>
+      <summary>Kısa Listeye Eklenen Adaylar</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="displayName" data-url="admin-candidate-profile.html?id={memberId}">Aday</th>
+            <th id="email">E-posta</th>
+            <th id="phone">Telefon</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="CompanyShortlist"></tbody>
+      </table>
+    </details>
+
+    <a href="admin-company-profile-edit.html" class="qs">Profili Güncelle</a>
+
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
@@ -79,19 +85,18 @@
         if (!data || data.length === 0 || e.detail.error) { return; }
 
         let companyName = document.getElementById("companyName")?.textContent;
+        let companyId = getUrlParam("id");
 
         let rows = $tbody.querySelectorAll('tr');
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.memberId) {
             let $msg = p();
-            let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, true, $msg);
-            let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, companyName);
-            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted);
-
-            let $td = td();
-            $td.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
-            tr.append($td);
+            tr.lastElementChild.append(
+              createShortlistButton(item.memberId, companyId, item.displayName, true, $msg, null, item.isInterviewResulted),
+              createInterviewReportButton(item.memberId, companyId, item.displayName, companyName, true, null, item.isInterviewResulted),
+              createHireCandidateButton(item.memberId, companyId, item.displayName, item.isInterviewResulted),
+              $msg);
           }
         });
       });

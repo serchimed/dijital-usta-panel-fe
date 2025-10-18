@@ -15,7 +15,6 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
     <h2>Profil Fotoğrafı Güncelle</h2>
 
     <div class="image-preview" id="imagePreview">
@@ -65,7 +64,7 @@
       submitBtn.addEventListener("click", async function () {
         if (!base64String || base64String === initialImage) {
           let p = this.nextElementSibling;
-          p.innerHTML = "• Lütfen bir fotoğraf seçin";
+          p.innerHTML = "• Bir fotoğraf seçin";
           return;
         }
 
@@ -74,7 +73,7 @@
           "Candidate/ImageChange",
           { memberId: USER.id, imageBase64: base64String },
           "Profil fotoğrafınız başarıyla güncellendi!",
-          "Fotoğraf güncellenemedi, lütfen tekrar deneyiniz.",
+          ERROR_MESSAGE_DEFAULT,
           "candidate-profile.html"
         );
       });

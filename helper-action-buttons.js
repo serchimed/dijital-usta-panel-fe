@@ -14,7 +14,6 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
 
     let $mbody = div();
     let $confirmLabel = p(confirmMessage);
-    $confirmLabel.style.marginBottom = "1em";
 
     let $msgDiv = div(CSS_CLASSES.modalMessage);
     let $modal;
@@ -23,7 +22,9 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
       setButtonLoading(buttons.submitBtn, true, actionText);
 
       btn.disabled = true;
-      btn.nextElementSibling.innerText = LOADING_MESSAGE_WAIT;
+      if (btn.nextElementSibling && btn.nextElementSibling.tagName === "P") {
+        btn.nextElementSibling.innerText = LOADING_MESSAGE_WAIT;
+      }
 
       let req = {};
       req[idKey] = btn.dataset.entityId;
@@ -33,10 +34,14 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
         isCurrentlyBlocked = !isCurrentlyBlocked;
         btn.dataset.isBlocked = isCurrentlyBlocked ? "true" : "false";
         btn.innerText = isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle";
-        btn.nextElementSibling.innerText = "";
+        if (btn.nextElementSibling && btn.nextElementSibling.tagName === "P") {
+          btn.nextElementSibling.innerText = "";
+        }
         closeModal($modal);
       } else {
-        btn.nextElementSibling.innerText = ERROR_MESSAGE_DEFAULT;
+        if (btn.nextElementSibling && btn.nextElementSibling.tagName === "P") {
+          btn.nextElementSibling.innerText = ERROR_MESSAGE_DEFAULT;
+        }
         showModalMessage($msgDiv, "error", ERROR_MESSAGE_DEFAULT);
         setButtonLoading(buttons.submitBtn, false, actionText);
       }
@@ -53,14 +58,21 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
     $modal = createModal("Onay", $mbody);
   });
 
-  return $btn;
+  let $wrapper = div();
+  $wrapper.append($btn, p());
+  return $wrapper;
 }
 
-function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement) {
+function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement, $interviewBtn, isInterviewResulted) {
   let $btn = btn(null, isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
   $btn.dataset.memberId = memberId;
   $btn.dataset.companyId = companyId;
   $btn.dataset.isShortlisted = isShortlisted ? "true" : "false";
+
+  if (isInterviewResulted) {
+    $btn.disabled = true;
+    $btn.title = "Mülakat sonucu bildirildiği için kısa liste değiştirilemez";
+  }
 
   $btn.addEventListener(CLICK_EVENT, async function () {
     let btn = this;
@@ -69,13 +81,12 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
     let confirmMessage = isCurrentlyShortlisted
       ? `${displayName}'i kısa listeden çıkarmak istediğinize emin misiniz?`
       : `${displayName}'i kısa listenize eklemek istediğinizden emin misiniz?`;
-    let successMessage = isCurrentlyShortlisted ? "Kısa listeden çıkarıldı." : "Kısa listeye başarıyla eklendi";
+    let successMessage = isCurrentlyShortlisted ? "Kısa listeden çıkarıldı." : "Kısa listeye eklendi";
     let errorMessage = isCurrentlyShortlisted ? "Kısa listeden çıkarılamadı." : ERROR_MESSAGE_DEFAULT;
     let actionText = isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle";
 
     let $mbody = div();
     let $confirmLabel = p(confirmMessage);
-    $confirmLabel.style.marginBottom = "1em";
 
     let $msgDiv = div(CSS_CLASSES.modalMessage);
     let $modal;
@@ -97,6 +108,16 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
         isCurrentlyShortlisted = !isCurrentlyShortlisted;
         btn.dataset.isShortlisted = isCurrentlyShortlisted ? "true" : "false";
         btn.innerText = isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle";
+
+        if ($interviewBtn) {
+          if (isCurrentlyShortlisted) {
+            $interviewBtn.disabled = false;
+            $interviewBtn.title = "";
+          } else {
+            $interviewBtn.disabled = true;
+            $interviewBtn.title = "Kısa listeye eklenmeden mülakat sonucu bildirilemez";
+          }
+        }
 
         if ($externalMsg && $externalMsg.tagName === "P") {
           $externalMsg.textContent = successMessage;
@@ -136,10 +157,20 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
   return $btn;
 }
 
-function createInterviewReportButton(candidateId, companyId, displayName, companyName) {
+function createInterviewReportButton(candidateId, companyId, displayName, companyName, isShortlisted, $hireBtn, isInterviewResulted) {
   let $btn = btn("action-btn-secondary", "Mülakat Sonucu Bildir");
 
+  if (!isShortlisted) {
+    $btn.disabled = true;
+    $btn.title = "Kısa listeye eklenmeden mülakat sonucu bildirilemez";
+  } else if (isInterviewResulted) {
+    $btn.disabled = true;
+    $btn.title = "Mülakat sonucu zaten bildirilmiş";
+  }
+
   $btn.addEventListener(CLICK_EVENT, async function () {
+    if (this.disabled) return;
+
     let $mbody = div();
 
     let $candidateLabel = lbl(`Aday: ${displayName}`);
@@ -185,12 +216,12 @@ function createInterviewReportButton(candidateId, companyId, displayName, compan
     let handleReport = async function () {
       let dateValue = $dateInput.value;
       if (!dateValue) {
-        showModalMessage($msgDiv, "error", "Lütfen mülakat tarihini giriniz.");
+        showModalMessage($msgDiv, "error", "Mülakat tarihini giriniz.");
         return;
       }
 
       if (!selectedResult) {
-        showModalMessage($msgDiv, "error", "Lütfen mülakat sonucunu seçiniz.");
+        showModalMessage($msgDiv, "error", "Mülakat sonucunu seçiniz.");
         return;
       }
 
@@ -212,6 +243,10 @@ function createInterviewReportButton(candidateId, companyId, displayName, compan
       });
 
       if (result && result.isSuccess) {
+        if ($hireBtn) {
+          $hireBtn.disabled = false;
+          $hireBtn.title = "";
+        }
         showModalMessage($msgDiv, "success", "Mülakat sonucu başarıyla bildirildi!");
         setTimeout(() => { closeModal($modal); }, MODAL_AUTO_CLOSE_DELAY);
       } else {
@@ -259,7 +294,7 @@ function createHireCandidateButton(memberId, companyId, displayName, isInterview
     let handleHire = async function () {
       let url = $urlInput.value.trim();
       if (!url || !checkUrl(url)) {
-        showModalMessage($msgDiv, "error", "Lütfen geçerli bir evrak linkini giriniz.");
+        showModalMessage($msgDiv, "error", "Geçerli bir evrak linkini giriniz.");
         return;
       }
 

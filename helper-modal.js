@@ -1,7 +1,7 @@
 let MODAL_AUTO_CLOSE_DELAY = 2345;
 let CSS_CLASSES = {
   modal: "modal",
-  modalOverlay: "modal-overlay",
+  modalOverlay: "overlay",
   modalHeader: "modal-header",
   modalBody: "modal-body",
   modalButtons: "modal-buttons",
@@ -42,10 +42,8 @@ function createModal(title, bodyContent) {
   return $overlay;
 }
 
-function closeModal($overlay) {
-  if ($overlay && $overlay.parentNode) {
-    $overlay.remove();
-  }
+function closeModal($o) {
+  if ($o && $o.parentNode) { $o.remove(); }
 }
 
 function showModalMessage($msgDiv, type, message) {

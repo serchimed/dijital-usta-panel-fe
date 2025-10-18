@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TOBB Eğitiminden Geçen Adayları Davet Et | Dijital Usta</title>
+  <title>Adayların Puanlarını Güncelle | Dijital Usta</title>
   <link rel="stylesheet" href="site.css" />
 </head>
 
@@ -15,9 +15,17 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <h2>TOBB Eğitiminden Geçen Adayları Davet Et</h2>
+    <h2>Adayların Puanlarını Güncelle</h2>
 
-    <label for="eposta">Seçilen Adayların E-posta Adresleri ve Puanları
+    <label for="pointType">
+      Puan Türü
+      <select id="pointType" disabled>
+        <option value="A">Puan A</option>
+        <option value="Tobb">Puan TOBB</option>
+      </select>
+    </label>
+
+    <label for="eposta">Adayların E-posta Adresleri ve Puanları
       <br />
       (Her satıra bir aday gelecek şekilde yazınız. Örnek: aday@gmail.com,85)
       <textarea id="lines"></textarea>
@@ -35,13 +43,14 @@
       let $msg = $btn.nextElementSibling;
       $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
-          lines: val("lines")
+          lines: val("lines"),
+          pointType: val("pointType")
         };
 
         req.lines = (req.lines || "").trim();
 
         if (!req.lines) {
-          $msg.innerHTML = "• Lütfen e-posta adreslerini ve puanlarını giriniz.";
+          $msg.innerHTML = "• E-posta adreslerini ve puanlarını giriniz.";
           return;
         }
 
@@ -72,22 +81,20 @@
           normalized.push(`${email},${scoreStr}`);
         });
 
-        // Hata varsa göster
         if (errs.length) {
           $msg.innerHTML = errs.map(e => `• ${e}`).join("<br>");
           return;
         }
 
-        // Hata yoksa API çağrısı yap
         req.lines = normalized.join("\n");
         $msg.textContent = "";
 
         await apiBtn(
           this,
-          "Admin/AddTobbCandidates",
+          "CandidatePoint/Add",
           req,
-          "Adaylar başarıyla eklendi.",
-          "Aday listesini ekleme başarısız oldu, lütfen tekrar deneyiniz.",
+          "Puanlar eklendi.",
+          ERROR_MESSAGE_DEFAULT,
           "admin-candidate-list.html"
         );
       });

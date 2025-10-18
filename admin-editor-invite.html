@@ -52,12 +52,12 @@
         };
 
         let errors = [];
-        if (!req.companyName) { errors.push("Lütfen çalışılan firma adını giriniz."); }
-        if (!req.editorNameSurname) { errors.push("Lütfen firma yetkilisi adını ve soyadını giriniz."); }
-        if (!req.phone) { errors.push("Lütfen firma yetkilisi telefonunu giriniz."); }
-        else if (!checkPhone(req.phone)) { errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
-        if (!req.email) { errors.push("Lütfen e-posta adresini giriniz."); }
-        else if (!checkEmail(req.email)) { errors.push("Lütfen geçerli bir e-posta adresi giriniz."); }
+        if (!req.companyName) { errors.push("Çalışılan firma adını giriniz."); }
+        if (!req.editorNameSurname) { errors.push("Firma yetkilisi adını ve soyadını giriniz."); }
+        if (!req.phone) { errors.push("Firma yetkilisi telefonunu giriniz."); }
+        else if (!checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
+        if (!req.email) { errors.push("E-posta adresini giriniz."); }
+        else if (!checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }
 
         if (errors.length) {
           $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");
@@ -65,7 +65,7 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "Admin/InviteEditor", req, "Davet başarıyla gönderildi.", "Davet gönderme başarısız oldu, lütfen tekrar deneyiniz.", "admin-and-editor-list.html");
+        await apiBtn(this, "Admin/InviteEditor", req, "Davet başarıyla gönderildi.", ERROR_MESSAGE_DEFAULT, "admin-and-editor-list.html");
       });
     });
   </script>

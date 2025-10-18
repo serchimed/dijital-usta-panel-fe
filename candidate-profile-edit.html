@@ -15,7 +15,6 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
     <h2>Aday Profili Güncelle</h2>
 
     <label>Adı Soyadı
@@ -202,15 +201,15 @@
         };
 
         let errors = [];
-        if (!req.displayName) { errors.push("Lütfen adınızı ve soyadınızı giriniz."); }
-        if (!req.birthDate) { errors.push("Lütfen doğum tarihinizi giriniz."); }
-        if (!req.gender) { errors.push("Lütfen cinsiyetinizi giriniz."); }
-        if (!req.educationLevel) { errors.push("Lütfen eğitim durumunuzu giriniz."); }
-        if (!req.university) { errors.push("Lütfen üniversite adını giriniz."); }
-        if (!req.major) { errors.push("Lütfen bölüm bilgisini giriniz."); }
-        if (!req.city) { errors.push("Lütfen il bilgisini giriniz."); }
-        if (!req.county) { errors.push("Lütfen ilçe bilgisini giriniz."); }
-        if (!req.travelWillingness) { errors.push("Lütfen seyahat engeli bilgisini giriniz."); }
+        if (!req.displayName) { errors.push("Adınızı ve soyadınızı giriniz."); }
+        if (!req.birthDate) { errors.push("Doğum tarihinizi giriniz."); }
+        if (!req.gender) { errors.push("Cinsiyetinizi giriniz."); }
+        if (!req.educationLevel) { errors.push("Eğitim durumunuzu giriniz."); }
+        if (!req.university) { errors.push("Üniversite adını giriniz."); }
+        if (!req.major) { errors.push("Bölüm bilgisini giriniz."); }
+        if (!req.city) { errors.push("İl bilgisini giriniz."); }
+        if (!req.county) { errors.push("İlçe bilgisini giriniz."); }
+        if (!req.travelWillingness) { errors.push("Seyahat engeli bilgisini giriniz."); }
 
         if (errors.length) {
           let p = this.nextElementSibling;
@@ -218,7 +217,7 @@
           return;
         }
 
-        await apiBtn(this, "Candidate/Update", req, "Güncelleme başarılı.", ERROR_MESSAGE_UPDATE_DEFAULT, "candidate-profile.html?id=" + id);
+        await apiBtn(this, "Candidate/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "candidate-profile.html?id=" + id);
       });
     });
   </script>

@@ -41,10 +41,9 @@
       let $companiesList = document.getElementById("companiesList");
       $companiesList.innerHTML = "<p>Firmalar yükleniyor...</p>";
 
-      let companiesResult = await api("Company/GetForCandidateCity", {});
-
+      let companiesResult = await api("Company/GetForCandidateCity", { email: val("email") });
       if (!companiesResult || companiesResult.error || !companiesResult.isSuccess || !Array.isArray(companiesResult.data)) {
-        $companiesList.innerHTML = "<p style='color: #d9534f;'>Firmalar yüklenemedi. Lütfen sayfayı yenileyin.</p>";
+        $companiesList.innerHTML = "<p style='color: #d9534f;'>Firmalar yüklenemedi. Sayfayı yenileyin.</p>";
       } else if (companiesResult.data.length === 0) {
         $companiesList.innerHTML = "<p>Şehrinizde henüz firma bulunmamaktadır.</p>";
       } else {
@@ -55,15 +54,10 @@
           $label.style.alignItems = "center";
           $label.style.marginBottom = "8px";
 
-          let $checkbox = document.createElement("input");
-          $checkbox.type = "checkbox";
-          $checkbox.value = company.id;
-          $checkbox.checked = true;
-          $checkbox.style.width = "auto";
-          $checkbox.style.margin = "0 8px 0 0";
+          let $checkbox = chk(company.id, true);
 
           let $span = document.createElement("span");
-          $span.textContent = company.name;
+          $span.textContent = company.companyName;
           $span.style.margin = "0";
 
           $label.append($checkbox);
@@ -86,10 +80,10 @@
         };
 
         let errors = [];
-        if (!req.email) { errors.push("Lütfen e-posta adresini giriniz."); }
+        if (!req.email) { errors.push("E-posta adresini giriniz."); }
 
         if (req.email && !checkEmail(req.email)) {
-          errors.push("Lütfen geçerli bir e-posta adresi giriniz.");
+          errors.push("Geçerli bir e-posta adresi giriniz.");
         }
 
         if (selectedCompanyIds.length === 0) {
@@ -102,7 +96,7 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "Candidate/Add", req, "Davet başarıyla kabul edildi.", "Davet kabul başarısız oldu, lütfen tekrar deneyiniz.", "index.html");
+        await apiBtn(this, "Candidate/Add", req, "Sisteme giriş sağlandı.", ERROR_MESSAGE_DEFAULT, "index.html");
       });
     });
   </script>

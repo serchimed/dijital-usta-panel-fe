@@ -42,7 +42,7 @@ let PAGE_ROLES = {
   "admin-and-editor-list": ["admin"],
   "admin-company-add": ["admin", "editor"],
   "admin-editor-invite": ["admin"],
-  "admin-tobb-add": ["admin"],
+  "admin-point-update": ["admin"],
   "admin-ai": ["admin"],
   "admin-data": ["admin"],
   "admin-statistics": ["admin"],

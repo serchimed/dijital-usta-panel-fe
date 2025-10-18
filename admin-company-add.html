@@ -76,28 +76,28 @@
         };
 
         let errors = [];
-        if (!req.companyName) { errors.push("Lütfen firma adını giriniz."); }
-        if (!req.displayName) { errors.push("Lütfen firma yetkilisi adı soyadı giriniz."); }
-        if (!req.email) { errors.push("Lütfen firma yetkilisi eposta adresini giriniz."); }
+        if (!req.companyName) { errors.push("Firma adını giriniz."); }
+        if (!req.displayName) { errors.push("Firma yetkilisi adı soyadı giriniz."); }
+        if (!req.email) { errors.push("Firma yetkilisi eposta adresini giriniz."); }
 
         if (req.email && !checkEmail(req.email)) {
-          errors.push("Lütfen geçerli bir e-posta adresi giriniz.");
+          errors.push("Geçerli bir e-posta adresi giriniz.");
         }
 
         if (req.phone && !checkPhone(req.phone)) {
-          errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788).");
+          errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788).");
         }
 
         if (req.webUrl && !checkUrl(req.webUrl)) {
-          errors.push("Lütfen geçerli bir web sitesi URL'si giriniz.");
+          errors.push("Geçerli bir web sitesi URL'si giriniz.");
         }
 
         if (req.trendyolUrl && !checkUrl(req.trendyolUrl)) {
-          errors.push("Lütfen geçerli bir Trendyol profil URL'si giriniz.");
+          errors.push("Geçerli bir Trendyol profil URL'si giriniz.");
         }
 
         if (req.driveUrl && !checkUrl(req.driveUrl)) {
-          errors.push("Lütfen geçerli bir Drive klasör URL'si giriniz.");
+          errors.push("Geçerli bir Drive klasör URL'si giriniz.");
         }
 
         if (errors.length) {
@@ -106,7 +106,7 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "Company/Add", req, "Firma başarıyla eklendi.", "Firma ekleme başarısız oldu, lütfen tekrar deneyiniz.", "admin-company-list.html");
+        await apiBtn(this, "Company/Add", req, "Firma başarıyla eklendi.", ERROR_MESSAGE_DEFAULT, "admin-company-list.html");
       });
     });
   </script>

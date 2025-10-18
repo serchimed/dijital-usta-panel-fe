@@ -15,15 +15,10 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
-    <h2>Aday Profili</h2>
+    <h2><span id="displayName"></span></h2>
 
     <label for="image">
       <img id="image" />
-    </label>
-
-    <label>Adı Soyadı
-      <span id="displayName"></span>
     </label>
 
     <details open>
@@ -84,37 +79,35 @@
       <label>Motivasyon Mektubu
         <textarea readonly id="motivationLetter"></textarea>
       </label>
-    </details>
 
-    <details open>
-      <summary>Deneyimler</summary>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="companyName">Önceki Çalıştığı Firma</th>
-            <th id="start">Başlangıç Tarihi</th>
-            <th id="end">Bitiş Tarihi</th>
-            <th id="position">Pozisyon</th>
-            <th id="description">Açıklama</th>
-          </tr>
-        </thead>
-        <tbody id="CandidateExperience"></tbody>
-      </table>
-    </details>
+      <label>Deneyimler
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="companyName">Önceki Çalıştığı Firma</th>
+              <th id="start">Başlangıç Tarihi</th>
+              <th id="end">Bitiş Tarihi</th>
+              <th id="position">Pozisyon</th>
+              <th id="description">Açıklama</th>
+            </tr>
+          </thead>
+          <tbody id="CandidateExperience"></tbody>
+        </table>
+      </label>
 
-    <details open>
-      <summary>Sertifikalar</summary>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="name">Sertifika</th>
-            <th id="company">Veren Kurum</th>
-            <th id="year">Alındığı Yıl</th>
-            <th id="description">Açıklama</th>
-          </tr>
-        </thead>
-        <tbody id="CandidateCertificate"></tbody>
-      </table>
+      <label>Sertifikalar
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="name">Sertifika</th>
+              <th id="company">Veren Kurum</th>
+              <th id="year">Alındığı Yıl</th>
+              <th id="description">Açıklama</th>
+            </tr>
+          </thead>
+          <tbody id="CandidateCertificate"></tbody>
+        </table>
+      </label>
     </details>
 
     <div id="actionButtons"></div>
@@ -145,9 +138,9 @@
       let isInterviewResulted = infoResult.data.isInterviewResulted || false;
 
       let $msg = p();
-      let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg);
-      let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, companyName);
       let $hireBtn = createHireCandidateButton(candidateId, USER.companyId, candidateName, isInterviewResulted);
+      let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, companyName, isShortlisted, $hireBtn, isInterviewResulted);
+      let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg, $interviewBtn, isInterviewResulted);
       let $actionButtons = document.getElementById("actionButtons");
       $actionButtons.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
     });

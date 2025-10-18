@@ -1,5 +1,5 @@
 let CITIES = ["Balıkesir", "Denizli", "Gaziantep", "Nevşehir", "Ordu"];
-let INTERVIEW_RESULTS = ["Olumlu", "Olumsuz - Adayı Beğenmedik", "Olumsuz - Mülakatı İptal Ettik", "Olumsuz - Adayı Mülakata Katılmadı", "Olumsuz - Aday Teklifi Reddetti"];
+let INTERVIEW_RESULTS = ["Mülakat yapıldı, sonucu olumlu", "Mülakat yapıldı sonucu başarısız, aday beğenilmedi", "Mülakat yapıldı sonucu başarısız, aday mülakata katılmadı", "Mülakat yapıldı sonucu başarısız, aday teklifi reddetti", "Mülakat iptal edildi"];
 function setFilters() {
   let $fis = document.querySelectorAll('.tblfilter');
   $fis.forEach($i => {
@@ -27,7 +27,7 @@ async function loadTables() {
 
   let key = window.location.pathname.includes("candidate") ? "memberId" : "companyId";
   let id = getId(key);
-  if (!id) { return; }
+  if (!id) { id= USER.id; }
 
   let req = {};
   req[key] = id;
@@ -60,8 +60,11 @@ async function loadTables() {
         let key = th.id;
         let value = item[key] ?? "";
 
-        if ((key === "birthDate" || key.toLowerCase().includes("date")) && value && value !== "-") {
+        if ((key === "start" || key === "end" || key.toLowerCase().includes("date")) && value && value !== "-") {
           value = formatDateLong(value);
+        }
+        else if (key === "createdAt" && value && value !== "-") {
+          value = formatTimeLong(value);
         }
 
         let template = th.dataset?.url;
@@ -103,7 +106,7 @@ async function fillSpans(url, key = "memberId") {
     for (let prop in result.data) {
       let $s = document.getElementById(prop);
       if ($s) {
-        let v = result.data[prop] ?? "-";
+        let v = result.data[prop] || "-";
         if ((prop === "start" || prop === "end" || prop.toLowerCase().includes("date")) && v && v !== "-") {
           v = formatDateLong(v);
         }
@@ -113,6 +116,11 @@ async function fillSpans(url, key = "memberId") {
           $s.src = v;
         } else if (tag === "textarea") {
           $s.value = v;
+        } else if (prop.endsWith("Url") && v && v !== "-") {
+          $s.innerHTML = "";
+          let $a = a(v, v);
+          $a.target = "_blank";
+          $s.append($a);
         } else {
           $s.textContent = v;
         }

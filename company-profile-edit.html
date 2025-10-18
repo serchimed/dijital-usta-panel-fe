@@ -15,7 +15,6 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
     <h2>Firma Profili Güncelle</h2>
 
     <label>Firma Adı
@@ -56,36 +55,47 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
+    function getReq(id) {
+      return {
+        memberId: USER.id,
+        companyId: id,
+        companyName: val("companyName"),
+        city: val("city"),
+        sector: val("sector"),
+        responsibleMemberName: val("responsibleMemberName"),
+        email: val("email"),
+        phone: val("phone"),
+        webUrl: val("webUrl"),
+        trendyolUrl: val("trendyolUrl")
+      };
+    }
+
     onAuthReady(async () => {
       let id = await fillInputs("Company/Get", "companyId");
+      let initialRequest = getReq(id);
 
       document.querySelector("button").addEventListener(CLICK_EVENT, async function () {
-        let req = {
-          memberId: USER.id,
-          companyId: id,
-          companyName: val("companyName"),
-          city: val("city"),
-          sector: val("sector"),
-          responsibleMemberName: val("responsibleMemberName"),
-          email: val("email"),
-          phone: val("phone"),
-          webUrl: val("webUrl"),
-          trendyolUrl: val("trendyolUrl")
-        };
+        let req = getReq(id);
+
+        if (!hasChanges(initialRequest, req)) {
+          let p = this.nextElementSibling;
+          p.innerText = "Herhangi bir değişiklik yapılmadı.";
+          return;
+        }
 
         let errors = [];
-        if (!req.companyName) { errors.push("Lütfen firma adını giriniz."); }
-        if (!req.responsibleMemberName) { errors.push("Lütfen adı ve soyad bilgisini giriniz."); }
-        if (!req.phone) { errors.push("Lütfen telefon numarası giriniz."); }
-        else if (!checkPhone(req.phone)) { errors.push("Lütfen geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
-        if (!req.email) { errors.push("Lütfen eposta adresini giriniz."); }
-        else if (!checkEmail(req.email)) { errors.push("Lütfen geçerli eposta adresini giriniz."); }
-        if (!req.city) { errors.push("Lütfen il bilgisini giriniz."); }
-        if (!req.sector) { errors.push("Lütfen sektör bilgisini giriniz."); }
-        if (!req.webUrl) { errors.push("Lütfen web sitesi bilgisini giriniz."); }
-        else if (!checkUrl(req.webUrl)) { errors.push("Lütfen geçerli bir web sitesi URL'si giriniz."); }
-        if (!req.trendyolUrl) { errors.push("Lütfen Trendyol satıcı profili bilgisini giriniz."); }
-        else if (!checkUrl(req.trendyolUrl)) { errors.push("Lütfen geçerli bir Trendyol profil URL'si giriniz."); }
+        if (!req.companyName) { errors.push("Firma adını giriniz."); }
+        if (!req.responsibleMemberName) { errors.push("Ad ve soyad bilgisini giriniz."); }
+        if (!req.phone) { errors.push("Telefon numarası giriniz."); }
+        else if (!checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
+        if (!req.email) { errors.push("E-posta adresini giriniz."); }
+        else if (!checkEmail(req.email)) { errors.push("Geçerli eposta adresini giriniz."); }
+        if (!req.city) { errors.push("İl bilgisini giriniz."); }
+        if (!req.sector) { errors.push("Sektör bilgisini giriniz."); }
+        if (!req.webUrl) { errors.push("Web sitesi bilgisini giriniz."); }
+        else if (!checkUrl(req.webUrl)) { errors.push("Geçerli bir web sitesi URL'si giriniz."); }
+        if (!req.trendyolUrl) { errors.push("Trendyol satıcı profili bilgisini giriniz."); }
+        else if (!checkUrl(req.trendyolUrl)) { errors.push("Geçerli bir Trendyol profil URL'si giriniz."); }
 
         if (errors.length) {
           let p = this.nextElementSibling;
@@ -93,7 +103,7 @@
           return;
         }
 
-        await apiBtn(this, "Company/Update", req, "Güncelleme başarılı.", ERROR_MESSAGE_UPDATE_DEFAULT, "company-profile.html?id=" + id);
+        await apiBtn(this, "Company/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "company-profile.html?id=" + id);
       });
     });
   </script>

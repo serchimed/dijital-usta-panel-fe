@@ -43,7 +43,7 @@
         };
 
         let errors = [];
-        if (!req.letter) { errors.push("Lütfen motivasyon mektubunu giriniz."); }
+        if (!req.letter) { errors.push("Motivasyon mektubunu giriniz."); }
 
         if (errors.length) {
           $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");

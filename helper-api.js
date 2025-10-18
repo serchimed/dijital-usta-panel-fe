@@ -1,6 +1,6 @@
 let API = "https://api.dijitalusta.net/";
 let ERROR_MESSAGE_DEFAULT = "İşlem başarısız oldu, lütfen tekrar deneyiniz.";
-let ERROR_MESSAGE_UPDATE_DEFAULT = "Güncelleme başarısız oldu, lütfen tekrar deneyiniz.";
+let SUCCESS_UPDATE_MESSAGE = "Güncelleme başarılı.";
 let LOADING_MESSAGE = "İşlem yapılıyor...";
 let LOADING_MESSAGE_WAIT = "İşlem yapılıyor, lütfen bekleyiniz.";
 
@@ -37,8 +37,6 @@ async function api(callName, data = {}) {
 
 async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement) {
   btn.disabled = true;
-
-  // Eğer özel mesaj elemanı verilmişse onu kullan, yoksa butonun yanındaki p'yi kullan
   let $msg = $msgElement;
   if (!$msg) {
     $msg = btn.nextElementSibling;

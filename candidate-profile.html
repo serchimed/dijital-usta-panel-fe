@@ -15,7 +15,6 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
     <h2><span id="displayName"></span></h2>
 
     <div id="motivationLetterWarning">
@@ -141,8 +140,8 @@
           <tr>
             <th id="companyName" data-url="candidate-company-profile.html?id={companyId}">Firma</th>
             <th id="city">İl</th>
-            <th id="trendyol" data-url="trendyol">Trendyol Profili</th>
-            <th id="web" data-url="web">Web Sitesi</th>
+            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+            <th id="webUrl" data-url="webUrl">Web Sitesi</th>
           </tr>
         </thead>
         <tbody id="CandidateInterview"></tbody>
@@ -158,6 +157,7 @@
             <th id="city">İl</th>
             <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
             <th id="webUrl" data-url="webUrl">Web Sitesi</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="CandidateCompany"></tbody>
@@ -187,10 +187,7 @@
           "companyId"
         );
 
-        let $td = tdbtn($btn);
-        $row.append($td);
-
-        $row.closest("thead tr").appendChild(th());
+        $row.lastElementChild.append($btn);
       });
     });
 

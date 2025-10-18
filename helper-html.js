@@ -67,6 +67,21 @@ function url(placeholder) {
   return $i;
 }
 
+function inp(placeholder) {
+  let $i = document.createElement("input");
+  $i.type = "text";
+  if (placeholder) { $i.placeholder = placeholder; }
+  return $i;
+}
+
+function chk(value, checked) {
+  let $i = document.createElement("input");
+  $i.type = "checkbox";
+  if (value !== undefined) { $i.value = value; }
+  if (checked !== undefined) { $i.checked = checked; }
+  return $i;
+}
+
 function ul() {
   return document.createElement("ul");
 }
@@ -133,6 +148,13 @@ function formatDateLong(dateStr) {
   return dt.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
+function formatTimeLong(dateStr) {
+  if (!dateStr) return "-";
+  let dt = new Date(dateStr);
+  if (isNaN(dt.getTime())) return dateStr;
+  return dt.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' }) + " " + dt.toLocaleTimeString("tr-TR", { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
 function formatDateInput(dateStr) {
   if (!dateStr) return "";
   let dt = new Date(dateStr);
@@ -161,8 +183,10 @@ function checkUrl(url) {
 
 function showOverMsg(msg) {
   let $o = document.createElement("div");
-  $o.id = "over";
-  $o.textContent = msg;
+  $o.className = "overlay";
+  let $p = p(msg);
+  $p.className = "overlay-p";
+  $o.append($p);
   document.body.append($o);
   return $o;
 }
@@ -170,7 +194,7 @@ function showOverMsg(msg) {
 function showContent() {
   let $m = document.querySelector("main");
   if ($m) {
-    let $o = document.getElementById("over");
+    let $o = document.querySelector(".overlay");
     if ($o) { $o.remove(); }
     $m.style.visibility = "visible";
   }
@@ -187,4 +211,13 @@ function toggleText(element) {
     truncated.style.display = "none";
     full.style.display = "inline-block";
   }
+}
+
+function hasChanges(initReq, req) {
+  for (let key in req) {
+    if (req[key] !== initReq[key]) {
+      return true;
+    }
+  }
+  return false;
 }

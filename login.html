@@ -50,12 +50,12 @@
         let pass = $pass.value.trim();
 
         if (!checkEmail(email)) {
-          $msg.innerText = "Lütfen geçerli bir e-posta adresi girin.";
+          $msg.innerText = "Geçerli bir e-posta adresi girin.";
           return;
         }
 
         if (pass.length !== 8) {
-          $msg.innerText = "Lütfen geçerli bir şifre girin.";
+          $msg.innerText = "Geçerli bir şifre girin.";
           return;
         }
 

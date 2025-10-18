@@ -15,7 +15,6 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
     <h2>Sertifika Güncelle</h2>
 
     <label for="name">Sertifika
@@ -62,9 +61,9 @@
         };
 
         let errors = [];
-        if (!req.name) { errors.push("Lütfen sertifika adını giriniz."); }
-        if (!req.organization) { errors.push("Lütfen veren kurum bilgisini giriniz."); }
-        if (!req.year) { errors.push("Lütfen yıl bilgisini giriniz."); }
+        if (!req.name) { errors.push("Sertifika adını giriniz."); }
+        if (!req.organization) { errors.push("Sertifikayı veren kurum bilgisini giriniz."); }
+        if (!req.year) { errors.push("Yıl bilgisini giriniz."); }
 
         if (req.year) {
           let yearNum = parseInt(req.year);
@@ -87,7 +86,7 @@
         }
 
         $msg.textContent = "";
-        await apiBtn(this, "CandidateCertificate/Update", req, "Sertifika başarıyla güncellendi.", ERROR_MESSAGE_UPDATE_DEFAULT, "candidate-profile.html");
+        await apiBtn(this, "CandidateCertificate/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
       });
     });
   </script>

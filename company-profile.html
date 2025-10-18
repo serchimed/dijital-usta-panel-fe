@@ -15,51 +15,71 @@
   <menu></menu>
   <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
   <main>
-    <div id="msg"></div>
     <h2><span id="companyName"></span></h2>
 
-    <label>İl
-      <span id="city"></span>
-    </label>
+    <details open>
+      <summary>Firma Bilgileri</summary>
 
-    <label>Sektör
-      <span id="sector"></span>
-    </label>
+      <label>İl
+        <span id="city"></span>
+      </label>
 
-    <label>Yetkili Adı Soyadı
-      <span id="responsibleMemberName"></span>
-    </label>
+      <label>Sektör
+        <span id="sector"></span>
+      </label>
 
-    <label>Yetkili Eposta Adresi
-      <span id="email"></span>
-    </label>
+      <label>Web Sitesi
+        <span id="webUrl"></span>
+      </label>
 
-    <label>Yetkili Telefonu
-      <span id="phone"></span>
-    </label>
+      <label>Trendyol Satıcı Profili
+        <span id="trendyolUrl"></span>
+      </label>
+    </details>
 
-    <label>Web Sitesi
-      <span id="webUrl"></span>
-    </label>
+    <details open>
+      <summary>Yetkili Bilgileri</summary>
 
-    <label>Trendyol Satıcı Profili
-      <span id="trendyolUrl"></span>
-    </label>
+      <label>Yetkili Adı Soyadı
+        <span id="responsibleMemberName"></span>
+      </label>
 
-    <label>Kısa Listeye Eklenen Adaylar</label>
-    <table class="load">
-      <thead>
-        <tr>
-          <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
-          <th id="city">İl</th>
-          <th id="county">İlçe</th>
-          <th id="birthDate">Doğum Tarihi</th>
-          <th id="willingSector">Çalışmak İstediği Sektör</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="CompanyShortlist"></tbody>
-    </table>
+      <label>Yetkili Eposta Adresi
+        <span id="email"></span>
+      </label>
+
+      <label>Yetkili Telefonu
+        <span id="phone"></span>
+      </label>
+    </details>
+
+    <details open>
+      <summary>Kısa Listeye Eklenen Adaylar</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
+            <th id="email">E-posta</th>
+            <th id="phone">Telefon</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="CompanyShortlist"></tbody>
+      </table>
+    </details>
+
+    <details open>
+      <summary>Olumsuz Değerlendirilen Adaylar</summary>
+      <table class="load">
+        <thead>
+          <tr>
+            <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
+            <th id="result">Açıklama</th>
+          </tr>
+        </thead>
+        <tbody id="CompanyDeclined"></tbody>
+      </table>
+    </details>
 
     <a href="company-profile-edit.html" class="qs">Güncelle</a>
   </main>
@@ -79,17 +99,11 @@
           let item = data[index];
           if (item && item.memberId) {
             let $msg = p();
-            let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $msg);
-
-            let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, companyName);
-
-            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted);
-
-            let $td = td();
-            $td.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
-            tr.append($td);
-
-            $tbody.parentElement.firstElementChild.firstElementChild.append(th());
+            tr.lastElementChild.append(
+              createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $msg, null, item.isInterviewResulted),
+              createInterviewReportButton(item.memberId, USER.companyId, item.displayName, companyName, item.isShortlisted || true, null, item.isInterviewResulted),
+              createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted),
+              $msg);
           }
         });
       });
