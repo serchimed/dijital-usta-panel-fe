@@ -221,3 +221,125 @@ function hasChanges(initReq, req) {
   }
   return false;
 }
+
+let AUTOCOMPLETE_LISTENER_ADDED = false;
+
+function autocomplete($input, data, filterFn, displayFn, onSelect, options = {}) {
+  let items = [];
+  let dataLoaded = false;
+  let ignoreNextInput = false;
+
+  let $list = div();
+  $input.after($list);
+
+  let $customInput;
+  if (options.allowCustom && options.customInputPlaceholder) {
+    $customInput = inp(options.customInputPlaceholder);
+    $customInput.style.display = "none";
+    $list.after($customInput);
+  }
+
+  async function loadData() {
+    if (dataLoaded) return;
+    if (typeof data === 'function') {
+      items = await data();
+    } else {
+      items = data;
+    }
+    dataLoaded = true;
+  }
+
+  async function search(text) {
+    $list.innerHTML = "";
+    $list.classList.remove("show");
+
+    if (!text) return;
+
+    await loadData();
+
+    let filtered = items.filter(item => filterFn(item, text));
+
+    if (filtered.length === 0) return;
+
+    filtered.forEach(item => {
+      let $item = div();
+      $item.textContent = displayFn(item);
+
+      $item.addEventListener(CLICK_EVENT, function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        // Önce listeyi kapat ve input event'lerini blokla
+        $list.classList.remove("show");
+        ignoreNextInput = true;
+
+        // Sonra callback'i çağır
+        setTimeout(() => {
+          onSelect(item, $input, $customInput);
+          setTimeout(() => { ignoreNextInput = false; }, 150);
+        }, 10);
+      });
+
+      $list.append($item);
+    });
+
+    if (options.allowCustom) {
+      let $custom = div();
+      $custom.textContent = options.customText || "Listede yok";
+      $custom.style.fontStyle = "italic";
+      $custom.style.color = "#666";
+
+      $custom.addEventListener(CLICK_EVENT, function (e) {
+        e.stopPropagation();
+
+        if ($customInput) {
+          $input.style.display = "none";
+          $customInput.style.display = "block";
+          $customInput.focus();
+        }
+
+        if (options.onCustom) {
+          options.onCustom($input, $customInput);
+        }
+
+        $list.classList.remove("show");
+      });
+
+      $list.append($custom);
+    }
+
+    $list.classList.add("show");
+  }
+
+  $input.addEventListener("input", function () {
+    if (ignoreNextInput) return;
+    search(this.value.trim());
+  });
+
+  $input.addEventListener("focus", function () {
+    if (this.value.trim()) {
+      search(this.value.trim());
+    }
+  });
+
+  // Tab ile çıkıldığında listeyi kapat
+  $input.addEventListener("blur", function () {
+    // Kısa bir gecikme ile kapat (item click'in çalışması için)
+    setTimeout(() => {
+      $list.classList.remove("show");
+    }, 200);
+  });
+
+  if (!AUTOCOMPLETE_LISTENER_ADDED) {
+    document.addEventListener(CLICK_EVENT, function (e) {
+      if (!e.target.closest(".sel")) {
+        document.querySelectorAll(".sel div").forEach($list => {
+          $list.classList.remove("show");
+        });
+      }
+    });
+    AUTOCOMPLETE_LISTENER_ADDED = true;
+  }
+
+  return { $list, $customInput };
+}

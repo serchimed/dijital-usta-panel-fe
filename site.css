@@ -125,7 +125,8 @@ label img {
   border: 1px solid #777;
   border-radius: 5px;
   display: block;
-  margin-top: 5px;
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 details a.qs {
@@ -159,10 +160,11 @@ textarea:read-only {
 button {
   background-color: #FE5200;
   border: 1px solid #FE5200;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: #fff;
   border-radius: 5px;
-  font-size: 19px;
-  padding: 13px 13px 8px;
+  font-size: 17px;
+  padding: 8px;
   width: fit-content;
   cursor: pointer;
   margin: 13px 0 21px;
@@ -427,7 +429,7 @@ summary {
 
 .truncated {
   max-width: 555px;
-  #fff-space: nowrap;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
@@ -471,7 +473,7 @@ label.sel div {
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin: 0;
-  margin-top: 4px;
+  margin-top: -15px;
 }
 
 label.sel div.show {
@@ -540,7 +542,9 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-label .tblfilter {
+label .tblfilter,
+details .tblfilter,
+.ml {
   margin-left: 13px;
   margin-top: 15px;
 }

@@ -199,7 +199,6 @@
 
       <label class="sel">Firma Ara
         <input type="text" id="companySearch" placeholder="Firma adı yazın..." autocomplete="off" />
-        <div id="companyResults"></div>
       </label>
 
       <input type="hidden" id="selectedCompanyId" />
@@ -208,7 +207,7 @@
       <p id="shortlistMsg"></p>
     </details>
 
-    <a href="admin-company-profile-edit.html" class="qs">Profili Güncelle</a>
+    <a href="candidate-profile-edit.html" class="qs">Profili Güncelle</a>
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
@@ -229,13 +228,15 @@
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.companyId && candidateId) {
-            let $reportBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, item.companyName, item.isShortlisted, null, item.isInterviewResulted);
-
+            let $msg = p();
             let $hireBtn = createHireCandidateButton(candidateId, item.companyId, candidateName, item.isInterviewResulted);
-
-            let $td = td();
-            $td.append($reportBtn, $hireBtn);
-            tr.append($td);
+            let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, null, item.isInterviewResulted);
+            tr.lastElementChild.append(
+              $shortlistBtn,
+              createInterviewReportButton(candidateId, item.companyId, candidateName, item.isShortlisted, $hireBtn, item.isInterviewResulted),
+              $hireBtn,
+              $msg
+            );
           }
         });
       });
@@ -244,77 +245,31 @@
     onAuthReady(async () => {
       candidateId = await fillSpans("Candidate/Get");
 
-      let $shortlistDetails = document.getElementById("shortlistDetails");
       let $search = document.getElementById("companySearch");
-      let $results = document.getElementById("companyResults");
       let $selectedId = document.getElementById("selectedCompanyId");
       let $addBtn = document.getElementById("addShortlistBtn");
       let $msg = document.getElementById("shortlistMsg");
 
-      $shortlistDetails.addEventListener("toggle", async function () {
-        if (this.open && !companiesLoaded) {
-          $results.innerHTML = "<p style='color:gray;'>Firmalar yükleniyor...</p>";
-          let companyResult = await api("CandidateCompany/GetAll", { memberId: candidateId });
-          if (companyResult && companyResult.isSuccess) {
-            companies = companyResult.data;
-            companiesLoaded = true;
-            $results.innerHTML = "";
-          } else {
-            $results.innerHTML = "<p style='color:red;'>Firmalar yüklenemedi</p>";
+      autocomplete(
+        $search,
+        async () => {
+          if (!companiesLoaded) {
+            let companyResult = await api("CandidateCompany/GetAll", { memberId: candidateId });
+            if (companyResult && companyResult.isSuccess) {
+              companies = companyResult.data;
+              companiesLoaded = true;
+            }
           }
+          return companies;
+        },
+        (company, searchText) => company.companyName.toLowerCase().includes(searchText.toLowerCase()),
+        (company) => `${company.companyName} (${company.city})`,
+        (company, $input) => {
+          $input.value = company.companyName;
+          $selectedId.value = company.companyId;
+          $addBtn.disabled = false;
         }
-      });
-
-      function filterCompanies(searchText) {
-        $results.innerHTML = "";
-        $results.classList.remove("show");
-        $selectedId.value = "";
-        $addBtn.disabled = true;
-
-        if (!searchText) {
-          return;
-        }
-
-        let filtered = companies.filter(c =>
-          c.companyName.toLowerCase().includes(searchText.toLowerCase())
-        );
-
-        if (filtered.length === 0) {
-          return;
-        }
-
-        filtered.forEach(company => {
-          let $item = document.createElement("div");
-          $item.innerHTML = `<strong>${company.companyName}</strong> - ${company.city}`;
-
-          $item.addEventListener(CLICK_EVENT, function () {
-            $search.value = company.companyName;
-            $selectedId.value = company.id;
-            $addBtn.disabled = false;
-            $results.classList.remove("show");
-          });
-
-          $results.append($item);
-        });
-
-        $results.classList.add("show");
-      }
-
-      $search.addEventListener("input", function () {
-        filterCompanies(this.value.trim());
-      });
-
-      $search.addEventListener("focus", function () {
-        if (this.value.trim()) {
-          filterCompanies(this.value.trim());
-        }
-      });
-
-      document.addEventListener(CLICK_EVENT, function (e) {
-        if (!e.target.closest(".sel")) {
-          $results.classList.remove("show");
-        }
-      });
+      );
 
       $addBtn.addEventListener(CLICK_EVENT, async function () {
         let companyId = $selectedId.value;
@@ -327,12 +282,10 @@
         let result = await apiBtn(this, "CompanyShortlist/Add", {
           memberId: candidateId,
           companyId: companyId
-        }, "Kısa listeye başarıyla eklendi", ERROR_MESSAGE_DEFAULT);
+        }, "Kısa listeye eklendi", ERROR_MESSAGE_DEFAULT);
 
         if (result && result.isSuccess) {
           $search.value = "";
-          $results.innerHTML = "";
-          $results.classList.remove("show");
           $selectedId.value = "";
           $addBtn.disabled = true;
         }

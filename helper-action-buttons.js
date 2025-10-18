@@ -1,5 +1,5 @@
 function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unblockEndpoint, idKey = "memberId") {
-  let $btn = btn(null, isBlocked ? "Engeli Kaldır" : "Engelle");
+  let $btn = btn("action-btn-secondary", isBlocked ? "Engeli Kaldır" : "Engelle");
   $btn.dataset.entityId = entityId;
   $btn.dataset.isBlocked = isBlocked ? "true" : "false";
 
@@ -27,6 +27,7 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
       }
 
       let req = {};
+      req["memberId"] = USER.id;
       req[idKey] = btn.dataset.entityId;
       let result = await api(endpoint, req);
 
@@ -64,7 +65,7 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
 }
 
 function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement, $interviewBtn, isInterviewResulted) {
-  let $btn = btn(null, isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
+  let $btn = btn("action-btn-secondary", isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
   $btn.dataset.memberId = memberId;
   $btn.dataset.companyId = companyId;
   $btn.dataset.isShortlisted = isShortlisted ? "true" : "false";
@@ -157,7 +158,7 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
   return $btn;
 }
 
-function createInterviewReportButton(candidateId, companyId, displayName, companyName, isShortlisted, $hireBtn, isInterviewResulted) {
+function createInterviewReportButton(candidateId, companyId, displayName, isShortlisted, $hireBtn, isInterviewResulted) {
   let $btn = btn("action-btn-secondary", "Mülakat Sonucu Bildir");
 
   if (!isShortlisted) {
@@ -269,12 +270,15 @@ function createInterviewReportButton(candidateId, companyId, displayName, compan
 }
 
 
-function createHireCandidateButton(memberId, companyId, displayName, isInterviewResulted) {
+function createHireCandidateButton(memberId, companyId, displayName, isInterviewResulted, isInterviewSuccess) {
   let $btn = btn("action-btn-secondary", "İşe Al");
 
   if (!isInterviewResulted) {
     $btn.disabled = true;
     $btn.title = "Mülakat sonucu bildirilmeden işe alınamaz";
+  } else if (!isInterviewSuccess) {
+    $btn.disabled = true;
+    $btn.title = "Mülakat sonucu başarılı olmadığı için işe alınamaz";
   }
 
   $btn.addEventListener(CLICK_EVENT, async function () {

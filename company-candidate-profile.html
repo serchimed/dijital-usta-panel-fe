@@ -136,13 +136,22 @@
       let companyName = infoResult.data.companyName;
       let isShortlisted = infoResult.data.isShortlisted || false;
       let isInterviewResulted = infoResult.data.isInterviewResulted || false;
+      let interviewResult = infoResult.data.interviewResult || "";
+      let isInterviewSuccess = infoResult.data.isInterviewSuccess || false;
 
-      let $msg = p();
-      let $hireBtn = createHireCandidateButton(candidateId, USER.companyId, candidateName, isInterviewResulted);
-      let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, companyName, isShortlisted, $hireBtn, isInterviewResulted);
-      let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg, $interviewBtn, isInterviewResulted);
       let $actionButtons = document.getElementById("actionButtons");
-      $actionButtons.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
+
+      if (isInterviewResulted && interviewResult && !isInterviewSuccess) {
+        let $resultP = p(`Mülakat Sonucu: ${interviewResult}`);
+        $resultP.className = "label-warn";
+        $actionButtons.append($resultP);
+      } else {
+        let $msg = p();
+        let $hireBtn = createHireCandidateButton(candidateId, USER.companyId, candidateName, isInterviewResulted, isInterviewSuccess);
+        let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, isShortlisted, $hireBtn, isInterviewResulted);
+        let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg, $interviewBtn, isInterviewResulted);
+        $actionButtons.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
+      }
     });
   </script>
 </body>

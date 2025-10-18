@@ -43,6 +43,10 @@ async function loadTables() {
     }
 
     let data = result.data;
+    if (!Array.isArray(data) && typeof data === 'object' && data !== null) {
+      data = [data];
+    }
+
     if (!Array.isArray(data) || data.length === 0) {
       tbody.innerHTML = getMsgLine("Veri yok");
       tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: [], error: false } }));

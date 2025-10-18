@@ -3,7 +3,7 @@ let MENU = {
     { text: "Firmalar", href: "admin-company-list" },
     { text: "Adaylar", href: "admin-candidate-list" },
     { text: "Adminler ve Editörler", href: "admin-and-editor-list" },
-    { text: "TOBB Eğitimden Geçen Adayları Davet Et", href: "admin-tobb-add" },
+    { text: "Toplu Puan Güncelle", href: "admin-point-update" },
     { text: "Yapay Zeka İşlemleri", href: "admin-ai" },
     { text: "Data İşlemleri", href: "admin-data" },
     { text: "İstatistikler", href: "admin-statistics" }
@@ -27,7 +27,8 @@ let PUBLIC_PAGES = [
   "access-denied",
   "error-client",
   "error-server",
-  "candidate-invite-accept"
+  "candidate-invite-accept",
+  "404"
 ];
 
 let PAGE_ROLES = {
@@ -50,12 +51,12 @@ let PAGE_ROLES = {
   "admin-profile-edit": ["admin"],
 
   "company-profile": ["company"],
-  "company-profile-edit": ["company"],
+  "company-profile-edit": ["company", "admin", "editor"],
   "company-candidate-list": ["company"],
   "company-candidate-profile": ["company"],
 
   "candidate-profile": ["candidate"],
-  "candidate-profile-edit": ["candidate"],
+  "candidate-profile-edit": ["candidate", "admin", "editor"],
   "candidate-profile-image": ["candidate"],
   "candidate-company-profile": ["candidate"],
   "candidate-letter-add": ["candidate"],

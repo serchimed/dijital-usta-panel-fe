@@ -101,7 +101,7 @@
             let $msg = p();
             tr.lastElementChild.append(
               createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $msg, null, item.isInterviewResulted),
-              createInterviewReportButton(item.memberId, USER.companyId, item.displayName, companyName, item.isShortlisted || true, null, item.isInterviewResulted),
+              createInterviewReportButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, null, item.isInterviewResulted),
               createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted),
               $msg);
           }

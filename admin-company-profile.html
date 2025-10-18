@@ -72,7 +72,7 @@
       </table>
     </details>
 
-    <a href="admin-company-profile-edit.html" class="qs">Profili Güncelle</a>
+    <a href="company-profile-edit.html" class="qs">Profili Güncelle</a>
 
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
@@ -94,7 +94,7 @@
             let $msg = p();
             tr.lastElementChild.append(
               createShortlistButton(item.memberId, companyId, item.displayName, true, $msg, null, item.isInterviewResulted),
-              createInterviewReportButton(item.memberId, companyId, item.displayName, companyName, true, null, item.isInterviewResulted),
+              createInterviewReportButton(item.memberId, companyId, item.displayName, true, null, item.isInterviewResulted),
               createHireCandidateButton(item.memberId, companyId, item.displayName, item.isInterviewResulted),
               $msg);
           }

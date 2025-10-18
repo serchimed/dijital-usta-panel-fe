@@ -17,36 +17,40 @@
   <main>
     <h2>Firma Profili Güncelle</h2>
 
-    <label>Firma Adı
+    <label for="companyName">Firma Adı
       <input type="text" id="companyName" />
     </label>
 
-    <label>İl
-      <input type="text" id="city" />
+    <label class="sel" for="city">İl
+      <input type="text" id="city" placeholder="İl ara..." autocomplete="off" />
     </label>
 
-    <label>Sektör
+    <label for="sector">Sektör
       <input type="text" id="sector" />
     </label>
 
-    <label>Yetkili Adı Soyadı
+    <label for="responsibleMemberName">Yetkili Adı Soyadı
       <input type="text" id="responsibleMemberName" />
     </label>
 
-    <label>Yetkili Eposta Adresi
+    <label for="email">Yetkili Eposta Adresi
       <input type="text" id="email" />
     </label>
 
-    <label>Yetkili Telefonu
+    <label for="phone">Yetkili Telefonu
       <input type="text" id="phone" />
     </label>
 
-    <label>Web Sitesi
+    <label for="webUrl">Web Sitesi
       <input type="text" id="webUrl" />
     </label>
 
-    <label>Trendyol Satıcı Profili
+    <label for="trendyolUrl">Trendyol Satıcı Profili
       <input type="text" id="trendyolUrl" />
+    </label>
+
+    <label for="driveUrl" style="display: none;">Drive Klasör URL
+      <input type="url" id="driveUrl" />
     </label>
 
     <button>Kaydet</button>
@@ -66,13 +70,30 @@
         email: val("email"),
         phone: val("phone"),
         webUrl: val("webUrl"),
-        trendyolUrl: val("trendyolUrl")
+        trendyolUrl: val("trendyolUrl"),
+        driveUrl: val("driveUrl")
       };
     }
 
     onAuthReady(async () => {
       let id = await fillInputs("Company/Get", "companyId");
       let initialRequest = getReq(id);
+
+      // Şehir autocomplete
+      let $city = document.getElementById("city");
+      autocomplete(
+        $city,
+        CITIES,
+        (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()),
+        (city) => city,
+        (city, $input) => {
+          $input.value = city;
+        }
+      );
+
+      if (USER.role === "editor" || USER.role === "admin") {
+        document.getElementById("driveUrl").parentElement.style.display = "block";
+      }
 
       document.querySelector("button").addEventListener(CLICK_EVENT, async function () {
         let req = getReq(id);
@@ -97,13 +118,21 @@
         if (!req.trendyolUrl) { errors.push("Trendyol satıcı profili bilgisini giriniz."); }
         else if (!checkUrl(req.trendyolUrl)) { errors.push("Geçerli bir Trendyol profil URL'si giriniz."); }
 
+        let redirectUrl = "company-profile.html?id=" + id;
+        if (USER.role === "editor" || USER.role === "admin") {
+          if (!req.driveUrl) { errors.push("Drive klasör URL'sini giriniz."); }
+          else if (!checkUrl(req.driveUrl)) { errors.push("Geçerli bir Drive klasör URL'si giriniz."); }
+
+          redirectUrl = "admin-company-profile.html?id=" + id;
+        }
+
         if (errors.length) {
           let p = this.nextElementSibling;
           p.innerHTML = errors.map(e => `• ${e}`).join("<br>");
           return;
         }
 
-        await apiBtn(this, "Company/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "company-profile.html?id=" + id);
+        await apiBtn(this, "Company/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, redirectUrl);
       });
     });
   </script>
