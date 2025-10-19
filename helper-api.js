@@ -64,3 +64,75 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
   btn.disabled = false;
   return result;
 }
+
+async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null) {
+  if ($msgElement && $msgElement.tagName === "P") {
+    $msgElement.textContent = "CSV hazırlanıyor...";
+  }
+
+  try {
+    let response = await fetch(`${API}${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      if ($msgElement) {
+        $msgElement.textContent = "CSV oluşturulamadı.";
+      }
+      return false;
+    }
+
+    let contentType = response.headers.get("Content-Type");
+
+    // Check if response is JSON instead of CSV
+    if (contentType && contentType.includes("application/json")) {
+      let result = await response.json();
+      if ($msgElement) {
+        if (result.isSuccess) {
+          $msgElement.textContent = result.data || "İşlem başarılı.";
+        } else {
+          $msgElement.textContent = result.data || "CSV oluşturulamadı.";
+        }
+      }
+      return result.isSuccess;
+    }
+
+    let blob = await response.blob();
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement("a");
+    link.href = url;
+
+    let filename = defaultFilename;
+    let contentDisposition = response.headers.get("Content-Disposition");
+    if (contentDisposition) {
+      let match = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+      if (match && match[1]) {
+        filename = match[1].replace(/['"]/g, '');
+      }
+    }
+    link.download = filename;
+
+    document.body.append(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    if ($msgElement) {
+      $msgElement.textContent = "CSV başarıyla indirildi.";
+      setTimeout(() => {
+        $msgElement.textContent = "";
+      }, 2345);
+    }
+
+    return true;
+  } catch (error) {
+    console.error("CSV download error:", error);
+    if ($msgElement) {
+      $msgElement.textContent = "Bir hata oluştu.";
+    }
+    return false;
+  }
+}

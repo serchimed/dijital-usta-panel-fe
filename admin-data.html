@@ -17,8 +17,26 @@
   <main>
     <h2>Data İşlemleri</h2>
 
-    <button id="btnWP">Wordpress Sistemindeki Son Verilerin CSV'sini İndir</button>
+    <button id="btnWP">Wordpress Son Verilerinin CSV'sini İndirmeyi Başlat</button>
     <p></p>
+
+    <details open>
+      <summary>Wordpress'den Alınan Veriler</summary>
+      <input type="text" class="tblfilter" placeholder="filtrele" />
+      <table>
+        <thead>
+          <tr>
+            <th>Dosya Adı</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Boyut (KB)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="wpResultsTable">
+          <tr><td colspan="4" style="text-align:center;color:gray;">Yükleniyor...</td></tr>
+        </tbody>
+      </table>
+    </details>
 
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
@@ -28,15 +46,72 @@
     onAuthReady(async () => {
       let btnWP = document.getElementById("btnWP");
       btnWP.addEventListener(CLICK_EVENT, function () {
-        if (!confirm("Wordpress güncel CSV'yi indirmek istediğinize emin misiniz?")) { return; }
-
         let btn = this;
-        btn.disabled = true;
-        btn.nextElementSibling.innerText = "İşlem yapılıyor, lütfen bekleyiniz.";
 
+        let $mbody = div();
+        let $confirmLabel = p("Wordpress güncel CSV'sini indirmeyi başlatmak istediğinize emin misiniz?");
+        let $msgDiv = div(CSS_CLASSES.modalMessage);
+        let $modal;
 
+        let handleStart = async function () {
+          setButtonLoading(buttons.submitBtn, true, "Başlat");
+          btn.disabled = true;
 
+          let result = await api("Data/GetWordpressData", {});
+
+          if (result && result.isSuccess && result.data) {
+            showModalMessage($msgDiv, "success", result.data);
+            setButtonLoading(buttons.submitBtn, false, "Başlat");
+            setTimeout(() => {
+              closeModal($modal);
+            }, MODAL_AUTO_CLOSE_DELAY);
+          } else {
+            showModalMessage($msgDiv, "error", result?.data || ERROR_MESSAGE_DEFAULT);
+            setButtonLoading(buttons.submitBtn, false, "Başlat");
+          }
+
+          btn.disabled = false;
+        };
+
+        let buttons = createModalButtons("İptal", "Başlat", () => closeModal($modal), handleStart);
+        $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+        $modal = createModal("Onay", $mbody);
       });
+
+      let $tbody = document.getElementById("wpResultsTable");
+      let result = await api("Data/GetWordpressResults", {});
+
+      if (!result || result.error || !result.isSuccess) {
+        $tbody.innerHTML = getMsgLine("Veri yüklenemedi");
+        return;
+      }
+
+      let files = result.data;
+      if (!Array.isArray(files) || files.length === 0) {
+        $tbody.innerHTML = getMsgLine("Veri yok");
+        return;
+      }
+
+      $tbody.innerHTML = "";
+      for (let file of files) {
+        let $tr = tr();
+        $tr.append(td(file.fileName));
+        $tr.append(td(formatTimeLong(file.createdAt)));
+        $tr.append(td(file.sizeKB));
+
+        let $downloadBtn = btn("action-btn-secondary", "İndir");
+        $downloadBtn.addEventListener(CLICK_EVENT, async function () {
+          this.disabled = true;
+          let $msg = this.nextElementSibling;
+
+          await downloadCsv("Data/GetWordpressResultFile", { fileName: file.fileName }, file.fileName, $msg);
+
+          this.disabled = false;
+        });
+
+        $tr.append(tdbtn($downloadBtn));
+        $tbody.append($tr);
+      }
     });
   </script>
 </body>
