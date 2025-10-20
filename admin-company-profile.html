@@ -93,9 +93,9 @@
           if (item && item.memberId) {
             let $msg = p();
             tr.lastElementChild.append(
-              createShortlistButton(item.memberId, companyId, item.displayName, true, $msg, null, item.isInterviewResulted),
-              createInterviewReportButton(item.memberId, companyId, item.displayName, true, null, item.isInterviewResulted),
-              createHireCandidateButton(item.memberId, companyId, item.displayName, item.isInterviewResulted),
+              createShortlistButton(item.memberId, companyId, item.displayName, true, $msg, null, item.isInterviewResulted, item.isHired),
+              createInterviewReportButton(item.memberId, companyId, item.displayName, true, null, item.isInterviewResulted, item.isHired),
+              createHireCandidateButton(item.memberId, companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired),
               $msg);
           }
         });
@@ -105,8 +105,8 @@
     onAuthReady(async () => {
       await fillSpans("Company/Get", "companyId");
 
-      setTimeout(loadTables, 1234);
-      setTimeout(setFilters, 2345);
+      setTimeout(loadTables, DELAY_1);
+      setTimeout(setFilters, DELAY_2);
     });
   </script>
 </body>

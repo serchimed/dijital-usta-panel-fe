@@ -27,13 +27,14 @@
         <thead>
           <tr>
             <th>Dosya Adı</th>
-            <th>Oluşturulma Tarihi</th>
             <th>Boyut (KB)</th>
             <th></th>
           </tr>
         </thead>
         <tbody id="wpResultsTable">
-          <tr><td colspan="4" style="text-align:center;color:gray;">Yükleniyor...</td></tr>
+          <tr>
+            <td colspan="4" style="text-align:center;color:gray;">Yükleniyor...</td>
+          </tr>
         </tbody>
       </table>
     </details>
@@ -54,20 +55,18 @@
         let $modal;
 
         let handleStart = async function () {
-          setButtonLoading(buttons.submitBtn, true, "Başlat");
+          setButtonLoading(buttons.submitBtn, true);
           btn.disabled = true;
 
           let result = await api("Data/GetWordpressData", {});
 
           if (result && result.isSuccess && result.data) {
             showModalMessage($msgDiv, "success", result.data);
-            setButtonLoading(buttons.submitBtn, false, "Başlat");
-            setTimeout(() => {
-              closeModal($modal);
-            }, MODAL_AUTO_CLOSE_DELAY);
+            setButtonLoading(buttons.submitBtn, false);
+            setTimeout(() => { closeModal($modal); }, DELAY_2);
           } else {
             showModalMessage($msgDiv, "error", result?.data || ERROR_MESSAGE_DEFAULT);
-            setButtonLoading(buttons.submitBtn, false, "Başlat");
+            setButtonLoading(buttons.submitBtn, false);
           }
 
           btn.disabled = false;
@@ -96,7 +95,6 @@
       for (let file of files) {
         let $tr = tr();
         $tr.append(td(file.fileName));
-        $tr.append(td(formatTimeLong(file.createdAt)));
         $tr.append(td(file.sizeKB));
 
         let $downloadBtn = btn("action-btn-secondary", "İndir");

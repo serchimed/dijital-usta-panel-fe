@@ -12,7 +12,7 @@ async function initAuth() {
   USER = await api("Member/Check");
   if (!USER || USER.error || !USER.isAuthenticated) {
     showOverMsg("Sisteme giriş yapmanız gerekiyor...");
-    setTimeout(() => window.location.replace("demand-password.html"), 789);
+    setTimeout(() => window.location.replace("demand-password.html"), DELAY_1);
     return;
   }
 
@@ -21,7 +21,7 @@ async function initAuth() {
   let allowedRoles = PAGE_ROLES[page];
   if (!allowedRoles || !allowedRoles.includes(USER.role.toLowerCase())) {
     showOverMsg("Erişim izniniz yok, yönlendiriliyorsunuz...");
-    setTimeout(() => window.location.replace("access-denied.html"), 789);
+    setTimeout(() => window.location.replace("access-denied.html"), DELAY_1);
     return;
   }
 

@@ -1,3 +1,8 @@
+let DELAY_00 = 12;
+let DELAY_0 = 123;
+let DELAY_1 = 1234;
+let DELAY_2 = 2345;
+
 function getId(key = "memberId") {
   let qs = new URLSearchParams(window.location.search);
   let id = qs.get("id");
@@ -258,7 +263,6 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
     await loadData();
 
     let filtered = items.filter(item => filterFn(item, text));
-
     if (filtered.length === 0) return;
 
     filtered.forEach(item => {
@@ -269,15 +273,13 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
         e.stopPropagation();
         e.preventDefault();
 
-        // Önce listeyi kapat ve input event'lerini blokla
         $list.classList.remove("show");
         ignoreNextInput = true;
 
-        // Sonra callback'i çağır
         setTimeout(() => {
           onSelect(item, $input, $customInput);
-          setTimeout(() => { ignoreNextInput = false; }, 150);
-        }, 10);
+          setTimeout(() => { ignoreNextInput = false; }, DELAY_0);
+        }, DELAY_00);
       });
 
       $list.append($item);
@@ -322,12 +324,10 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
     }
   });
 
-  // Tab ile çıkıldığında listeyi kapat
   $input.addEventListener("blur", function () {
-    // Kısa bir gecikme ile kapat (item click'in çalışması için)
     setTimeout(() => {
       $list.classList.remove("show");
-    }, 200);
+    }, DELAY_0);
   });
 
   if (!AUTOCOMPLETE_LISTENER_ADDED) {

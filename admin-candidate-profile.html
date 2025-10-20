@@ -198,7 +198,7 @@
       <summary>Firma Kısa Listesine Ekle</summary>
 
       <label class="sel">Firma Ara
-        <input type="text" id="companySearch" placeholder="Firma adı yazın..." autocomplete="off" />
+        <input type="text" id="companySearch" placeholder="Adayın izin verdiği firma adı yazın..." autocomplete="off" />
       </label>
 
       <input type="hidden" id="selectedCompanyId" />
@@ -224,19 +224,41 @@
 
         let candidateName = document.getElementById("displayName")?.textContent;
 
-        let rows = e.target.querySelectorAll('tr');
+        let rows = e.target.querySelectorAll("tr");
         rows.forEach((tr, index) => {
           let item = data[index];
           if (item && item.companyId && candidateId) {
             let $msg = p();
-            let $hireBtn = createHireCandidateButton(candidateId, item.companyId, candidateName, item.isInterviewResulted);
-            let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, null, item.isInterviewResulted);
+            let $hireBtn = createHireCandidateButton(candidateId, item.companyId, candidateName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired);
+            let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, null, item.isInterviewResulted, item.isHired);
             tr.lastElementChild.append(
               $shortlistBtn,
-              createInterviewReportButton(candidateId, item.companyId, candidateName, item.isShortlisted, $hireBtn, item.isInterviewResulted),
+              createInterviewReportButton(candidateId, item.companyId, candidateName, true, $hireBtn, item.isInterviewResulted, item.isHired),
               $hireBtn,
               $msg
             );
+          }
+        });
+      });
+    }
+
+    let $historyTbody = document.getElementById("CandidateHistory");
+    if ($historyTbody) {
+      $historyTbody.addEventListener("tableLoaded", (e) => {
+        let data = e.detail.data;
+        if (!data || data.length === 0) { return; }
+
+        let rows = e.target.querySelectorAll("tr");
+        rows.forEach((tr, index) => {
+          let item = data[index];
+          if (item) {
+            let companyNameCell = tr.querySelector("td:nth-child(2)");
+            if (companyNameCell) {
+              let link = companyNameCell.querySelector("a");
+              if (link && link.textContent === "Admin") {
+                link.outerHTML = link.textContent;
+              }
+            }
           }
         });
       });
@@ -288,11 +310,13 @@
           $search.value = "";
           $selectedId.value = "";
           $addBtn.disabled = true;
+
+          await loadTables($shortlistTbody.id);
         }
       });
 
-      setTimeout(loadTables, 1234);
-      setTimeout(setFilters, 2345);
+      setTimeout(loadTables, DELAY_1);
+      setTimeout(setFilters, DELAY_2);
     });
   </script>
 </body>

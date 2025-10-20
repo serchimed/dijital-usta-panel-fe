@@ -58,7 +58,7 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
     $msg.innerHTML = errText;
   } else {
     $msg.textContent = successMsg;
-    if (redirectUrl) { setTimeout(() => { location.href = redirectUrl; }, 1234); }
+    if (redirectUrl) { setTimeout(() => { location.href = redirectUrl; }, DELAY_1); }
   }
 
   btn.disabled = false;
@@ -121,10 +121,10 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     URL.revokeObjectURL(url);
 
     if ($msgElement) {
-      $msgElement.textContent = "CSV başarıyla indirildi.";
+      $msgElement.textContent = "CSV indirildi.";
       setTimeout(() => {
         $msgElement.textContent = "";
-      }, 2345);
+      }, DELAY_2);
     }
 
     return true;

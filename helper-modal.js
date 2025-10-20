@@ -1,4 +1,3 @@
-let MODAL_AUTO_CLOSE_DELAY = 2345;
 let CSS_CLASSES = {
   modal: "modal",
   modalOverlay: "overlay",
@@ -52,9 +51,20 @@ function showModalMessage($msgDiv, type, message) {
   $msgDiv.innerText = message;
 }
 
-function setButtonLoading($btn, isLoading, originalText) {
-  $btn.disabled = isLoading;
-  $btn.innerText = isLoading ? LOADING_MESSAGE : originalText;
+function setButtonLoading($btn, isLoading) {
+  if (!$btn) return;
+
+  if (isLoading) {
+    if (!$btn.dataset.originalText) {
+      $btn.dataset.originalText = $btn.innerText;
+    }
+    $btn.disabled = true;
+    $btn.innerText = LOADING_MESSAGE;
+  } else {
+    $btn.disabled = false;
+    $btn.innerText = $btn.dataset.originalText || $btn.innerText;
+    delete $btn.dataset.originalText;
+  }
 }
 
 function createModalButtons(cancelText, submitText, onCancel, onSubmit) {

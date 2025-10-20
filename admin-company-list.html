@@ -17,8 +17,10 @@
   <main>
     <h2>Firma Listesi</h2>
 
-    <button id="exportBtn">CSV Olarak Dışa Aktar</button>
-    <p id="exportMsg"></p>
+    <p>
+      <a href="admin-company-add.html">Firma Davet Et</a>
+      <br />
+    </p>
 
     <input type="text" class="tblfilter" placeholder="filtrele" />
     <table>
@@ -34,6 +36,10 @@
       </thead>
       <tbody></tbody>
     </table>
+
+    <button id="exportBtn">CSV Olarak Dışa Aktar</button>
+    <p id="exportMsg"></p>
+
   </main>
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
@@ -82,7 +88,7 @@
         console.error(errText);
       }
 
-      setTimeout(setFilters, 1234);
+      setTimeout(setFilters, DELAY_1);
     });
   </script>
 </body>

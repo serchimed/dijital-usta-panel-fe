@@ -22,8 +22,8 @@ function setFilters() {
   });
 }
 
-async function loadTables() {
-  let tBodies = document.querySelectorAll("table.load tbody");
+async function loadTables(querySelector = "table.load tbody") {
+  let tBodies = document.querySelectorAll(querySelector);
 
   let key = window.location.pathname.includes("candidate") ? "memberId" : "companyId";
   let id = getId(key);
