@@ -23,7 +23,7 @@
 
     <div id="companiesContainer">
       <label>Profil bilgilerinizin paylaşılacağı firmalar</label>
-      <p class="label-warn">Profilinizi görmesini istemediğiniz firmalar var ise seçimi kaldırınız.</p>
+      <p class="label-warn">Profilinizi görmesini istemediğiniz firmalar için seçimi kaldırınız.</p>
       <div id="companiesList"></div>
     </div>
 
@@ -33,10 +33,12 @@
   <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
   <script src="site.js"></script>
   <script>
-    onAuthReady(async () => {
+    onReady(async () => {
       let prms = new URLSearchParams(window.location.search);
       let token = prms.get("ref");
-      if (!token) { window.location.href = "index.html"; }
+      let email = prms.get("email");
+      if (email) { set("email", email); }
+      // if (!token) { window.location.href = "index.html"; }
 
       let $companiesList = document.getElementById("companiesList");
       $companiesList.innerHTML = "<p>Firmalar yükleniyor...</p>";
@@ -69,9 +71,7 @@
       let $btn = document.querySelector("button");
       let $msg = $btn.nextElementSibling;
       $btn.addEventListener(CLICK_EVENT, async function () {
-        let selectedCompanyIds = Array.from(
-          document.querySelectorAll('#companiesList input[type="checkbox"]:checked')
-        ).map(cb => cb.value);
+        let selectedCompanyIds = Array.from(document.querySelectorAll('#companiesList input[type="checkbox"]:checked')).map(cb => cb.value);
 
         let req = {
           token: token,
@@ -81,14 +81,8 @@
 
         let errors = [];
         if (!req.email) { errors.push("E-posta adresini giriniz."); }
-
-        if (req.email && !checkEmail(req.email)) {
-          errors.push("Geçerli bir e-posta adresi giriniz.");
-        }
-
-        if (selectedCompanyIds.length === 0) {
-          errors.push("En az bir firma seçmelisiniz.");
-        }
+        if (req.email && !checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }
+        if (selectedCompanyIds.length === 0) { errors.push("En az bir firma seçmelisiniz."); }
 
         if (errors.length) {
           $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");

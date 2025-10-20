@@ -146,6 +146,11 @@ function val(id) {
   return undefined;
 }
 
+function set(id, val) {
+  let $i = document.getElementById(id);
+  if ($i) { $i.value = val || ""; }
+}
+
 function formatDateLong(dateStr) {
   if (!dateStr) return "-";
   let dt = new Date(dateStr);
@@ -200,8 +205,11 @@ function showContent() {
   let $m = document.querySelector("main");
   if ($m) {
     let $o = document.querySelector(".overlay");
-    if ($o) { $o.remove(); }
-    $m.style.visibility = "visible";
+    if ($o) {
+      $o.classList.add("fade-out");
+      setTimeout(() => $o.remove(), DELAY_0 * 2);
+    }
+    setTimeout(() => $m.classList.add("show"), DELAY_0);
   }
 }
 

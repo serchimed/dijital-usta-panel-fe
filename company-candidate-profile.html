@@ -130,7 +130,7 @@
         return;
       }
 
-      setTimeout(loadTables, DELAY_1);
+      await loadTables();
 
       let candidateName = document.getElementById("displayName")?.textContent;
       let companyName = infoResult.data.companyName;

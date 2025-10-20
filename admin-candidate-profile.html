@@ -162,12 +162,24 @@
 
     <details open>
       <summary>Kısa Listeye Ekleyen Firmalar</summary>
+
+      <div>
+        <label class="sel">
+          <input type="text" id="companySearch" placeholder="Adayın izin verdiği firma adı yazın..."
+            autocomplete="off" />
+        </label>
+
+        <input type="hidden" id="selectedCompanyId" />
+        <button id="addShortlistBtn" disabled>Kısa Listeye Ekle</button>
+        <p id="shortlistMsg"></p>
+      </div>
+
       <table class="load">
         <thead>
           <tr>
             <th id="companyName" data-url="admin-company-profile.html?id={companyId}">Firma</th>
             <th id="city">İl</th>
-            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Satıcı Profili</th>
             <th id="webUrl" data-url="webUrl">Web Sitesi</th>
             <th id="createdAt">Zaman</th>
             <th></th>
@@ -185,26 +197,13 @@
           <tr>
             <th id="companyName" data-url="admin-company-profile.html?id={companyId}">Firma</th>
             <th id="city">İl</th>
-            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Satıcı Profili</th>
             <th id="webUrl" data-url="webUrl">Web Sitesi</th>
             <th></th>
           </tr>
         </thead>
         <tbody id="CandidateCompany"></tbody>
       </table>
-    </details>
-
-    <details id="shortlistDetails" open>
-      <summary>Firma Kısa Listesine Ekle</summary>
-
-      <label class="sel">Firma Ara
-        <input type="text" id="companySearch" placeholder="Adayın izin verdiği firma adı yazın..." autocomplete="off" />
-      </label>
-
-      <input type="hidden" id="selectedCompanyId" />
-
-      <button id="addShortlistBtn" disabled>Kısa Listeye Ekle</button>
-      <p id="shortlistMsg"></p>
     </details>
 
     <a href="candidate-profile-edit.html" class="qs">Profili Güncelle</a>
@@ -315,8 +314,8 @@
         }
       });
 
-      setTimeout(loadTables, DELAY_1);
-      setTimeout(setFilters, DELAY_2);
+      await loadTables();
+      setFilters();
     });
   </script>
 </body>

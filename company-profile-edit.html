@@ -116,7 +116,7 @@
         if (!req.webUrl) { errors.push("Web sitesi bilgisini giriniz."); }
         else if (!checkUrl(req.webUrl)) { errors.push("Geçerli bir web sitesi URL'si giriniz."); }
         if (!req.trendyolUrl) { errors.push("Trendyol satıcı profili bilgisini giriniz."); }
-        else if (!checkUrl(req.trendyolUrl)) { errors.push("Geçerli bir Trendyol profil URL'si giriniz."); }
+        else if (!checkUrl(req.trendyolUrl)) { errors.push("Geçerli bir Trendyol statıcı profil URL'si giriniz."); }
 
         let redirectUrl = "company-profile.html?id=" + id;
         if (USER.role === "editor" || USER.role === "admin") {

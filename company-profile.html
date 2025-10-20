@@ -110,8 +110,10 @@
     }
 
     onAuthReady(async () => {
-      await fillSpans("Company/Get", "companyId");
-      setTimeout(loadTables, DELAY_1);
+      await Promise.all([
+        fillSpans("Company/Get", "companyId"),
+        loadTables()
+      ]);
     });
   </script>
 </body>

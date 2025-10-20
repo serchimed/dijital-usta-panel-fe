@@ -131,10 +131,7 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
         setMessageText($externalMsg, successMessage);
 
         closeModal($modal);
-
-        setTimeout(() => {
-          setMessageText($externalMsg, "");
-        }, DELAY_2);
+        setTimeout(() => { setMessageText($externalMsg, ""); }, DELAY_2);
 
         if (!isCurrentlyShortlisted && btn.closest("tr")) {
           btn.closest("tr").remove();
@@ -248,18 +245,20 @@ function createInterviewReportButton(candidateId, companyId, displayName, isShor
         setBtnState($hireBtn, true);
         showSuccessAndClose($msgDiv, $modal, "Mülakat sonucu bildirildi.");
       } else {
+        let $row = $btn.closest("tr");
+        if ($row) {
+          let $buttons = $row.querySelectorAll("button");
+          $buttons.forEach(button => {
+            button.disabled = true;
+          });
+        }
         showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
         setButtonLoading(buttons.submitBtn, false);
       }
     };
 
-    let buttons = createModalButtons("İptal", "Sonucu Bildir",
-      () => closeModal($modal),
-      handleReport
-    );
-
+    let buttons = createModalButtons("İptal", "Sonucu Bildir", () => closeModal($modal), handleReport);
     $mbody.append($candidateLabel, $dateLabel, $resultLabel, buttons.buttonsDiv, $msgDiv);
-
     $modal = createModal("Mülakat Sonucu Bildir", $mbody);
   });
 
@@ -319,7 +318,6 @@ function createHireCandidateButton(memberId, companyId, displayName, isInterview
     };
 
     let buttons = createModalButtons("İptal", "İşe Al", () => closeModal($modal), handleHire);
-
     $mbody.append($candidateLabel, $urlLabel, buttons.buttonsDiv, $msgDiv);
 
     $modal = createModal("Aday İşe Al", $mbody);

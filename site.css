@@ -51,7 +51,12 @@ menu a:visited {
 main {
   padding: 34px;
   min-height: 300px;
-  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+main.show {
+  opacity: 1;
 }
 
 a,
@@ -91,7 +96,7 @@ details label table {
 
 details label {
   margin-left: 15px;
-  min-width: 250px;
+  width: 250px;
   display: inline-block;
 }
 
@@ -105,6 +110,7 @@ label span {
   display: block;
   margin: 8px 0 13px;
   font-weight: bold;
+  max-width: 250px;
 }
 
 .label-warn {
@@ -144,7 +150,7 @@ select {
   padding: 5px;
   border: 1px solid #777;
   font-size: 19px;
-  width: 555px;
+  width: 600px;
 }
 
 textarea {
@@ -176,7 +182,7 @@ table {
   border-radius: 8px;
   padding: 8px;
   border-collapse: collapse;
-  min-width: 555px;
+  min-width: 600px;
 }
 
 thead tr th {
@@ -293,6 +299,13 @@ summary {
   align-items: center;
   justify-content: center;
   z-index: 10000;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .overlay-p {
@@ -428,7 +441,7 @@ summary {
 }
 
 .truncated {
-  max-width: 555px;
+  max-width: 600px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -437,7 +450,7 @@ summary {
 }
 
 .full {
-  max-width: 555px;
+  max-width: 600px;
   display: none;
   cursor: pointer;
 }
@@ -457,7 +470,7 @@ label.sel {
 
 label.sel input {
   width: 100%;
-  max-width: 555px;
+  max-width: 600px;
 }
 
 label.sel div {
@@ -469,7 +482,7 @@ label.sel div {
   border-radius: 3px;
   background: #fff;
   width: 100%;
-  max-width: 555px;
+  max-width: 600px;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin: 0;
@@ -547,4 +560,19 @@ details .tblfilter,
 .ml {
   margin-left: 13px;
   margin-top: 15px;
+}
+
+
+#shortlistMsg {
+  margin-left: 15px;
+}
+
+#companySearch {
+  display: inline-block;
+  width: 445px;
+  margin-right: 5px;
+}
+
+#addShortlistBtn{
+  display: inline-block;
 }
