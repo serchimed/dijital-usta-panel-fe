@@ -23,6 +23,10 @@ footer {
   padding: 34px;
 }
 
+header {
+  padding-top: 55px;
+}
+
 menu {
   float: right;
   margin: 13px;
@@ -558,13 +562,9 @@ details .tblfilter,
 @media (max-width: 768px) {
   menu {
     float: left;
-    margin: 27px;
-    margin-top: -80px;
+    margin: 30px;
+    margin-top: -75px;
     width: 100%;
-  }
-
-  h2 {
-    margin: -5px;
   }
 
   table,
@@ -576,18 +576,22 @@ details .tblfilter,
     display: block;
   }
 
+  table {
+    max-width: 95%;
+  }
+
   thead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
 
-  tr {
+  /* tr {
     margin-bottom: 15px;
     border: 1px solid #ff6720;
     border-radius: 8px;
     padding: 8px;
-  }
+  } */
 
   td {
     position: relative;
