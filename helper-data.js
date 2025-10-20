@@ -63,6 +63,7 @@ async function loadTables(querySelector = "table.load tbody") {
       for (let th of headers) {
         let key = th.id;
         let value = item[key] ?? "";
+        let label = th.textContent || key;
 
         if ((key === "start" || key === "end" || key.toLowerCase().includes("date")) && value && value !== "-") {
           value = formatDateLong(value);
@@ -72,13 +73,17 @@ async function loadTables(querySelector = "table.load tbody") {
         }
 
         let template = th.dataset?.url;
+        let $td;
 
         if (template) {
           let href = template === key ? value : template.replace(/\{([^}]+)\}/g, (_, token) => item[token] ?? "");
-          $tr.append(tda(value || href || "", href || "#"));
+          $td = tda(value || href || "", href || "#");
         } else {
-          $tr.append(td(value));
+          $td = td(value);
         }
+
+        $td.setAttribute("data-label", label);
+        $tr.append($td);
       }
 
       fragment.append($tr);

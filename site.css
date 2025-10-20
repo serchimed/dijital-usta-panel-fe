@@ -23,12 +23,6 @@ footer {
   padding: 34px;
 }
 
-footer a,
-footer a:visited {
-  float: right;
-  color: #ff6720;
-}
-
 menu {
   float: right;
   margin: 13px;
@@ -61,7 +55,7 @@ main.show {
 
 a,
 a:visited {
-  color: #2775c8;
+  color: #033366;
 }
 
 h1 {
@@ -77,6 +71,7 @@ h1 a:visited {
 
 h2 {
   font-size: 34px;
+  line-height: 38px;
   margin: 25px 0;
 }
 
@@ -150,7 +145,8 @@ select {
   padding: 5px;
   border: 1px solid #777;
   font-size: 19px;
-  width: 600px;
+  width: 95%;
+  max-width: 600px;
 }
 
 textarea {
@@ -202,7 +198,7 @@ tbody tr td a {
 }
 
 tr:nth-child(even) {
-  background-color: #c6c0be;
+  background-color: #ffded3;
 }
 
 td {
@@ -222,7 +218,7 @@ table p {
 }
 
 table tbody tr:hover {
-  background-color: #eef6ff;
+  background-color: #f79090;
   transition: background-color 0.2s ease;
 }
 
@@ -234,24 +230,6 @@ section a {
 ul {
   list-style: none;
   padding: 0;
-}
-
-ul#firma-menu,
-ul#admin-menu {
-  margin-top: 21px;
-}
-
-ul#firma-menu li,
-ul#admin-menu li {
-  margin: 5px 5px 0 0;
-}
-
-ul li a {
-  display: inline-block;
-  border-radius: 5px;
-  border: 1px solid #2775c8;
-  padding: 8px;
-  margin: 5px 5px 0 0;
 }
 
 details {
@@ -573,6 +551,73 @@ details .tblfilter,
   margin-right: 5px;
 }
 
-#addShortlistBtn{
+#addShortlistBtn {
   display: inline-block;
+}
+
+@media (max-width: 768px) {
+  menu {
+    float: left;
+    margin: 27px;
+    margin-top: -80px;
+    width: 100%;
+  }
+
+  h2 {
+    margin: -5px;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ff6720;
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+    text-align: right;
+    border: none;
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 8px;
+    width: 45%;
+    padding-right: 10px;
+    text-align: left;
+    font-weight: bold;
+    color: #ff6720;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  main {
+    padding: 16px;
+  }
+
+  label {
+    padding: 0;
+  }
 }
