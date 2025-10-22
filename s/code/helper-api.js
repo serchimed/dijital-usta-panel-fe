@@ -58,6 +58,7 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
     $msg.innerHTML = errText;
   } else {
     $msg.textContent = successMsg;
+    if (result.data && result.data.redirectUrl) { redirectUrl = result.data.redirectUrl; }
     if (redirectUrl) { setTimeout(() => { location.href = redirectUrl; }, DELAY_1); }
   }
 
@@ -86,8 +87,6 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     }
 
     let contentType = response.headers.get("Content-Type");
-
-    // Check if response is JSON instead of CSV
     if (contentType && contentType.includes("application/json")) {
       let result = await response.json();
       if ($msgElement) {

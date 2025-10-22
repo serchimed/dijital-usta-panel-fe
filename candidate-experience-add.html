@@ -5,15 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deneyim Ekle | Dijital Usta</title>
-  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="./s/site.css" />
+<link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
   <header>
-    <h1><a href="./">Dijital Usta</a></h1>
+    <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
+    <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <menu></menu>
-  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <nav><ul></ul></nav>
   <main>
     <h2>Deneyim Ekle</h2>
 
@@ -45,8 +46,20 @@
     <button>Kaydet</button>
     <p></p>
   </main>
-  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
-  <script src="site.js"></script>
+  <footer>
+    <div>
+      <span>
+        <h1>Dijital Usta</h1>
+        <p>Gençleri e-ticaretle buluşturup<br/>KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+      </span>
+      <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
+    </div>
+    <div>
+      © 2025 Dijital Usta | Tüm Haklar Saklıdır.
+      <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
+    </div>
+  </footer>
+  <script src="./s/site.js"></script>
   <script>
     onAuthReady(() => {
       let prms = new URLSearchParams(window.location.search);
@@ -69,7 +82,7 @@
         $end.disabled = true;
       }
 
-      let $btn = document.querySelector("button");
+      let $btn = document.querySelector("main button");
       let $msg = $btn.nextElementSibling;
       $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {

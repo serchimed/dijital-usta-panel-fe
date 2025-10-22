@@ -5,20 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Firma Profili | Dijital Usta</title>
-  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="./s/site.css" />
+<link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
   <header>
-    <h1><a href="./">Dijital Usta</a></h1>
+    <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
+    <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <menu></menu>
-  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <nav><ul></ul></nav>
   <main>
     <h2><span id="companyName"></span></h2>
 
     <details open>
-      <summary>Firma Bilgileri</summary>
+      <summary>Firma Bilgileri</summary><div>
 
       <label>İl
         <span id="city"></span>
@@ -35,10 +36,10 @@
       <label>Trendyol Satıcı Profili
         <span id="trendyolUrl"></span>
       </label>
-    </details>
+    </div></details>
 
     <details open>
-      <summary>Yetkili Bilgileri</summary>
+      <summary>Yetkili Bilgileri</summary><div>
 
       <label>Yetkili Adı Soyadı
         <span id="responsibleMemberName"></span>
@@ -51,10 +52,10 @@
       <label>Yetkili Telefonu
         <span id="phone"></span>
       </label>
-    </details>
+    </div></details>
 
     <details open>
-      <summary>Kısa Listeye Eklenen Adaylar</summary>
+      <summary>Kısa Listeye Eklenen Adaylar</summary><div>
       <table class="load">
         <thead>
           <tr>
@@ -66,10 +67,10 @@
         </thead>
         <tbody id="CompanyShortlist"></tbody>
       </table>
-    </details>
+    </div></details>
 
     <details open>
-      <summary>Olumsuz Değerlendirilen Adaylar</summary>
+      <summary>Olumsuz Değerlendirilen Adaylar</summary><div>
       <table class="load">
         <thead>
           <tr>
@@ -79,12 +80,24 @@
         </thead>
         <tbody id="CompanyDeclined"></tbody>
       </table>
-    </details>
+    </div></details>
 
     <a href="company-profile-edit.html" class="qs">Güncelle</a>
   </main>
-  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
-  <script src="site.js"></script>
+  <footer>
+    <div>
+      <span>
+        <h1>Dijital Usta</h1>
+        <p>Gençleri e-ticaretle buluşturup<br/>KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+      </span>
+      <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
+    </div>
+    <div>
+      © 2025 Dijital Usta | Tüm Haklar Saklıdır.
+      <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
+    </div>
+  </footer>
+  <script src="./s/site.js"></script>
   <script>
     let $tbody = document.getElementById("CompanyShortlist");
     if ($tbody) {
@@ -99,11 +112,11 @@
           let item = data[index];
           if (item && item.memberId) {
             let $msg = p();
-            tr.lastElementChild.append(
-              createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $msg, null, item.isInterviewResulted),
-              createInterviewReportButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, null, item.isInterviewResulted),
-              createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted),
-              $msg);
+            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired);
+            let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $hireBtn, item.isInterviewResulted, item.isHired);
+            let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
+
+            tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
           }
         });
       });

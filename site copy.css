@@ -25,6 +25,11 @@ footer {
 
 header {
   padding-top: 55px;
+  background-color: #fff;
+}
+
+header img {
+  height: 55px;
 }
 
 menu {
@@ -585,13 +590,6 @@ details .tblfilter,
     top: -9999px;
     left: -9999px;
   }
-
-  /* tr {
-    margin-bottom: 15px;
-    border: 1px solid #ff6720;
-    border-radius: 8px;
-    padding: 8px;
-  } */
 
   td {
     position: relative;

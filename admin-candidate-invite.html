@@ -16,15 +16,7 @@
   </header>
   <nav><ul></ul></nav>
   <main>
-    <h2>Adayların Puanlarını Güncelle</h2>
-
-    <label for="pointType">
-      Puan Türü
-      <select id="pointType">
-        <option value="A">Puan A</option>
-        <option value="Tobb">Puan TOBB ETÜ</option>
-      </select>
-    </label>
+    <h2>TOBB ETÜ Eğitimini Geçen Adayları Davet Et</h2>
 
     <label for="eposta">Adayların E-posta Adresleri ve Puanları
       <br />
@@ -56,8 +48,7 @@
       let $msg = $btn.nextElementSibling;
       $btn.addEventListener(CLICK_EVENT, async function () {
         let req = {
-          lines: val("lines"),
-          pointType: val("pointType")
+          lines: val("lines")
         };
 
         req.lines = (req.lines || "").trim();
@@ -104,7 +95,7 @@
 
         await apiBtn(
           this,
-          "CandidatePoint/Add",
+          "Candidate/Invite",
           req,
           "Puanlar eklendi.",
           ERROR_MESSAGE_DEFAULT,

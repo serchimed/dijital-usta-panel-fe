@@ -181,7 +181,7 @@ async function fillInputs(url, key = "memberId") {
         }
       }
 
-      let $btn = document.querySelector("button");
+      let $btn = document.querySelector("main button");
       $btn.disabled = false;
       $btn.nextElementSibling.innerHTML = "";
     } else {

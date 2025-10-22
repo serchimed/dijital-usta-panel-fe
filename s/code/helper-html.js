@@ -97,6 +97,13 @@ function li(text) {
   return $li;
 }
 
+function lia(text, href) {
+  let $li = li();
+  let $a = a(text, href);
+  $li.append($a);
+  return $li;
+}
+
 function tr() {
   return document.createElement("tr");
 }
@@ -191,14 +198,19 @@ function checkUrl(url) {
   }
 }
 
-function showOverMsg(msg) {
-  let $o = document.createElement("div");
-  $o.className = "overlay";
-  let $p = p(msg);
-  $p.className = "overlay-p";
-  $o.append($p);
-  document.body.append($o);
-  return $o;
+function showHeaderMsg(msg) {
+  let $banner = document.createElement("div");
+  $banner.className = "header-message";
+  $banner.textContent = msg;
+  let $header = document.querySelector("header");
+  if ($header && $header.nextSibling) {
+    $header.parentNode.insertBefore($banner, $header.nextSibling);
+  } else if ($header) {
+    $header.after($banner);
+  } else {
+    document.body.prepend($banner);
+  }
+  return $banner;
 }
 
 function showContent() {

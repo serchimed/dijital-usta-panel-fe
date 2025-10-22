@@ -11,22 +11,21 @@ async function initAuth() {
 
   USER = await api("Member/Check");
   if (!USER || USER.error || !USER.isAuthenticated) {
-    showOverMsg("Sisteme giriş yapmanız gerekiyor...");
-    setTimeout(() => window.location.replace("demand-password.html"), DELAY_1);
+    showHeaderMsg("Sisteme giriş yapmanız gerekiyor...");
+    showContent();
+    setTimeout(() => window.location.replace("demand-password.html"), DELAY_2);
     return;
   }
-
-  buildUserMenu();
 
   let allowedRoles = PAGE_ROLES[page];
   if (!allowedRoles || !allowedRoles.includes(USER.role.toLowerCase())) {
-    showOverMsg("Erişim izniniz yok, yönlendiriliyorsunuz...");
-    setTimeout(() => window.location.replace("access-denied.html"), DELAY_1);
+    showHeaderMsg("Erişim izniniz yok, yönlendiriliyorsunuz...");
+    showContent();
+    setTimeout(() => window.location.replace("access-denied.html"), DELAY_2);
     return;
   }
 
-  if (page === "index") { buildRoleMenu(); }
-
+  buildAuthenticatedMenu();
   showContent();
   dispatchAuthReady();
 }

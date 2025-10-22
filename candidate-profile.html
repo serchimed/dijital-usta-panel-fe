@@ -5,15 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aday Profili | Dijital Usta</title>
-  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="./s/site.css" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
   <header>
-    <h1><a href="./">Dijital Usta</a></h1>
+    <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
+    <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <menu></menu>
-  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <nav>
+    <ul></ul>
+  </nav>
   <main>
     <h2><span id="displayName"></span></h2>
 
@@ -24,157 +27,180 @@
       <a href="candidate-letter-add.html" class="qs">Motivasyon Mektubu Ekle</a>
     </div>
 
-    <label for="image" style="margin-bottom: 15px;">
-      <img id="image" />
-      <a href="candidate-profile-image.html" class="qs">Fotoğrafı Güncelle</a>
-    </label>
-
     <details open>
       <summary>Kişisel Bilgiler</summary>
+      <div>
 
-      <label>Email
-        <span id="email"></span>
-      </label>
+        <label for="image" style="margin-bottom: 15px;">
+          <img id="image" />
+          <a href="candidate-profile-image.html" class="qs">Fotoğrafı Güncelle</a>
+        </label>
 
-      <label>Telefon
-        <span id="phone"></span>
-      </label>
+        <label>Email
+          <span id="email"></span>
+        </label>
 
-      <label>Doğum Tarihi
-        <span id="birthDate"></span>
-      </label>
+        <label>Telefon
+          <span id="phone"></span>
+        </label>
 
-      <label>Cinsiyet
-        <span id="gender"></span>
-      </label>
+        <label>Doğum Tarihi
+          <span id="birthDate"></span>
+        </label>
 
-      <label>Aday İli
-        <span id="city"></span>
-      </label>
+        <label>Cinsiyet
+          <span id="gender"></span>
+        </label>
 
-      <label>Aday İlçesi
-        <span id="county"></span>
-      </label>
+        <label>Aday İli
+          <span id="city"></span>
+        </label>
 
-      <label>Seyahat Engeli Var Mı?
-        <span id="travelWillingness"></span>
-      </label>
+        <label>Aday İlçesi
+          <span id="county"></span>
+        </label>
+      </div>
     </details>
 
     <details open>
       <summary>Eğitim Bilgileri</summary>
+      <div>
 
-      <label>Eğitim Durumu
-        <span id="educationLevel"></span>
-      </label>
+        <label>Eğitim Durumu
+          <span id="educationLevel"></span>
+        </label>
 
-      <label>Üniversite Adı
-        <span id="university"></span>
-      </label>
+        <label>Üniversite Adı
+          <span id="university"></span>
+        </label>
 
-      <label>Bölümü
-        <span id="major"></span>
-      </label>
+        <label>Bölümü
+          <span id="major"></span>
+        </label>
 
-      <label>Sınıfı
-        <span id="classYear"></span>
-      </label>
+        <label>Sınıfı
+          <span id="classYear"></span>
+        </label>
 
-      <label>Yabancı Diller
-        <span id="languages"></span>
-      </label>
+        <label>Yabancı Diller
+          <span id="languages"></span>
+        </label>
+
+        <label for="pointB">
+          Başarı Puanı B
+          <span id="pointB"></span>
+        </label>
+      </div>
     </details>
 
     <details open>
       <summary>Kariyer Bilgileri</summary>
+      <div>
 
-      <label>Çalışmak İstediği Sektör
-        <span id="willingSector"></span>
-      </label>
-
-      <label>Motivasyon Mektubu
-        <a href="candidate-letter-add.html" class="qs">Mektup Ekle</a>
-        <textarea readonly id="motivationLetter"></textarea>
-      </label>
+        <label>Motivasyon Mektubu
+          <a href="candidate-letter-add.html" class="qs">Mektup Ekle</a>
+          <textarea readonly id="motivationLetter"></textarea>
+        </label>
+      </div>
     </details>
 
     <details open>
       <summary>Deneyimler</summary>
-      <a href="candidate-experience-add.html" class="qs ml">İş Deneyimi Ekle</a>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="companyName">Önceki Çalıştığı Firma</th>
-            <th id="start">Başlangıç Tarihi</th>
-            <th id="end">Bitiş Tarihi</th>
-            <th id="position">Pozisyon</th>
-            <th id="description">Açıklama</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="CandidateExperience"></tbody>
-      </table>
+      <div>
+        <a href="candidate-experience-add.html" class="qs ml">İş Deneyimi Ekle</a>
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="companyName">Önceki Çalıştığı Firma</th>
+              <th id="start">Başlangıç Tarihi</th>
+              <th id="end">Bitiş Tarihi</th>
+              <th id="position">Pozisyon</th>
+              <th id="description">Açıklama</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="CandidateExperience"></tbody>
+        </table>
+      </div>
     </details>
 
     <details open>
       <summary>Sertifikalar</summary>
-      <a href="candidate-certificate-add.html" class="qs ml">Sertifika Ekle</a>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="name">Sertifika</th>
-            <th id="company">Veren Kurum</th>
-            <th id="year">Alındığı Yıl</th>
-            <th id="description">Açıklama</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="CandidateCertificate"></tbody>
-      </table>
+      <div>
+        <a href="candidate-certificate-add.html" class="qs ml">Sertifika Ekle</a>
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="name">Sertifika</th>
+              <th id="company">Veren Kurum</th>
+              <th id="year">Alındığı Yıl</th>
+              <th id="description">Açıklama</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="CandidateCertificate"></tbody>
+        </table>
+      </div>
     </details>
 
     <details open>
-      <summary>Mülakata Yapan Firmalar</summary>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="companyName" data-url="candidate-company-profile.html?id={companyId}">Firma</th>
-            <th id="city">İl</th>
-            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
-            <th id="webUrl" data-url="webUrl">Web Sitesi</th>
-          </tr>
-        </thead>
-        <tbody id="CandidateInterview"></tbody>
-      </table>
+      <summary>Mülakat Yapan Firmalar</summary>
+      <div>
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="companyName" data-url="candidate-company-profile.html?id={companyId}">Firma</th>
+              <th id="city">İl</th>
+              <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+              <th id="webUrl" data-url="webUrl">Web Sitesi</th>
+            </tr>
+          </thead>
+          <tbody id="CandidateInterview"></tbody>
+        </table>
+      </div>
     </details>
 
     <details>
       <summary>Profilinizi Görmesine İzin Verdiğiniz Firmalar</summary>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="companyName" data-url="candidate-company-profile.html?id={companyId}">Firma</th>
-            <th id="city">İl</th>
-            <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
-            <th id="webUrl" data-url="webUrl">Web Sitesi</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="CandidateCompany"></tbody>
-      </table>
+      <div>
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="companyName" data-url="candidate-company-profile.html?id={companyId}">Firma</th>
+              <th id="city">İl</th>
+              <th id="trendyolUrl" data-url="trendyolUrl">Trendyol Profili</th>
+              <th id="webUrl" data-url="webUrl">Web Sitesi</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="CandidateCompany"></tbody>
+        </table>
+      </div>
     </details>
 
     <a href="candidate-profile-edit.html" class="qs">Profili Güncelle</a>
   </main>
-  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
-  <script src="site.js"></script>
+  <footer>
+    <div>
+      <span>
+        <h1>Dijital Usta</h1>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+      </span>
+      <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
+    </div>
+    <div>
+      © 2025 Dijital Usta | Tüm Haklar Saklıdır.
+      <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
+    </div>
+  </footer>
+  <script src="./s/site.js"></script>
   <script>
-    let $candidateCompanyTable = document.getElementById("CandidateCompany");
-    $candidateCompanyTable.addEventListener("tableLoaded", function (event) {
-      if (event.detail.error || !event.detail.data || event.detail.data.length === 0) { return; }
+    let $tbl = document.getElementById("CandidateCompany");
+    $tbl.addEventListener("tableLoaded", function (e) {
+      if (e.detail.error || !e.detail.data || e.detail.data.length === 0) { return; }
 
       let rows = this.querySelectorAll("tr");
-      event.detail.data.forEach((item, index) => {
+      e.detail.data.forEach((item, index) => {
         let $row = rows[index];
         if (!$row) { return; }
 
@@ -192,26 +218,22 @@
     });
 
     onAuthReady(async () => {
-      await fillSpans("Candidate/Get");
+      await Promise.all([
+        fillSpans("Candidate/Get"),
+        loadTables()
+      ]);
 
-      let $motivationLetter = document.getElementById("motivationLetter");
-      let $addLetterLinks = document.querySelectorAll('a[href*="candidate-letter-add.html"]');
-      let $warning = document.getElementById("motivationLetterWarning");
-
-      if ($motivationLetter && $motivationLetter.value.trim()) {
-        if ($addLetterLinks) {
-          $addLetterLinks.forEach(link => link.remove());
-        }
+      let $warn = document.getElementById("motivationLetterWarning");
+      let $letter = document.getElementById("motivationLetter");
+      if ($letter && $letter.value.trim() && $letter.value.trim() != "-") {
+        $letter.style.height = "333px";
+        if ($warn) { $warn.style.display = "block"; }
+        let $links = document.querySelectorAll('a[href*="candidate-letter-add.html"]');
+        if ($links) { $links.forEach(link => link.remove()); }
       } else {
-        if ($motivationLetter) {
-          $motivationLetter.remove();
-        }
-        if ($warning) {
-          $warning.style.display = "block";
-        }
+        if ($letter) { $letter.remove(); }
+        if ($warn) { $warn.style.display = "none"; }
       }
-
-      await loadTables();
     });
   </script>
 </body>

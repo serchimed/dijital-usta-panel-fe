@@ -5,20 +5,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dijital Usta</title>
-  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="./s/site.css" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
   <header>
-    <h1><a href="./">Dijital Usta</a></h1>
+    <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
+    <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <menu></menu>
-  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <nav>
+    <ul></ul>
+  </nav>
   <main>
-    <section></section>
+    <h2>Hoş geldiniz</h2>
+
+    <p style="line-height: 1.5; margin-bottom: 21px;">
+      Dijital Usta platformuna hoş geldiniz. Aşağıdaki tabloda, sistemimizde kayıtlı firma ve aday sayıları, kısa listeye eklenme durumları, gerçekleşen mülakatlar ve işe alım doğrulamaları gibi önemli istatistikler il bazında özetlenmiştir.
+    </p>
+
+    <table class="load">
+      <thead>
+        <tr>
+          <th id="city">İl</th>
+          <th id="companyCount">Firma Sayısı</th>
+          <th id="candidCount">Aday Sayısı</th>
+          <th id="shortlistedCount">Kısa Listeye Eklenme</th>
+          <th id="interviewedCount">Gerçekleşen Mülakat</th>
+          <th id="hiredCount">İşe Alımı Doğrulananlar</th>
+        </tr>
+      </thead>
+      <tbody id="Stats"></tbody>
+    </table>
   </main>
-  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
-  <script src="site.js"></script>
+  <footer>
+    <div>
+      <span>
+        <h1>Dijital Usta</h1>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+      </span>
+      <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
+    </div>
+    <div>
+      © 2025 Dijital Usta | Tüm Haklar Saklıdır.
+      <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
+    </div>
+  </footer>
+  <script src="./s/site.js"></script>
+  <script>
+    onAuthReady(async () => {
+      await loadTables();
+    });
+  </script>
 </body>
 
 </html>

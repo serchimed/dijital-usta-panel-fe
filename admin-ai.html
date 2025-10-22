@@ -4,30 +4,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yapay Zeka İşlemleri | Dijital Usta</title>
-  <link rel="stylesheet" href="site.css" />
+  <title>Yapay Zeka Ayarları | Dijital Usta</title>
+  <link rel="stylesheet" href="./s/site.css" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
   <header>
-    <h1><a href="./">Dijital Usta</a></h1>
+    <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
+    <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <menu></menu>
-  <div class="slogan">Gençleri e-ticaretle buluşturup KOBİ’lere yetkin iş gücü kazandırmayı amaçlar.</div>
+  <nav>
+    <ul></ul>
+  </nav>
   <main>
-    <h2>Yapay Zeka İşlemleri</h2>
+    <h2>Yapay Zeka Ayarları</h2>
 
+    <details>
+      <summary>API Ayarları</summary>
+      <div>
+        <label for="apiKeyGoogle">Google API Key
+          <input type="password" id="apiKeyGoogle" autocomplete="off" />
+        </label>
+        <label for="apiKeyOpenAI">OpenAI API Key
+          <input type="password" id="apiKeyOpenAI" autocomplete="off" />
+        </label>
 
+        <button id="btnSaveAPI">Güncelle</button>
+        <p></p>
+      </div>
+    </details>
 
+    <details open>
+      <summary>Prompt Güncelleme</summary>
+      <div>
+        <textarea id="promptText"></textarea>
+        <button id="btnSavePrompt">Güncelle</button>
+        <p></p>
+      </div>
+    </details>
 
+    <details id="AIHistoryDetails">
+      <summary>Kullanım Geçmişi</summary>
+      <div>
+        <input type="text" class="tblfilter" placeholder="filtrele" />
+        <table>
+          <thead>
+            <tr>
+              <th>Giden Prompt</th>
+              <th>Gelen Cevap</th>
+              <th>Zaman</th>
+            </tr>
+          </thead>
+          <tbody id="AIHistory"></tbody>
+        </table>
+      </div>
+    </details>
 
   </main>
-  <footer>© 2025 Dijital Usta | Tüm Haklar Saklıdır.</footer>
+  <footer>
+    <div>
+      <span>
+        <h1>Dijital Usta</h1>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+      </span>
+      <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
+    </div>
+    <div>
+      © 2025 Dijital Usta | Tüm Haklar Saklıdır.
+      <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
+    </div>
+  </footer>
 
-  <script src="site.js"></script>
+  <script src="./s/site.js"></script>
   <script>
     onAuthReady(async () => {
+      await fillInputs("AI/GetSettings");
 
+      let $btnSaveAPI = document.getElementById("btnSaveAPI");
+      $btnSaveAPI.addEventListener(CLICK_EVENT, async function () {
+        let apiKeyGoogle = val("apiKeyGoogle");
+        let apiKeyOpenAI = val("apiKeyOpenAI");
+
+        if (!apiKeyGoogle && !apiKeyOpenAI) {
+          let $msg = this.nextElementSibling;
+          $msg.textContent = "En az bir API key girilmelidir.";
+          return;
+        }
+
+        await apiBtn(
+          this,
+          "AI/UpdateAPIKeys",
+          {
+            apiKeyGoogle: apiKeyGoogle,
+            apiKeyOpenAI: apiKeyOpenAI
+          },
+          "API Key'ler güncellendi.",
+          "API Key güncellenemedi."
+        );
+      });
+
+      let $btnSavePrompt = document.getElementById("btnSavePrompt");
+      $btnSavePrompt.addEventListener(CLICK_EVENT, async function () {
+        let promptText = val("promptText");
+
+        if (!promptText) {
+          let $msg = this.nextElementSibling;
+          $msg.textContent = "Prompt metni boş olamaz.";
+          return;
+        }
+        if (promptText.length > 5000) {
+          let $msg = this.nextElementSibling;
+          $msg.textContent = "Prompt metni 5000 karakterden uzun olamaz.";
+          return;
+        }
+
+        await apiBtn(
+          this,
+          "AI/UpdatePrompt",
+          {
+            promptText: promptText
+          },
+          "Prompt güncellendi.",
+          "Prompt güncellenemedi."
+        );
+      });
+
+      let $d = document.getElementById("AIHistoryDetails");
+      $d.addEventListener("click", async () => {
+        if (!$d.hasAttribute("open") && !$d.dataset.loaded) {
+          $d.dataset.loaded = true;
+          await loadTables("#AIHistory");
+        }
+      });
     });
   </script>
 </body>

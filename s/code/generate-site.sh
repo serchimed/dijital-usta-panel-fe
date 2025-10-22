@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUT_FILE="site.js"
+OUTPUT_FILE="../site.js"
 TEMP_FILE="${OUTPUT_FILE}.tmp"
 
 echo "Generating bundled site.js..."

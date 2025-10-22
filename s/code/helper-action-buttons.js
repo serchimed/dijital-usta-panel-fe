@@ -19,6 +19,15 @@ function setBtnState($btn, isEnabled, disabledMessage = "") {
   if (!$btn) return;
   $btn.disabled = !isEnabled;
   $btn.title = isEnabled ? "" : disabledMessage;
+
+  // Disabled durumuna göre class değiştir
+  if (isEnabled) {
+    $btn.classList.remove("action-btn-secondary");
+    $btn.classList.add("action-btn-primary");
+  } else {
+    $btn.classList.remove("action-btn-primary");
+    $btn.classList.add("action-btn-secondary");
+  }
 }
 
 function showSuccessAndClose($msgDiv, $modal, message) {
@@ -26,8 +35,8 @@ function showSuccessAndClose($msgDiv, $modal, message) {
   setTimeout(() => closeModal($modal), DELAY_2);
 }
 
-function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unblockEndpoint, idKey = "memberId") {
-  let $btn = btn("action-btn-secondary", isBlocked ? "Engeli Kaldır" : "Engelle");
+function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblockEndpoint, idKey = "memberId") {
+  let $btn = btn("action-btn-primary", isBlocked ? "Engeli Kaldır" : "Engelle");
   $btn.dataset.entityId = entityId;
   $btn.dataset.isBlocked = isBlocked;
 
@@ -36,8 +45,8 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
     let isCurrentlyBlocked = btn.dataset.isBlocked === "true";
     let endpoint = isCurrentlyBlocked ? unblockEndpoint : blockEndpoint;
     let confirmMessage = isCurrentlyBlocked
-      ? `${displayName}'in engelini kaldırmak istediğinize emin misiniz?`
-      : `${displayName}'i engellemek istediğinize emin misiniz?`;
+      ? `${entityName}'in engelini kaldırmak istediğinize emin misiniz?`
+      : `${entityName}'i engellemek istediğinize emin misiniz?`;
 
     let $mbody = div();
     let $confirmLabel = p(confirmMessage);
@@ -52,8 +61,8 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
       let req = {};
       req["memberId"] = USER.id;
       req[idKey] = btn.dataset.entityId;
-      let result = await api(endpoint, req);
 
+      let result = await api(endpoint, req);
       if (result && result.isSuccess) {
         isCurrentlyBlocked = !isCurrentlyBlocked;
         btn.dataset.isBlocked = isCurrentlyBlocked;
@@ -67,11 +76,7 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
       }
     };
 
-    let buttons = createModalButtons("İptal", isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle",
-      () => closeModal($modal),
-      handleBlock
-    );
-
+    let buttons = createModalButtons("İptal", isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle", () => closeModal($modal), handleBlock);
     $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
     $modal = createModal("Onay", $mbody);
   });
@@ -82,7 +87,9 @@ function createBlockButton(entityId, isBlocked, displayName, blockEndpoint, unbl
 }
 
 function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement, $interviewBtn, isInterviewResulted, isHired) {
-  let $btn = btn("action-btn-secondary", isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
+  let isDisabled = isHired || isInterviewResulted;
+  let btnClass = isDisabled ? "action-btn-secondary" : "action-btn-primary";
+  let $btn = btn(btnClass, isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
   $btn.dataset.memberId = memberId;
   $btn.dataset.companyId = companyId;
   $btn.dataset.isShortlisted = isShortlisted;
@@ -156,7 +163,9 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
 }
 
 function createInterviewReportButton(candidateId, companyId, displayName, isShortlisted, $hireBtn, isInterviewResulted, isHired) {
-  let $btn = btn("action-btn-secondary", "Mülakat Sonucu Bildir");
+  let isDisabled = isHired || !isShortlisted || isInterviewResulted;
+  let btnClass = isDisabled ? "action-btn-secondary" : "action-btn-primary";
+  let $btn = btn(btnClass, "Mülakat Sonucu Bildir");
 
   if (isHired) {
     $btn.disabled = true;
@@ -267,7 +276,9 @@ function createInterviewReportButton(candidateId, companyId, displayName, isShor
 
 
 function createHireCandidateButton(memberId, companyId, displayName, isInterviewResulted, isInterviewSuccess, isHired) {
-  let $btn = btn("action-btn-secondary", "İşe Al");
+  let isDisabled = isHired || !isInterviewResulted || !isInterviewSuccess;
+  let btnClass = isDisabled ? "action-btn-secondary" : "action-btn-primary";
+  let $btn = btn(btnClass, "İşe Al");
 
   if (isHired) {
     $btn.disabled = true;
