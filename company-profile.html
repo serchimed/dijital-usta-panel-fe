@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Firma Profili | Dijital Usta</title>
   <link rel="stylesheet" href="./s/site.css" />
-<link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
@@ -14,73 +14,83 @@
     <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
     <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <nav><ul></ul></nav>
+  <nav>
+    <ul></ul>
+  </nav>
   <main>
     <h2><span id="companyName"></span></h2>
 
     <details open>
-      <summary>Firma Bilgileri</summary><div>
+      <summary>Firma Bilgileri</summary>
+      <div>
 
-      <label>İl
-        <span id="city"></span>
-      </label>
+        <label>İl
+          <span id="city"></span>
+        </label>
 
-      <label>Sektör
-        <span id="sector"></span>
-      </label>
+        <label>Sektör
+          <span id="sector"></span>
+        </label>
 
-      <label>Web Sitesi
-        <span id="webUrl"></span>
-      </label>
+        <label>Web Sitesi
+          <span id="webUrl"></span>
+        </label>
 
-      <label>Trendyol Satıcı Profili
-        <span id="trendyolUrl"></span>
-      </label>
-    </div></details>
-
-    <details open>
-      <summary>Yetkili Bilgileri</summary><div>
-
-      <label>Yetkili Adı Soyadı
-        <span id="responsibleMemberName"></span>
-      </label>
-
-      <label>Yetkili Eposta Adresi
-        <span id="email"></span>
-      </label>
-
-      <label>Yetkili Telefonu
-        <span id="phone"></span>
-      </label>
-    </div></details>
+        <label>Trendyol Satıcı Profili
+          <span id="trendyolUrl"></span>
+        </label>
+      </div>
+    </details>
 
     <details open>
-      <summary>Kısa Listeye Eklenen Adaylar</summary><div>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
-            <th id="email">E-posta</th>
-            <th id="phone">Telefon</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="CompanyShortlist"></tbody>
-      </table>
-    </div></details>
+      <summary>Yetkili Bilgileri</summary>
+      <div>
+
+        <label>Yetkili Adı Soyadı
+          <span id="responsibleMemberName"></span>
+        </label>
+
+        <label>Yetkili Eposta Adresi
+          <span id="email"></span>
+        </label>
+
+        <label>Yetkili Telefonu
+          <span id="phone"></span>
+        </label>
+      </div>
+    </details>
 
     <details open>
-      <summary>Olumsuz Değerlendirilen Adaylar</summary><div>
-      <table class="load">
-        <thead>
-          <tr>
-            <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
-            <th id="result">Açıklama</th>
-          </tr>
-        </thead>
-        <tbody id="CompanyDeclined"></tbody>
-      </table>
-    </div></details>
+      <summary>Kısa Listeye Eklenen Adaylar</summary>
+      <div>
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
+              <th id="email">E-posta</th>
+              <th id="phone">Telefon</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="CompanyShortlist"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details open>
+      <summary>Olumsuz Değerlendirilen Adaylar</summary>
+      <div>
+        <table class="load">
+          <thead>
+            <tr>
+              <th id="displayName" data-url="company-candidate-profile.html?id={memberId}">Aday</th>
+              <th id="result">Açıklama</th>
+            </tr>
+          </thead>
+          <tbody id="CompanyDeclined"></tbody>
+        </table>
+      </div>
+    </details>
 
     <a href="company-profile-edit.html" class="qs">Güncelle</a>
   </main>
@@ -88,7 +98,7 @@
     <div>
       <span>
         <h1>Dijital Usta</h1>
-        <p>Gençleri e-ticaretle buluşturup<br/>KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
       </span>
       <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
     </div>
@@ -98,38 +108,7 @@
     </div>
   </footer>
   <script src="./s/site.js"></script>
-  <script>
-    let $tbody = document.getElementById("CompanyShortlist");
-    if ($tbody) {
-      $tbody.addEventListener("tableLoaded", (e) => {
-        let data = e.detail.data;
-        if (!data || data.length === 0) { return; }
-
-        let companyName = document.getElementById("companyName")?.textContent;
-
-        let rows = e.target.querySelectorAll('tr');
-        rows.forEach((tr, index) => {
-          let item = data[index];
-          if (item && item.memberId) {
-            let $msg = p();
-            let $hireBtn = createHireInformButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired, item.isHireInformed);
-            let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $hireBtn, item.isInterviewResulted, item.isHired);
-            let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
-            $interviewBtn.$shortlistBtn = $shortlistBtn;
-
-            tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
-          }
-        });
-      });
-    }
-
-    onAuthReady(async () => {
-      await Promise.all([
-        fillSpans("Company/Get", "companyId"),
-        loadTables()
-      ]);
-    });
-  </script>
+  <script src="./s/code/pages/company-company-profile.js"></script>
 </body>
 
 </html>

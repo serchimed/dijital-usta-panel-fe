@@ -6,15 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Firma Davet | Dijital Usta</title>
   <link rel="stylesheet" href="./s/site.css" />
-<link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
-    <header>
+  <header>
     <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
     <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <nav><ul></ul></nav>
+  <nav>
+    <ul></ul>
+  </nav>
   <main>
     <h2>Firma Davet</h2>
 
@@ -54,7 +56,8 @@
       <input type="url" id="driveUrl" />
     </label>
 
-    <p class="lbl-warn">Davet ettiğiniz firmaya, sisteme giriş yapabilmesi için e-posta ile davet linki gönderilecektir.</p>
+    <p class="lbl-warn">Davet ettiğiniz firmaya, sisteme giriş yapabilmesi için e-posta ile davet linki gönderilecektir.
+    </p>
 
     <button>Kaydet</button>
     <p></p>
@@ -63,7 +66,7 @@
     <div>
       <span>
         <h1>Dijital Usta</h1>
-        <p>Gençleri e-ticaretle buluşturup<br/>KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
       </span>
       <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
     </div>
@@ -73,70 +76,7 @@
     </div>
   </footer>
   <script src="./s/site.js"></script>
-  <script>
-    onAuthReady(() => {
-      let $city = document.getElementById("city");
-
-      autocomplete(
-        $city,
-        CITIES,
-        (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()),
-        (city) => city,
-        (city, $input) => {
-          $input.value = city;
-        }
-      );
-
-      let $btn = document.querySelector("main button");
-      let $msg = $btn.nextElementSibling;
-      $btn.addEventListener(CLICK_EVENT, async function () {
-        let req = {
-          companyName: val("companyName"),
-          responsibleMemberName: val("responsibleMemberName"),
-          phone: val("phone"),
-          email: val("email"),
-          city: val("city"),
-          sector: val("sector"),
-          webUrl: val("webUrl"),
-          trendyolUrl: val("trendyolUrl"),
-          driveUrl: val("driveUrl")
-        };
-
-        let errors = [];
-        if (!req.companyName) { errors.push("Firma adını giriniz."); }
-        if (!req.city) { errors.push("İl bilgisini giriniz."); }
-        if (!req.responsibleMemberName) { errors.push("Firma yetkilisi adı soyadı giriniz."); }
-        if (!req.email) { errors.push("Firma yetkilisi eposta adresini giriniz."); }
-        if (req.email && !checkEmail(req.email)) {
-          errors.push("Geçerli bir e-posta adresi giriniz.");
-        }
-
-        if (req.phone && !checkPhone(req.phone)) {
-          errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788).");
-        }
-
-        if (req.webUrl && !checkUrl(req.webUrl)) {
-          errors.push("Geçerli bir web sitesi URL'si giriniz.");
-        }
-
-        if (req.trendyolUrl && !checkUrl(req.trendyolUrl)) {
-          errors.push("Geçerli bir Trendyol profil URL'si giriniz.");
-        }
-
-        if (req.driveUrl && !checkUrl(req.driveUrl)) {
-          errors.push("Geçerli bir Drive klasör URL'si giriniz.");
-        }
-
-        if (errors.length) {
-          $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-          return;
-        }
-
-        $msg.textContent = "";
-        await apiBtn(this, "Company/Add", req, "Firma eklendi.", ERROR_MESSAGE_DEFAULT, "admin-company-list.html");
-      });
-    });
-  </script>
+  <script src="./s/code/pages/admin-company-add.js"></script>
 </body>
 
 </html>

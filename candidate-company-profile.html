@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Firma Profili | Dijital Usta</title>
   <link rel="stylesheet" href="./s/site.css" />
-<link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
@@ -14,7 +14,9 @@
     <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
     <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <nav><ul></ul></nav>
+  <nav>
+    <ul></ul>
+  </nav>
   <main>
     <h2><span id="companyName"></span></h2>
 
@@ -38,7 +40,7 @@
     <div>
       <span>
         <h1>Dijital Usta</h1>
-        <p>Gençleri e-ticaretle buluşturup<br/>KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
       </span>
       <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
     </div>
@@ -48,11 +50,7 @@
     </div>
   </footer>
   <script src="./s/site.js"></script>
-  <script>
-    onAuthReady(async () => {
-      await fillSpans("Company/GetForCandidate", "companyId");
-    });
-  </script>
+  <script src="./s/code/pages/candidate-company-profile.js"></script>
 </body>
 
 </html>

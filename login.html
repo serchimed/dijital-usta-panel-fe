@@ -20,7 +20,8 @@
   <main>
     <h2>Giriş Yap</h2>
     <p>E-postanıza gönderilen tek kullanımlık şifre ile giriş yapabilirsiniz.</p>
-    <p style="margin-bottom: 21px;">Şifreyi henüz istemediyseniz veya ulaşmadıysa, lütfen <a href="demand-password.html" style="margin: 0;">buradan talep edin</a>.</p>
+    <p class="mb21">Şifreyi henüz istemediyseniz veya ulaşmadıysa, lütfen <a href="demand-password.html"
+        class="m0">buradan talep edin</a>.</p>
 
     <label for="email">E-posta
       <input type="email" id="email" />
@@ -47,50 +48,7 @@
     </div>
   </footer>
   <script src="./s/site.js"></script>
-  <script>
-    onReady(() => {
-      showContent();
-
-      let $email = document.getElementById("email");
-      let $pass = document.getElementById("passcode");
-      let $btn = document.querySelector("main button");
-      let $msg = $btn.nextElementSibling;
-
-      let prms = new URLSearchParams(window.location.search);
-      let prmEmail = prms.get("email");
-      if (prmEmail) { $email.value = prmEmail; }
-
-      let handleLogin = async function () {
-        let email = $email.value.trim();
-        let pass = $pass.value.trim();
-
-        if (!checkEmail(email)) {
-          $msg.innerText = "Geçerli bir e-posta adresi girin.";
-          return;
-        }
-
-        if (pass.length !== 8) {
-          $msg.innerText = "Geçerli bir şifre girin.";
-          return;
-        }
-
-        $msg.textContent = "";
-        await apiBtn($btn, "Member/Login", { email: email, passcode: pass }, "Giriş başarılı.", "Bir hata oluştu.", "index.html");
-      };
-
-      $btn.addEventListener(CLICK_EVENT, handleLogin);
-
-      let handleKeyPress = (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          handleLogin();
-        }
-      };
-
-      $email.addEventListener("keypress", handleKeyPress);
-      $pass.addEventListener("keypress", handleKeyPress);
-    });
-  </script>
+  <script src="./s/code/pages/login.js"></script>
 </body>
 
 </html>

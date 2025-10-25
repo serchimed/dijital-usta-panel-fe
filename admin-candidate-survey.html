@@ -19,9 +19,9 @@
   </nav>
   <main>
     <h2>Aday Anket Bilgileri</h2>
-    <p><a href="admin-candidate-profile.html" class="qs" style="margin-top: -27px;"><span id="displayName"></span></a>
+    <p><a href="admin-candidate-profile.html" class="qs mt27e"><span id="displayName"></span></a>
     </p>
-    <p class="lbl-warn" style="margin-bottom: 21px;"><span id="surveyWarning"></span></p>
+    <p class="lbl-warn mb21"><span id="surveyWarning"></span></p>
 
     <details open>
       <summary>E-Ticaret Deneyimi ve İlgi</summary>
@@ -178,17 +178,7 @@
     </div>
   </footer>
   <script src="./s/site.js"></script>
-  <script>
-    onAuthReady(async () => {
-      let candidateId = await fillSpans("Candidate/Survey");
-
-      let $link = document.querySelector('a[href="admin-candidate-profile.html"]');
-      if ($link && candidateId) { $link.href = `admin-candidate-profile.html?id=${candidateId}`; }
-
-      let $surveyWarn = document.getElementById('surveyWarning');
-      if ($surveyWarn && $surveyWarn.innerText.trim() === '-') { $surveyWarn.parentElement.remove(); }
-    });
-  </script>
+  <script src="./s/code/pages/admin-candidate-survey.js"></script>
 </body>
 
 </html>

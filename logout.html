@@ -36,20 +36,7 @@
     </div>
   </footer>
   <script src="./s/site.js"></script>
-  <script>
-    onAuthReady(async () => {
-      showHeaderMsg("Çıkış yapılıyor...");
-
-      let result = await api("Member/Logout", {});
-      if (result && result === true) {
-        showContent();
-        if (document.querySelector(".header-message")) { document.querySelector(".header-message").remove(); }
-
-      } else {
-        console.error("Logout failed", result);
-      }
-    });
-  </script>
+  <script src="./s/code/pages/logout.js"></script>
 </body>
 
 </html>

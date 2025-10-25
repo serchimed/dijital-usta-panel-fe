@@ -707,10 +707,57 @@ details>div>p.description {
   height: 333px;
 }
 
-.lbl-warn {
+#promptText {
+  max-width: 100%;
+  grid-column: span 3;
+}
+
+.lbl-warn,
+.lbl-err {
   color: #FE5200;
   font-weight: 500;
   font-size: 15px;
+}
+
+.lbl-warn {
+  color: #e20707;
+}
+
+.mb8 {
+  margin-bottom: 8px;
+}
+
+.mb15 {
+  margin-bottom: 15px;
+}
+
+.mb21 {
+  margin-bottom: 21px;
+}
+
+.mt27e {
+  margin-top: -27px;
+}
+
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.s3 {
+  grid-column: span 3;
+}
+
+.none {
+  display: none;
+}
+
+.m0 {
+  margin: 0;
+}
+
+.lh1-5 {
+  line-height: 1.5;
 }
 
 @keyframes slideDown {
@@ -844,6 +891,11 @@ table {
 
 thead {
   background-color: #304d80;
+}
+
+.graytr {
+  text-align: center;
+  color: gray;
 }
 
 th {

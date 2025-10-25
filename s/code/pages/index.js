@@ -1,0 +1,1 @@
+onAuthReady(async () => { await loadTables(); });

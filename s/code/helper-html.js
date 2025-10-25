@@ -29,7 +29,7 @@ function getTomorrow() {
 }
 
 function getMsgLine(msg) {
-  return `<tr><td colspan="99" style="text-align:center; color:gray;">${msg}</td></tr>`;
+  return `<tr><td colspan="99" class="graytr">${msg}</td></tr>`;
 }
 
 function div(className) {
