@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adayların Puanlarını Güncelle | Dijital Usta</title>
   <link rel="stylesheet" href="./s/site.css" />
-<link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
 <body>
@@ -14,7 +14,9 @@
     <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
     <button aria-label="Menü"><i></i><i></i><i></i></button>
   </header>
-  <nav><ul></ul></nav>
+  <nav>
+    <ul></ul>
+  </nav>
   <main>
     <h2>TOBB ETÜ Eğitimini Geçen Adayları Davet Et</h2>
 
@@ -24,6 +26,9 @@
       <textarea id="lines"></textarea>
     </label>
 
+    <p class="lbl-warn">Listedeki adaylara davet e-postası gönderilecektir. Doğru listeyi eklediğinize emin olunuz.
+    </p>
+
     <button>Kaydet</button>
     <p></p>
 
@@ -32,7 +37,7 @@
     <div>
       <span>
         <h1>Dijital Usta</h1>
-        <p>Gençleri e-ticaretle buluşturup<br/>KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
       </span>
       <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
     </div>
@@ -42,68 +47,7 @@
     </div>
   </footer>
   <script src="./s/site.js"></script>
-  <script>
-    onAuthReady(() => {
-      let $btn = document.querySelector("main button");
-      let $msg = $btn.nextElementSibling;
-      $btn.addEventListener(CLICK_EVENT, async function () {
-        let req = {
-          lines: val("lines")
-        };
-
-        req.lines = (req.lines || "").trim();
-
-        if (!req.lines) {
-          $msg.innerHTML = "• E-posta adreslerini ve puanlarını giriniz.";
-          return;
-        }
-
-        let rows = req.lines.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-        let errs = [];
-        let normalized = [];
-
-        rows.forEach((line, idx) => {
-          let i = idx + 1;
-          let parts = line.split(",").map(s => s.trim());
-
-          if (parts.length !== 2) {
-            errs.push(`Satır ${i}: "eposta,puan" biçiminde olmalıdır.`);
-            return;
-          }
-
-          let email = parts[0];
-          let scoreStr = parts[1];
-          let score = Number(scoreStr);
-
-          if (!checkEmail(email)) {
-            errs.push(`Satır ${i}: Geçersiz e-posta (${email}).`);
-          }
-          if (!Number.isFinite(score) || score < 0 || score > 100) {
-            errs.push(`Satır ${i}: Puan 0-100 arasında olmalıdır (${scoreStr}).`);
-          }
-
-          normalized.push(`${email},${scoreStr}`);
-        });
-
-        if (errs.length) {
-          $msg.innerHTML = errs.map(e => `• ${e}`).join("<br>");
-          return;
-        }
-
-        req.lines = normalized.join("\n");
-        $msg.textContent = "";
-
-        await apiBtn(
-          this,
-          "Candidate/Invite",
-          req,
-          "Puanlar eklendi.",
-          ERROR_MESSAGE_DEFAULT,
-          "admin-candidate-list.html"
-        );
-      });
-    });
-  </script>
+  <script src="./s/code/admin-candidate-invite.js"></script>
 </body>
 
 </html>

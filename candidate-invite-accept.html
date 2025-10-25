@@ -24,7 +24,7 @@
 
     <div id="companiesContainer">
       <label>Profil bilgilerinizin paylaşılacağı firmalar</label>
-      <p class="label-warn">Profilinizi görmesini istemediğiniz firmalar için seçimi kaldırınız.</p>
+      <p class="lbl-warn">Profilinizi görmesini istemediğiniz firmalar için seçimi kaldırınız.</p>
       <div id="companiesList"></div>
     </div>
 
@@ -49,9 +49,9 @@
     onReady(async () => {
       let prms = new URLSearchParams(window.location.search);
       let token = prms.get("ref");
+      if (!token) { window.location.href = "error-server.html"; }
       let email = prms.get("email");
-      if (email) { set("email", email); }
-      // if (!token) { window.location.href = "index.html"; }
+      if (email) { set("email", email); } else { window.location.href = "error-server.html"; }
 
       let $companiesList = document.getElementById("companiesList");
       $companiesList.innerHTML = "<p>Firmalar yükleniyor...</p>";
@@ -98,7 +98,7 @@
         if (selectedCompanyIds.length === 0) { errors.push("En az bir firma seçmelisiniz."); }
 
         if (errors.length) {
-          $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          $msg.textContent = errors.map(e => `• ${e}`).join("\n");
           return;
         }
 

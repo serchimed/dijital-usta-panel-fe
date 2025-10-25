@@ -34,8 +34,8 @@
       <input type="email" id="email" />
     </label>
 
-    <label for="city" class="sel">Şehir
-      <input type="text" id="city" placeholder="Şehir ara..." autocomplete="off" />
+    <label for="city" class="sel">İl
+      <input type="text" id="city" placeholder="İl ara..." autocomplete="off" />
     </label>
 
     <label for="sector">Sektör
@@ -54,7 +54,7 @@
       <input type="url" id="driveUrl" />
     </label>
 
-    <p class="label-warn">Davet ettiğiniz firmaya, sisteme giriş yapabilmesi için e-posta ile davet linki gönderilecektir.</p>
+    <p class="lbl-warn">Davet ettiğiniz firmaya, sisteme giriş yapabilmesi için e-posta ile davet linki gönderilecektir.</p>
 
     <button>Kaydet</button>
     <p></p>
@@ -104,9 +104,9 @@
 
         let errors = [];
         if (!req.companyName) { errors.push("Firma adını giriniz."); }
+        if (!req.city) { errors.push("İl bilgisini giriniz."); }
         if (!req.responsibleMemberName) { errors.push("Firma yetkilisi adı soyadı giriniz."); }
         if (!req.email) { errors.push("Firma yetkilisi eposta adresini giriniz."); }
-
         if (req.email && !checkEmail(req.email)) {
           errors.push("Geçerli bir e-posta adresi giriniz.");
         }
@@ -128,7 +128,7 @@
         }
 
         if (errors.length) {
-          $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          $msg.textContent = errors.map(e => `• ${e}`).join("\n");
           return;
         }
 

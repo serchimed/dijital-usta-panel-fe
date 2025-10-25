@@ -112,9 +112,10 @@
           let item = data[index];
           if (item && item.memberId) {
             let $msg = p();
-            let $hireBtn = createHireCandidateButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired);
+            let $hireBtn = createHireInformButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired, item.isHireInformed);
             let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $hireBtn, item.isInterviewResulted, item.isHired);
             let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isShortlisted || true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
+            $interviewBtn.$shortlistBtn = $shortlistBtn;
 
             tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
           }

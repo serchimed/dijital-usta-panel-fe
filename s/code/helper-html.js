@@ -79,6 +79,12 @@ function inp(placeholder) {
   return $i;
 }
 
+function txt(placeholder) {
+  let $t = document.createElement("textarea");
+  if (placeholder) { $t.placeholder = placeholder; }
+  return $t;
+}
+
 function chk(value, checked) {
   let $i = document.createElement("input");
   $i.type = "checkbox";
@@ -131,6 +137,34 @@ function th(text) {
   let $th = document.createElement("th");
   if (text) { $th.textContent = text; }
   return $th;
+}
+
+function table() {
+  return document.createElement("table");
+}
+
+function thead() {
+  return document.createElement("thead");
+}
+
+function tbody() {
+  return document.createElement("tbody");
+}
+
+function details() {
+  return document.createElement("details");
+}
+
+function summary(text) {
+  let $s = document.createElement("summary");
+  if (text) { $s.textContent = text; }
+  return $s;
+}
+
+function strong(text) {
+  let $s = document.createElement("strong");
+  if (text) { $s.textContent = text; }
+  return $s;
 }
 
 function tda(text, href) {
@@ -216,12 +250,16 @@ function showHeaderMsg(msg) {
 function showContent() {
   let $m = document.querySelector("main");
   if ($m) {
-    let $o = document.querySelector(".overlay");
-    if ($o) {
-      $o.classList.add("fade-out");
-      setTimeout(() => $o.remove(), DELAY_0 * 2);
-    }
+    hideOverlay();
     setTimeout(() => $m.classList.add("show"), DELAY_0);
+  }
+}
+
+function hideOverlay() {
+  let $o = document.querySelector(".overlay");
+  if ($o) {
+    $o.classList.add("fade-out");
+    setTimeout(() => $o.remove(), DELAY_0 * 2);
   }
 }
 

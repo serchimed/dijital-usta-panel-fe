@@ -111,7 +111,8 @@ async function fillSpans(url, key = "memberId") {
     return null;
   }
 
-  if (result.isSuccess) {
+  // Fill spans from data even if isSuccess is false
+  if (result.data) {
     for (let prop in result.data) {
       let $s = document.getElementById(prop);
       if ($s) {
@@ -135,9 +136,10 @@ async function fillSpans(url, key = "memberId") {
         }
       }
     }
-  } else {
+  }
+
+  if (!result.isSuccess) {
     console.error("API error:", result);
-    return null;
   }
 
   return id;

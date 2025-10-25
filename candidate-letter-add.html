@@ -59,7 +59,7 @@
         if (!req.letter) { errors.push("Motivasyon mektubunu giriniz."); }
 
         if (errors.length) {
-          $msg.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          $msg.textContent = errors.map(e => `• ${e}`).join("\n");
           return;
         }
 

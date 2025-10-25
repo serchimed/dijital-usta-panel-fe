@@ -22,7 +22,7 @@
       Fotoğraf yükleniyor...
     </div>
 
-    <div class="label-warn">
+    <div class="lbl-warn">
       <strong>Fotoğraf Gereksinimleri:</strong>
       <ul>
         <li>Dosya türü: JPG veya PNG</li>
@@ -65,19 +65,23 @@
         let result = await api("Candidate/Image", { memberId: USER.id });
         if (result && result.isSuccess && result.data) {
           base64String = initialImage = result.data;
-          imagePreview.innerHTML = `<img src="${base64String}" alt="Profil Fotoğrafı">`;
+          let $img = document.createElement("img");
+          $img.src = base64String;
+          $img.alt = "Profil Fotoğrafı";
+          imagePreview.innerHTML = "";
+          imagePreview.append($img);
         } else {
-          imagePreview.innerHTML = "Fotoğraf yüklenmedi";
+          imagePreview.textContent = "Fotoğraf yüklenmedi";
         }
       } catch (error) {
-        imagePreview.innerHTML = "Fotoğraf yüklenemedi";
+        imagePreview.textContent = "Fotoğraf yüklenemedi";
       }
 
       fileInput.addEventListener("change", (e) => { handleFile(e.target.files[0]); });
       submitBtn.addEventListener("click", async function () {
         if (!base64String || base64String === initialImage) {
           let p = this.nextElementSibling;
-          p.innerHTML = "• Bir fotoğraf seçin";
+          p.textContent = "• Bir fotoğraf seçin";
           return;
         }
 
@@ -97,14 +101,14 @@
         let validTypes = ["image/jpeg", "image/png"];
         if (!validTypes.includes(file.type)) {
           let p = submitBtn.nextElementSibling;
-          p.innerHTML = "• Geçersiz dosya türü. Sadece JPG veya PNG yükleyebilirsiniz.";
+          p.textContent = "• Geçersiz dosya türü. Sadece JPG veya PNG yükleyebilirsiniz.";
           return;
         }
 
         let maxSize = 500 * 1024; // 500KB
         if (file.size > maxSize) {
           let p = submitBtn.nextElementSibling;
-          p.innerHTML = "• Dosya boyutu çok büyük. Maksimum 500KB yükleyebilirsiniz.";
+          p.textContent = "• Dosya boyutu çok büyük. Maksimum 500KB yükleyebilirsiniz.";
           return;
         }
 
@@ -112,13 +116,13 @@
         img.onload = function () {
           if (this.width < 150 || this.height < 150) {
             let p = submitBtn.nextElementSibling;
-            p.innerHTML = "• Fotoğraf boyutu çok küçük. Minimum 150x150 piksel olmalıdır.";
+            p.textContent = "• Fotoğraf boyutu çok küçük. Minimum 150x150 piksel olmalıdır.";
             return;
           }
 
           if (this.width > 1500 || this.height > 1500) {
             let p = submitBtn.nextElementSibling;
-            p.innerHTML = "• Fotoğraf boyutu çok büyük. Maksimum 1500x1500 piksel olmalıdır.";
+            p.textContent = "• Fotoğraf boyutu çok büyük. Maksimum 1500x1500 piksel olmalıdır.";
             return;
           }
 
@@ -127,7 +131,7 @@
 
         img.onerror = function () {
           let p = submitBtn.nextElementSibling;
-          p.innerHTML = "• Fotoğraf dosyası okunamadı.";
+          p.textContent = "• Fotoğraf dosyası okunamadı.";
         };
 
         img.src = URL.createObjectURL(file);
@@ -139,16 +143,20 @@
         reader.onload = function (e) {
           base64String = e.target.result;
 
-          imagePreview.innerHTML = `<img src="${base64String}" alt="Önizleme">`;
+          let $img = document.createElement("img");
+          $img.src = base64String;
+          $img.alt = "Önizleme";
+          imagePreview.innerHTML = "";
+          imagePreview.append($img);
 
           submitBtn.disabled = false;
           let p = submitBtn.nextElementSibling;
-          p.innerHTML = "";
+          p.textContent = "";
         };
 
         reader.onerror = function () {
           let p = submitBtn.nextElementSibling;
-          p.innerHTML = "• Dosya okunurken bir hata oluştu";
+          p.textContent = "• Dosya okunurken bir hata oluştu";
         };
 
         reader.readAsDataURL(file);

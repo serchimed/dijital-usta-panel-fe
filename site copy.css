@@ -117,14 +117,14 @@ label span {
   max-width: 250px;
 }
 
-.label-warn {
+.lbl-warn {
   font-size: 0.9em;
   color: #666;
   margin-top: 0.5em;
   font-weight: normal;
 }
 
-.label-warn ul {
+.lbl-warn ul {
   margin-top: 0.5em;
   padding-left: 1.5em;
   list-style-type: disc;
@@ -442,11 +442,11 @@ summary {
   cursor: pointer;
 }
 
-.action-btn-secondary {
+.btn-gray {
   margin-left: 8px;
 }
 
-.action-btn-secondary:disabled {
+.btn-gray:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

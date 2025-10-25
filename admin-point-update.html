@@ -95,7 +95,7 @@
         });
 
         if (errs.length) {
-          $msg.innerHTML = errs.map(e => `• ${e}`).join("<br>");
+          $msg.textContent = errs.map(e => `• ${e}`).join("\n");
           return;
         }
 

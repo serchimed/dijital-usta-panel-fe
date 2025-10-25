@@ -137,7 +137,7 @@
 
         if (errors.length) {
           let p = this.nextElementSibling;
-          p.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          p.textContent = errors.map(e => `• ${e}`).join("\n");
           return;
         }
 

@@ -246,7 +246,7 @@ h4 {
 
 p {
   margin-bottom: 5px;
-  line-height: 1.3;
+  line-height: 1.5;
 }
 
 ul,
@@ -268,6 +268,7 @@ label {
   display: block;
   margin: 13px 0 5px;
   padding-top: 8px;
+  font-size: 15px;
 }
 
 label span {
@@ -334,7 +335,11 @@ button:active {
   background-color: #022447;
 }
 
-.action-btn-primary {
+#actionButtons button {
+  margin-right: 8px;
+}
+
+.btn-act {
   background-color: #033366;
   border: 1px solid #033366;
   font-size: 14px;
@@ -347,16 +352,16 @@ button:active {
   justify-content: center;
 }
 
-.action-btn-primary:hover {
+.btn-act:hover {
   background-color: #1960ac;
   border: 1px solid #1960ac;
 }
 
-.action-btn-primary:active {
+.btn-act:active {
   background-color: #022447;
 }
 
-.action-btn-secondary {
+.btn-gray {
   background-color: #6c757d;
   border: 1px solid #6c757d;
   font-size: 14px;
@@ -369,23 +374,23 @@ button:active {
   justify-content: center;
 }
 
-.action-btn-secondary:hover {
+.btn-gray:hover {
   background-color: #5a6268;
   border: 1px solid #5a6268;
 }
 
-.action-btn-secondary:active {
+.btn-gray:active {
   background-color: #545b62;
 }
 
-.action-btn-secondary:disabled,
-.action-btn-primary:disabled {
+.btn-gray:disabled,
+.btn-act:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-td .action-btn-primary,
-td .action-btn-secondary {
+td .btn-act,
+td .btn-gray {
   display: block;
   width: 100%;
 }
@@ -435,7 +440,8 @@ td .action-btn-secondary {
   max-width: 600px;
   width: 90%;
   max-height: 90vh;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   animation: slideUp 0.3s ease;
 }
 
@@ -458,6 +464,10 @@ td .action-btn-secondary {
   padding: 21px;
   border-bottom: 1px solid #e2e8f0;
   background-color: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-radius: 8px 8px 0 0;
 }
 
 .modal-header h3 {
@@ -492,6 +502,10 @@ td .action-btn-secondary {
 
 .modal-body {
   padding: 21px;
+  padding-top: 3px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .modal-body label {
@@ -507,6 +521,10 @@ td .action-btn-secondary {
   max-width: 100%;
 }
 
+.modal-body div {
+  margin-top: 13px;
+}
+
 .modal-subdued {
   color: #666;
   font-weight: 400;
@@ -517,7 +535,7 @@ td .action-btn-secondary {
   display: flex;
   gap: 13px;
   justify-content: flex-end;
-  margin-top: 21px;
+  margin-top: 13px;
 }
 
 .modal-btn-cancel {
@@ -616,8 +634,71 @@ details>*:not(summary) {
   animation: slideDown 0.3s ease;
 }
 
-details div {
-  padding-top: 0;
+details>div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+  padding-top: 5px;
+}
+
+details>div>label {
+  grid-column: span 1;
+}
+
+details>div>label:has(textarea) {
+  grid-column: span 2;
+}
+
+details>div>label:has(table),
+details>div>label:has(img),
+details>div>label:has(p) {
+  grid-column: span 3;
+  margin-bottom: -15px;
+}
+
+details>div>button {
+  grid-column: span 3;
+  height: fit-content;
+  width: fit-content;
+  margin-top: -15px;
+}
+
+details>div>textarea {
+  grid-column: span 2;
+}
+
+details>div>table,
+details>div>p {
+  grid-column: span 3;
+  width: 100%;
+  margin-top: 0;
+}
+
+details>div>h4 {
+  grid-column: span 3;
+  width: 100%;
+  margin-top: 15px;
+}
+
+details>div>div {
+  grid-column: span 3;
+  width: 100%;
+}
+
+details>div>input[type="file"] {
+  grid-column: span 3;
+  width: 100%;
+}
+
+details details {
+  grid-column: span 3;
+  width: 100%;
+  margin-bottom: 13px;
+}
+
+details>div>p.description {
+  color: gray;
+  font-size: 14px;
 }
 
 #letter,
@@ -626,7 +707,7 @@ details div {
   height: 333px;
 }
 
-.label-warn {
+.lbl-warn {
   color: #FE5200;
   font-weight: 500;
   font-size: 15px;
@@ -644,7 +725,6 @@ details div {
   }
 }
 
-/* Autocomplete / Select Dropdown */
 label.sel {
   position: relative;
 }
@@ -683,14 +763,15 @@ label.sel div div {
   position: static;
   max-height: none;
   overflow: visible;
-  border-left: none;
-  border-right: none;
-  border-top: none;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
   border-radius: 0;
-  box-shadow: none;
+  box-shadow: 0;
   width: auto;
   z-index: auto;
   transition: background-color 0.2s ease;
+  font-weight: normal;
 }
 
 label.sel div div:first-child {
@@ -739,7 +820,14 @@ main.dimmed {
   opacity: 0.3;
 }
 
+main a {
+  margin-top: 21px;
+  display: block;
+}
 
+p a {
+  display: inline-block;
+}
 
 
 
@@ -790,7 +878,22 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
+table td a {
+  margin-top: 5px;
+}
+
 @media (max-width: 768px) {
+  details>div {
+    grid-template-columns: 1fr;
+  }
+
+  details>div>label,
+  details>div>label:has(textarea),
+  details>div>label:has(table),
+  details>div>table {
+    grid-column: span 1;
+  }
+
   footer div {
     padding: 21px;
     font-size: 16px;

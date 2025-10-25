@@ -22,7 +22,7 @@
       <input type="text" id="companyName" />
     </label>
 
-    <label class="sel" for="city">İl
+    <label for="city" class="sel">İl
       <input type="text" id="city" placeholder="İl ara..." autocomplete="off" />
     </label>
 
@@ -140,7 +140,7 @@
 
         if (errors.length) {
           let p = this.nextElementSibling;
-          p.innerHTML = errors.map(e => `• ${e}`).join("<br>");
+          p.textContent = errors.map(e => `• ${e}`).join("\n");
           return;
         }
 

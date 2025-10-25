@@ -41,12 +41,14 @@ let PAGE_ROLES = {
   "admin-company-list": ["admin", "editor"],
   "admin-company-profile": ["admin", "editor"],
   "admin-candidate-list": ["admin", "editor"],
+  "admin-candidate-list-included": ["admin"],
   "admin-candidate-profile": ["admin", "editor"],
 
   "admin-and-editor-list": ["admin"],
   "admin-company-add": ["admin", "editor"],
   "admin-editor-invite": ["admin"],
   "admin-candidate-invite": ["admin"],
+  "admin-candidate-survey": ["admin"],
   "admin-point-update": ["admin"],
   "admin-ai": ["admin"],
   "admin-data": ["admin"],
@@ -134,7 +136,10 @@ function buildAuthenticatedMenu() {
   page = page.replace(".html", "");
 
   $nav.innerHTML = "";
-  $nav.append(lia("Ana Sayfa", "index.html"));
+
+  if (USER.role === "editor" || USER.role === "admin") {
+    $nav.append(lia("Ana Sayfa", "index.html"));
+  }
 
   let role = USER.role.toLowerCase();
   let items = MENU[role] || [];
@@ -148,6 +153,23 @@ function buildAuthenticatedMenu() {
   let userId = USER.role === "company" ? USER.companyId : USER.id;
   $nav.append(lia(USER.name, `${userRole}-profile.html?id=${userId}`));
   $nav.append(lia("Çıkış", "logout.html"));
+
+  updateLogoLink();
+}
+
+function updateLogoLink() {
+  let $logoLink = document.querySelector("header a");
+  if (!$logoLink || !USER) return;
+
+  let role = USER.role.toLowerCase();
+
+  if (role === "candidate") {
+    $logoLink.href = `candidate-profile.html?id=${USER.id}`;
+  } else if (role === "company") {
+    $logoLink.href = "company-candidate-list.html";
+  } else if (role === "admin" || role === "editor") {
+    $logoLink.href = "index.html";
+  }
 }
 
 onReady(() => {

@@ -28,7 +28,7 @@ function createModal(title, bodyContent) {
 
   let $mbody = div(CSS_CLASSES.modalBody);
   if (typeof bodyContent === "string") {
-    $mbody.innerHTML = bodyContent;
+    $mbody.append(p(bodyContent));
   } else {
     $mbody.append(bodyContent);
   }
@@ -83,4 +83,35 @@ function createModalButtons(cancelText, submitText, onCancel, onSubmit) {
   $d.append($cancelBtn, $submitBtn);
 
   return { buttonsDiv: $d, cancelBtn: $cancelBtn, submitBtn: $submitBtn };
+}
+
+function createConfirmationModal(options) {
+  let { confirmMessage, apiEndpoint, apiParams = {}, confirmButtonText = "Onayla", sourceButton } = options;
+
+  let $mbody = div();
+  let $confirmLabel = p(confirmMessage);
+  let $msgDiv = div(CSS_CLASSES.modalMessage);
+  let $modal;
+
+  let handleConfirm = async function () {
+    setButtonLoading(buttons.submitBtn, true);
+    if (sourceButton) sourceButton.disabled = true;
+
+    let result = await api(apiEndpoint, apiParams);
+
+    if (result && result.isSuccess && result.data) {
+      showModalMessage($msgDiv, "success", result.data);
+      setButtonLoading(buttons.submitBtn, false);
+      setTimeout(() => { closeModal($modal); }, DELAY_2);
+    } else {
+      showModalMessage($msgDiv, "error", result?.data || ERROR_MESSAGE_DEFAULT);
+      setButtonLoading(buttons.submitBtn, false);
+    }
+
+    if (sourceButton) sourceButton.disabled = false;
+  };
+
+  let buttons = createModalButtons("İptal", confirmButtonText, () => closeModal($modal), handleConfirm);
+  $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+  $modal = createModal("Onay", $mbody);
 }

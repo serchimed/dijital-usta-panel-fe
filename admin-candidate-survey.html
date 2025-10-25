@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aday Anket Bilgileri | Dijital Usta</title>
+  <link rel="stylesheet" href="./s/site.css" />
+  <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
+</head>
+
+<body>
+  <header>
+    <a href="./"><img src="./s/logo.png" alt="Dijital Usta" /></a>
+    <button aria-label="Menü"><i></i><i></i><i></i></button>
+  </header>
+  <nav>
+    <ul></ul>
+  </nav>
+  <main>
+    <h2>Aday Anket Bilgileri</h2>
+    <p><a href="admin-candidate-profile.html" class="qs" style="margin-top: -27px;"><span id="displayName"></span></a>
+    </p>
+    <p class="lbl-warn" style="margin-bottom: 21px;"><span id="surveyWarning"></span></p>
+
+    <details open>
+      <summary>E-Ticaret Deneyimi ve İlgi</summary>
+      <div>
+
+        <label>Daha önce e-ticaret veya dijital pazarlama alanında eğitim aldınız mı?
+          <span id="dahaOnceETicaretVeyaDijitalPazarlamaAlanindaEgitimAldinizMi"></span>
+        </label>
+
+        <label>İnternette ürün satışı gerçekleştirme deneyiminiz oldu mu?
+          <span id="internetteUrunSatisiGerceklestirmeDeneyiminizOlduMu"></span>
+        </label>
+
+        <label>E-ticaret alanında çalışmayı kariyer hedefi olarak görüyor musunuz?
+          <span id="eTicaretAlanindaCalismayiKariyerHedefiOlarakGoruyorMusunuz"></span>
+        </label>
+
+        <label>Daha önce bir KOBİ'de, mağazada ya da küçük çaplı işletmede çalıştınız mı?
+          <span id="dahaOnceBirKOBIDeMagazadaYadaKucukCapliIsletmedeCalistinizMi"></span>
+        </label>
+
+      </div>
+    </details>
+
+    <details open>
+      <summary>Bilgi Düzeyleri (1-5 arası)</summary>
+      <div>
+
+        <label>E-ticaret Temel Kavramları bilgi düzeyinizi 1-5 arası puanlayınız.
+          <span id="eTicaretTemelKavramlariBilgiDuzeyi"></span>
+        </label>
+
+        <label>Pazarlama bilgi düzeyinizi 1-5 arası puanlayınız.
+          <span id="pazarlamaBilgiDuzeyi"></span>
+        </label>
+
+        <label>Yapay Zeka bilgi düzeyinizi 1-5 arası puanlayınız.
+          <span id="yapayZekaBilgiDuzeyi"></span>
+        </label>
+
+        <label>E-Ticaret Ödeme Sistemleri ve Güvenlik bilgi düzeyinizi 1-5 arası puanlayınız.
+          <span id="eTicaretOdemeSistemleriVeGuvenlikBilgiDuzeyi"></span>
+        </label>
+
+        <label>Tedarik ve Tedarik Zinciri Yönetimi bilgi düzeyinizi 1-5 arası puanlayınız.
+          <span id="tedarikVeTedarikZinciriYonetimiBilgiDuzeyi"></span>
+        </label>
+
+        <label>Sosyal medya kullanımı ve dijital araçlar bilgi düzeyinizi 1-5 arası puanlayınız.
+          <span id="sosyalMedyaKullanimiVeDijitalAraclarBilgiDuzeyi"></span>
+        </label>
+
+      </div>
+    </details>
+
+    <details open>
+      <summary>Motivasyon ve Hedefler</summary>
+      <div>
+
+        <label>Aşağıdakilerden hangileri bu eğitime katılma motivasyonlarınız arasında yer alıyor?
+          <span id="buEgitimeKatilmaMotivasyonlariniz"></span>
+        </label>
+
+        <label>Eğitim sonunda kendi e-ticaret fikrinizi hayata geçirmeyi düşünüyor musunuz?
+          <span id="egitimSonundaKendiETicaretFikriniziHayataGecirmeyiDusunuyorMusunuz"></span>
+        </label>
+
+        <label>Bu proje sonunda hangi alanda uzmanlaşmak istersiniz?
+          <span id="buProjeSonundaHangiAladaUzmanlasmakIstersiniz"></span>
+        </label>
+
+      </div>
+    </details>
+
+    <details open>
+      <summary>Çalışma ve İstihdam Durumu</summary>
+      <div>
+
+        <label>Şu anda bir işte çalışıyor musunuz?
+          <span id="suAndaBirIsteCalisiyorMusunuz"></span>
+        </label>
+
+        <label>Aylık ortalama geliriniz nedir?
+          <span id="aylikOrtalamaGeliriniz"></span>
+        </label>
+
+        <label>Haftada kaç gün çalışmaya uygunsunuz?
+          <span id="haftadaKacGunCalismayaUygunsunuz"></span>
+        </label>
+
+        <label>Günün hangi saat aralıklarında çalışmaya uygunsunuz?
+          <span id="gununHangiSaatAraliklarindaCalismayaUygunsunuz"></span>
+        </label>
+
+        <label>Kendi yaşadığınız şehirde KOBİ'lerde 3 ay süreyle yarı zamanlı/tam zamanlı çalışmaya uygun musunuz?
+          <span id="kendiYasadiginizSehirdeKOBILerde3AySureyleYariZamanliTamZamanliCalismayaUygunMusunuz"></span>
+        </label>
+
+        <label>Seyahat engeliniz var mı?
+          <span id="seyahatEngelinizVarMi"></span>
+        </label>
+
+        <label>Aşağıdaki durumlardan biri size uyuyor mu?
+          <span id="asagidakiDurumlardanBiriSizeUyuyorMu"></span>
+        </label>
+
+        <label>Çalışmak istediğiniz sektörü seçiniz: (Bu istihdam için bir taahhüt taşımamaktadır, demografik bilgiler
+          için gereklidir.)
+          <span id="calismakIstediginizSektoruSeciniz"></span>
+        </label>
+
+        <label>Yukarıdakiler dışında çalışmak istediğiniz sektör varsa yazınız: (Bu istihdam için bir taahhüt
+          taşımamaktadır, demografik bilgiler için gereklidir.)
+          <span id="yukaridakilerDisindaCalismakIstediginizSektorVarsaYaziniz"></span>
+        </label>
+
+      </div>
+    </details>
+
+    <details open>
+      <summary>Teknik Altyapı ve Yeterlilikler</summary>
+      <div>
+
+        <label>Evinizde internet bağlantısı var mı?
+          <span id="evinizdeInternetBaglantisiVarMi"></span>
+        </label>
+
+        <label>Kişisel bir bilgisayar veya tabletiniz var mı?
+          <span id="kisiselBirBilgisayarVeyaTabletinizVarMi"></span>
+        </label>
+
+        <label>Daha önce Zoom, Google Meet, Slack, Trello gibi uzaktan çalışma araçlarını kullandınız mı?
+          <span id="dahaOnceZoomGoogleMeetSlackTrelloGibiUzaktanCalismaAraclariniKullandinizMi"></span>
+        </label>
+
+        <label>Daha önce bir e-posta yoluyla resmi iletişim gerçekleştirdiniz mi?
+          <span id="dahaOnceBirEpostaYoluylaResmiIletisimGerceklestirdinizMi"></span>
+        </label>
+
+      </div>
+    </details>
+  </main>
+  <footer>
+    <div>
+      <span>
+        <h1>Dijital Usta</h1>
+        <p>Gençleri e-ticaretle buluşturup<br />KOBİ'lere yetkin iş gücü kazandırmayı amaçlar.</p>
+      </span>
+      <img src="./s/logo-3.png" alt="Dijital Usta'nın Destekçileri" />
+    </div>
+    <div>
+      © 2025 Dijital Usta | Tüm Haklar Saklıdır.
+      <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
+    </div>
+  </footer>
+  <script src="./s/site.js"></script>
+  <script>
+    onAuthReady(async () => {
+      let candidateId = await fillSpans("Candidate/Survey");
+
+      let $link = document.querySelector('a[href="admin-candidate-profile.html"]');
+      if ($link && candidateId) { $link.href = `admin-candidate-profile.html?id=${candidateId}`; }
+
+      let $surveyWarn = document.getElementById('surveyWarning');
+      if ($surveyWarn && $surveyWarn.innerText.trim() === '-') { $surveyWarn.parentElement.remove(); }
+    });
+  </script>
+</body>
+
+</html>
