@@ -1,9 +1,7 @@
 onReady(async () => {
-  let prms = new URLSearchParams(window.location.search);
-  let token = prms.get("ref");
-  if (!token) { window.location.href = "error-server.html"; }
-  let email = prms.get("email");
-  if (email) { set("email", email); } else { window.location.href = "error-server.html"; }
+  let token = getRequiredQueryParam("ref", "error-server.html");
+  let email = getRequiredQueryParam("email", "error-server.html");
+  if (email) { set("email", email); }
 
   let $companiesList = document.getElementById("companiesList");
   $companiesList.innerHTML = "<p>Firmalar yükleniyor...</p>";
@@ -49,12 +47,9 @@ onReady(async () => {
     if (req.email && !checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }
     if (selectedCompanyIds.length === 0) { errors.push("En az bir firma seçmelisiniz."); }
 
-    if (errors.length) {
-      $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
-    $msg.textContent = "";
+    clearErrors($msg);
     await apiBtn(this, "Candidate/Add", req, "Sisteme giriş sağlandı.", ERROR_MESSAGE_DEFAULT, "index.html");
   });
 });

@@ -33,7 +33,9 @@ autocomplete(
 onAuthReady(async () => {
   let id = await fillInputs("Candidate/Get");
 
-  document.querySelector("main button").addEventListener(CLICK_EVENT, async function () {
+  let $btn = document.querySelector("main button");
+  let $msg = $btn.nextElementSibling;
+  $btn.addEventListener(CLICK_EVENT, async function () {
     let universityValue = $customUniversity.style.display === "block" && $customUniversity.value.trim()
       ? $customUniversity.value.trim()
       : val("university");
@@ -61,17 +63,14 @@ onAuthReady(async () => {
     if (!req.city) { errors.push("İl bilgisini giriniz."); }
     if (!req.county) { errors.push("İlçe bilgisini giriniz."); }
 
-    if (errors.length) {
-      let p = this.nextElementSibling;
-      p.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
     let redirectUrl = "candidate-profile.html?id=" + id;
     if (USER.role === "admin" || USER.role === "editor") {
       redirectUrl = "admin-candidate-profile.html?id=" + id;
     }
 
+    clearErrors($msg);
     await apiBtn(this, "Candidate/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, redirectUrl);
   });
 });

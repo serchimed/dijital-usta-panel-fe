@@ -1,7 +1,5 @@
 onAuthReady(() => {
-  let prms = new URLSearchParams(window.location.search);
-  let id = prms.get("id");
-  if (!id) { window.location.href = "index.html"; }
+  let id = getRequiredQueryParam("id");
 
   let $year = document.getElementById("year");
   if ($year) {
@@ -32,19 +30,12 @@ onAuthReady(() => {
       }
     }
 
-    if (req.description) {
-      let wordCount = req.description.split(/\s+/).filter(Boolean).length;
-      if (wordCount > 200) {
-        errors.push(`Açıklama en fazla 200 kelime olmalıdır. (Şu an: ${wordCount})`);
-      }
-    }
+    let wcError = validateWordCount(req.description, 200, "Açıklama");
+    if (wcError) { errors.push(wcError); }
 
-    if (errors.length) {
-      $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
-    $msg.textContent = "";
+    clearErrors($msg);
     await apiBtn(this, "CandidateCertificate/Add", req, "Sertifika eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html?id=" + id);
   });
 });

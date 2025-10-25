@@ -51,12 +51,9 @@ onAuthReady(() => {
       errors.push("Geçerli bir Drive klasör URL'si giriniz.");
     }
 
-    if (errors.length) {
-      $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
-    $msg.textContent = "";
+    clearErrors($msg);
     await apiBtn(this, "Company/Add", req, "Firma eklendi.", ERROR_MESSAGE_DEFAULT, "admin-company-list.html");
   });
 });

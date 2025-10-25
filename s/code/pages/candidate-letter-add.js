@@ -1,7 +1,5 @@
 onAuthReady(() => {
-  let prms = new URLSearchParams(window.location.search);
-  let id = prms.get("id");
-  if (!id) { window.location.href = "index.html"; }
+  let id = getRequiredQueryParam("id");
 
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;
@@ -14,12 +12,9 @@ onAuthReady(() => {
     let errors = [];
     if (!req.letter) { errors.push("Motivasyon mektubunu giriniz."); }
 
-    if (errors.length) {
-      $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
-    $msg.textContent = "";
+    clearErrors($msg);
     await apiBtn(this, "CandidateLetter/Add", req, "Motivasyon mektubu eklendi.", "Motivasyon mektubu ekleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html?id=" + id);
   });
 });

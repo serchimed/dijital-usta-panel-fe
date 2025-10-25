@@ -401,3 +401,48 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
 
   return { $list, $customInput };
 }
+
+function showErrors($msg, errors) {
+  if (errors.length) {
+    $msg.textContent = errors.map(e => `• ${e}`).join("\n");
+    return true;
+  }
+  return false;
+}
+
+function clearErrors($msg) {
+  $msg.textContent = "";
+}
+
+function validateWordCount(text, maxWords, fieldName) {
+  if (!text) return null;
+  let wordCount = text.split(/\s+/).filter(Boolean).length;
+  if (wordCount > maxWords) {
+    return `${fieldName} en fazla ${maxWords} kelime olmalıdır. (Şu an: ${wordCount})`;
+  }
+  return null;
+}
+
+function getRequiredQueryParam(paramName, redirectUrl = "index.html") {
+  let prms = new URLSearchParams(window.location.search);
+  let value = prms.get(paramName);
+  if (!value) {
+    window.location.href = redirectUrl;
+    return null;
+  }
+  return value;
+}
+
+function validateDateRange(startDate, endDate) {
+  let errors = [];
+  if (startDate && endDate) {
+    let s = new Date(startDate);
+    let e = new Date(endDate);
+    if (isNaN(s.getTime()) || isNaN(e.getTime())) {
+      errors.push("Tarih formatı geçersiz.");
+    } else if (s > e) {
+      errors.push("Bitiş tarihi, başlangıç tarihinden önce olamaz.");
+    }
+  }
+  return errors;
+}

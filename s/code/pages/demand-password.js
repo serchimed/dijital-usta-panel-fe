@@ -11,12 +11,15 @@ onReady(() => {
 
   let handleSubmit = async function () {
     let email = $email.value.trim();
+
+    let errors = [];
     if (!checkEmail(email)) {
-      $msg.innerText = "Geçerli bir e-posta adresi girin.";
-      return;
+      errors.push("Geçerli bir e-posta adresi girin.");
     }
 
-    $msg.textContent = "";
+    if (showErrors($msg, errors)) { return; }
+
+    clearErrors($msg);
     let result = await apiBtn($btn, "Member/NewPasscode", { email: email }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
 
     if (result && result.isSuccess) {

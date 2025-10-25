@@ -14,17 +14,18 @@ onReady(() => {
     let email = $email.value.trim();
     let pass = $pass.value.trim();
 
+    let errors = [];
     if (!checkEmail(email)) {
-      $msg.innerText = "Geçerli bir e-posta adresi girin.";
-      return;
+      errors.push("Geçerli bir e-posta adresi girin.");
     }
 
     if (pass.length !== 8) {
-      $msg.innerText = "Geçerli bir şifre girin.";
-      return;
+      errors.push("Geçerli bir şifre girin.");
     }
 
-    $msg.textContent = "";
+    if (showErrors($msg, errors)) { return; }
+
+    clearErrors($msg);
     await apiBtn($btn, "Member/Login", { email: email, passcode: pass }, "Giriş başarılı.", "Bir hata oluştu.", "index.html");
   };
 

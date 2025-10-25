@@ -31,12 +31,9 @@ onAuthReady(() => {
     if (!req.email) { errors.push("E-posta adresini giriniz."); }
     else if (!checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }
 
-    if (errors.length) {
-      $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
-    $msg.textContent = "";
+    clearErrors($msg);
     await apiBtn(this, "Admin/InviteEditor", req, "Davet gönderildi.", ERROR_MESSAGE_DEFAULT, "admin-and-editor-list.html");
   });
 });

@@ -33,12 +33,13 @@ onAuthReady(async () => {
     document.getElementById("driveUrl").parentElement.style.display = "block";
   }
 
-  document.querySelector("main button").addEventListener(CLICK_EVENT, async function () {
+  let $btn = document.querySelector("main button");
+  let $msg = $btn.nextElementSibling;
+  $btn.addEventListener(CLICK_EVENT, async function () {
     let req = getReq(id);
 
     if (!hasChanges(initialRequest, req)) {
-      let p = this.nextElementSibling;
-      p.innerText = "Herhangi bir değişiklik yapılmadı.";
+      $msg.innerText = "Herhangi bir değişiklik yapılmadı.";
       return;
     }
 
@@ -64,12 +65,9 @@ onAuthReady(async () => {
       redirectUrl = "admin-company-profile.html?id=" + id;
     }
 
-    if (errors.length) {
-      let p = this.nextElementSibling;
-      p.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
+    clearErrors($msg);
     await apiBtn(this, "Company/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, redirectUrl);
   });
 });

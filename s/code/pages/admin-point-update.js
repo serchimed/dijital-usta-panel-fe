@@ -9,13 +9,13 @@ onAuthReady(() => {
 
     req.lines = (req.lines || "").trim();
 
+    let errors = [];
     if (!req.lines) {
-      $msg.innerHTML = "• E-posta adreslerini ve puanlarını giriniz.";
-      return;
+      errors.push("E-posta adreslerini ve puanlarını giriniz.");
+      if (showErrors($msg, errors)) { return; }
     }
 
     let rows = req.lines.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-    let errs = [];
     let normalized = [];
 
     rows.forEach((line, idx) => {
@@ -23,7 +23,7 @@ onAuthReady(() => {
       let parts = line.split(",").map(s => s.trim());
 
       if (parts.length !== 2) {
-        errs.push(`Satır ${i}: "eposta,puan" biçiminde olmalıdır.`);
+        errors.push(`Satır ${i}: "eposta,puan" biçiminde olmalıdır.`);
         return;
       }
 
@@ -32,22 +32,19 @@ onAuthReady(() => {
       let score = Number(scoreStr);
 
       if (!checkEmail(email)) {
-        errs.push(`Satır ${i}: Geçersiz e-posta (${email}).`);
+        errors.push(`Satır ${i}: Geçersiz e-posta (${email}).`);
       }
       if (!Number.isFinite(score) || score < 0 || score > 100) {
-        errs.push(`Satır ${i}: Puan 0-100 arasında olmalıdır (${scoreStr}).`);
+        errors.push(`Satır ${i}: Puan 0-100 arasında olmalıdır (${scoreStr}).`);
       }
 
       normalized.push(`${email},${scoreStr}`);
     });
 
-    if (errs.length) {
-      $msg.textContent = errs.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
     req.lines = normalized.join("\n");
-    $msg.textContent = "";
+    clearErrors($msg);
 
     await apiBtn(
       this,

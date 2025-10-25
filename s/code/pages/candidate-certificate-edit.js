@@ -32,19 +32,12 @@ onAuthReady(async () => {
       }
     }
 
-    if (req.description) {
-      let wordCount = req.description.split(/\s+/).filter(Boolean).length;
-      if (wordCount > 200) {
-        errors.push(`Açıklama en fazla 200 kelime olmalıdır. (Şu an: ${wordCount})`);
-      }
-    }
+    let wcError = validateWordCount(req.description, 200, "Açıklama");
+    if (wcError) { errors.push(wcError); }
 
-    if (errors.length) {
-      $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
-    $msg.textContent = "";
+    clearErrors($msg);
     await apiBtn(this, "CandidateCertificate/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
   });
 });

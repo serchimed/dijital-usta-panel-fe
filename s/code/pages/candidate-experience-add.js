@@ -1,7 +1,5 @@
 onAuthReady(() => {
-  let prms = new URLSearchParams(window.location.search);
-  let id = prms.get("id");
-  if (!id) { window.location.href = "index.html"; }
+  let id = getRequiredQueryParam("id");
 
   let $isOngoing = document.getElementById("isOngoing");
   let $end = document.getElementById("end");
@@ -37,29 +35,14 @@ onAuthReady(() => {
     if (!req.start) { errors.push("Başlangıç tarihini seçiniz."); }
     if (!$isOngoing.checked && !req.end) { errors.push("Bitiş tarihini seçiniz veya 'Çalışmaya Devam Ediyorum' seçeneğini işaretleyiniz."); }
 
-    if (req.start && req.end) {
-      let s = new Date(req.start);
-      let e = new Date(req.end);
-      if (isNaN(s.getTime()) || isNaN(e.getTime())) {
-        errors.push("Tarih formatı geçersiz.");
-      } else if (s > e) {
-        errors.push("Bitiş tarihi, başlangıç tarihinden önce olamaz.");
-      }
-    }
+    errors.push(...validateDateRange(req.start, req.end));
 
-    if (req.description) {
-      let wordCount = req.description.split(/\s+/).filter(Boolean).length;
-      if (wordCount > 200) {
-        errors.push(`Açıklama en fazla 200 kelime olmalıdır. (Şu an: ${wordCount})`);
-      }
-    }
+    let wcError = validateWordCount(req.description, 200, "Açıklama");
+    if (wcError) { errors.push(wcError); }
 
-    if (errors.length) {
-      $msg.textContent = errors.map(e => `• ${e}`).join("\n");
-      return;
-    }
+    if (showErrors($msg, errors)) { return; }
 
-    $msg.textContent = "";
+    clearErrors($msg);
     await apiBtn(this, "CandidateExperience/Add", req, "Deneyim eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html?id=" + id);
   });
 });
