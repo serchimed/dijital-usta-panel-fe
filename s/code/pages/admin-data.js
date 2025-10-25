@@ -117,7 +117,7 @@ onAuthReady(async () => {
     btnBackupApprove.disabled = true;
 
     try {
-      const formData = new FormData();
+      let formData = new FormData();
       formData.append('File', backupFileInput.files[0]);
 
       let response = await fetch(`${API}Data/CheckBackup`, {
@@ -197,7 +197,7 @@ onAuthReady(async () => {
       btnBackupApprove.classList.add("btn-gray");
 
       try {
-        const formData = new FormData();
+        let formData = new FormData();
         formData.append('File', backupFileInput.files[0]);
 
         let response = await fetch(`${API}Data/Restore`, {

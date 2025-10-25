@@ -426,6 +426,13 @@ function validateWordCount(text, maxWords, fieldName) {
 function getRequiredQueryParam(paramName, redirectUrl = "index.html") {
   let prms = new URLSearchParams(window.location.search);
   let value = prms.get(paramName);
+  if (paramName === 'email' && value) {
+    let regex = new RegExp(`[?&]${paramName}=([^&]*)`);
+    let match = window.location.search.match(regex);
+    if (match && match[1].includes('+')) {
+      value = decodeURIComponent(match[1]);
+    }
+  }
   if (!value) {
     window.location.href = redirectUrl;
     return null;

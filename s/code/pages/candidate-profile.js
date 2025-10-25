@@ -30,11 +30,11 @@ onAuthReady(async () => {
   let $letter = document.getElementById("motivationLetter");
   if ($letter && $letter.value.trim() && $letter.value.trim() != "-") {
     $letter.style.height = "333px";
-    if ($warn) { $warn.style.display = "block"; }
+    if ($warn) { $warn.style.display = "none"; }
     let $links = document.querySelectorAll('a[href*="candidate-letter-add.html"]');
     if ($links) { $links.forEach(link => link.remove()); }
   } else {
     if ($letter) { $letter.remove(); }
-    if ($warn) { $warn.style.display = "none"; }
+    if ($warn) { $warn.style.display = "block"; }
   }
 });

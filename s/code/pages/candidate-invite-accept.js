@@ -50,6 +50,6 @@ onReady(async () => {
     if (showErrors($msg, errors)) { return; }
 
     clearErrors($msg);
-    await apiBtn(this, "Candidate/Add", req, "Sisteme giriş sağlandı.", ERROR_MESSAGE_DEFAULT, "index.html");
+    await apiBtn(this, "Candidate/Add", req, "Sisteme giriş sağlandı.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
   });
 });
