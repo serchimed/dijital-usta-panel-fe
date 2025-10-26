@@ -2,9 +2,7 @@ onAuthReady(async () => {
   let certificateId = await fillInputs("CandidateCertificate/Get");
 
   let $year = document.getElementById("year");
-  if ($year) {
-    $year.max = new Date().getFullYear();
-  }
+  if ($year) { $year.max = new Date().getFullYear(); }
 
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;
@@ -36,7 +34,6 @@ onAuthReady(async () => {
     if (wcError) { errors.push(wcError); }
 
     if (showErrors($msg, errors)) { return; }
-
     clearErrors($msg);
     await apiBtn(this, "CandidateCertificate/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
   });

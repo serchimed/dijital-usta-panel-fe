@@ -17,11 +17,7 @@ onAuthReady(async () => {
       $tr.append(td(candidate.major));
       tbody.append($tr);
     }
-  } else {
-    let errText = "Bir hata oluştu.";
-    if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
-    console.error(errText);
-  }
+  } else { logErr(result); }
 
   setFilters();
 });

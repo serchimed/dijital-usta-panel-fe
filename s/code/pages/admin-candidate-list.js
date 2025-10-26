@@ -1,12 +1,9 @@
 onAuthReady(async () => {
-  let $exportBtn = document.getElementById("exportBtn");
   let $exportMsg = document.getElementById("exportMsg");
-
+  let $exportBtn = document.getElementById("exportBtn");
   $exportBtn.addEventListener(CLICK_EVENT, async function () {
     this.disabled = true;
-
     await downloadCsv("Candidate/Export", {}, "adaylar.csv", $exportMsg);
-
     this.disabled = false;
   });
 
@@ -25,23 +22,12 @@ onAuthReady(async () => {
       $tr.append(td(candidate.major));
       $tr.append(td(candidate.status));
 
-      let $btn = createBlockButton(
-        candidate.id,
-        candidate.isBlocked,
-        candidate.displayName,
-        "Member/Block",
-        "Member/Unblock",
-        "memberId"
-      );
+      let $btn = createBlockButton(candidate.id, candidate.isBlocked, candidate.displayName, "Member/Block", "Member/Unblock", "memberId");
       $tr.append(tdbtn($btn));
 
       tbody.append($tr);
     }
-  } else {
-    let errText = "Bir hata oluştu.";
-    if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
-    console.error(errText);
-  }
+  } else { logErr(result); }
 
   setFilters();
 });

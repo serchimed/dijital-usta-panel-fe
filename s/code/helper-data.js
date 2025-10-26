@@ -27,7 +27,7 @@ async function loadTables(querySelector = "table.load tbody") {
 
   let key = window.location.pathname.includes("candidate") ? "memberId" : "companyId";
   let id = getId(key);
-  if (!id) { id= USER.id; }
+  if (!id) { id = USER.id; }
 
   let req = {};
   req[key] = id;
@@ -111,7 +111,6 @@ async function fillSpans(url, key = "memberId") {
     return null;
   }
 
-  // Fill spans from data even if isSuccess is false
   if (result.data) {
     for (let prop in result.data) {
       let $s = document.getElementById(prop);
@@ -124,6 +123,7 @@ async function fillSpans(url, key = "memberId") {
         let tag = ($s.tagName || "").toLowerCase();
         if (tag === "img") {
           $s.src = v;
+          if (!v || v === "-") { $s.src = "./s/profile.png"; }
         } else if (tag === "textarea") {
           $s.value = v;
         } else if (prop.endsWith("Url") && v && v !== "-") {
@@ -138,10 +138,7 @@ async function fillSpans(url, key = "memberId") {
     }
   }
 
-  if (!result.isSuccess) {
-    console.error("API error:", result);
-  }
-
+  if (!result.isSuccess) { console.error("API error:", result); }
   return id;
 }
 

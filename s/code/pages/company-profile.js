@@ -4,8 +4,6 @@ if ($tbody) {
     let data = e.detail.data;
     if (!data || data.length === 0) { return; }
 
-    let companyName = document.getElementById("companyName")?.textContent;
-
     let rows = e.target.querySelectorAll('tr');
     rows.forEach((tr, index) => {
       let item = data[index];

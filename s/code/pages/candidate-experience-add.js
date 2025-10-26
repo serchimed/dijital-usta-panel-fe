@@ -13,9 +13,7 @@ onAuthReady(() => {
     }
   });
 
-  if ($isOngoing.checked) {
-    $end.disabled = true;
-  }
+  if ($isOngoing.checked) { $end.disabled = true; }
 
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;

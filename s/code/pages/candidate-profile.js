@@ -7,15 +7,7 @@ $tbl.addEventListener("tableLoaded", function (e) {
     let $row = rows[index];
     if (!$row) { return; }
 
-    let $btn = createBlockButton(
-      item.companyId,
-      item.isBlocked,
-      item.companyName,
-      "CandidateCompany/Block",
-      "CandidateCompany/Unblock",
-      "companyId"
-    );
-
+    let $btn = createBlockButton(item.companyId, item.isBlocked, item.companyName, "CandidateCompany/Block", "CandidateCompany/Unblock", "companyId");
     $row.lastElementChild.append($btn);
   });
 });
@@ -26,15 +18,43 @@ onAuthReady(async () => {
     loadTables()
   ]);
 
-  let $warn = document.getElementById("motivationLetterWarning");
+  let $warnLetter = document.getElementById("motivationLetterWarning");
   let $letter = document.getElementById("motivationLetter");
   if ($letter && $letter.value.trim() && $letter.value.trim() != "-") {
     $letter.style.height = "333px";
-    if ($warn) { $warn.style.display = "none"; }
+    if ($warnLetter) { $warnLetter.style.display = "none"; }
     let $links = document.querySelectorAll('a[href*="candidate-letter-add.html"]');
     if ($links) { $links.forEach(link => link.remove()); }
   } else {
     if ($letter) { $letter.remove(); }
-    if ($warn) { $warn.style.display = "block"; }
+    if ($warnLetter) { $warnLetter.style.display = "block"; }
   }
+
+  let $warnNewCompany = document.getElementById("newCompanyWarning");
+  let $list = document.getElementById("companiesList");
+  let result = await api("Company/GetNewForCandidateCity", { memberId: USER.id });
+  if (!result || result.error || !result.isSuccess || !Array.isArray(result.data) || result.data.length === 0) {
+    $warnNewCompany.style.display = "none";
+  } else {
+    $warnNewCompany.style.display = "block";
+    $list.innerHTML = "";
+    result.data.forEach(company => { $list.append(chkComp(company)); });
+  }
+
+  let $btnGiveAccess = document.getElementById("giveAccessButton");
+  let $msg = $btnGiveAccess.nextElementSibling;
+  $btnGiveAccess.addEventListener(CLICK_EVENT, async function () {
+    let selectedIds = Array.from(document.querySelectorAll('#companiesList input[type="checkbox"]:checked')).map(cb => cb.value);
+    let req = {
+      memberId: USER.id,
+      companyIds: selectedIds
+    };
+
+    let errors = [];
+    if (selectedIds.length === 0) { errors.push("En az bir firma seçmelisiniz."); }
+
+    if (showErrors($msg, errors)) { return; }
+    clearErrors($msg);
+    await apiBtn(this, "Candidate/GiveAccess", req, "Firmalara erişim verildi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
+  });
 });

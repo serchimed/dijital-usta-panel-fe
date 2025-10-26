@@ -13,19 +13,13 @@ onReady(() => {
     let email = $email.value.trim();
 
     let errors = [];
-    if (!checkEmail(email)) {
-      errors.push("Geçerli bir e-posta adresi girin.");
-    }
-
+    if (!checkEmail(email)) { errors.push("Geçerli bir e-posta adresi girin."); }
     if (showErrors($msg, errors)) { return; }
-
     clearErrors($msg);
-    let result = await apiBtn($btn, "Member/NewPasscode", { email: email }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
 
+    let result = await apiBtn($btn, "Member/NewPasscode", { email: email }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
     if (result && result.isSuccess) {
-      setTimeout(() => {
-        window.location.href = `login.html?email=${encodeURIComponent(email)}`;
-      }, DELAY_2);
+      setTimeout(() => { window.location.href = `login.html?email=${encodeURIComponent(email)}`; }, DELAY_2);
     }
   };
 

@@ -18,7 +18,6 @@ onAuthReady(async () => {
     else if (!checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
 
     if (showErrors($msg, errors)) { return; }
-
     clearErrors($msg);
     await apiBtn(this, "Admin/AdminEdit", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "admin-profile.html?id=" + id);
   });

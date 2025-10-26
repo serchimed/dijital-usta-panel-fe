@@ -1,15 +1,7 @@
 onAuthReady(() => {
   let $city = document.getElementById("city");
 
-  autocomplete(
-    $city,
-    CITIES,
-    (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()),
-    (city) => city,
-    (city, $input) => {
-      $input.value = city;
-    }
-  );
+  autocomplete($city, CITIES, (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()), (city) => city, (city, $input) => { $input.value = city; });
 
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;
@@ -32,7 +24,6 @@ onAuthReady(() => {
     else if (!checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }
 
     if (showErrors($msg, errors)) { return; }
-
     clearErrors($msg);
     await apiBtn(this, "Admin/InviteEditor", req, "Davet gönderildi.", ERROR_MESSAGE_DEFAULT, "admin-and-editor-list.html");
   });

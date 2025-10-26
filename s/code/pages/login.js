@@ -4,7 +4,6 @@ onReady(() => {
   let $email = document.getElementById("email");
   let $pass = document.getElementById("passcode");
   let $btn = document.querySelector("main button");
-  let $msg = $btn.nextElementSibling;
 
   let prms = new URLSearchParams(window.location.search);
   let prmEmail = prms.get("email");
@@ -15,16 +14,11 @@ onReady(() => {
     let pass = $pass.value.trim();
 
     let errors = [];
-    if (!checkEmail(email)) {
-      errors.push("Geçerli bir e-posta adresi girin.");
-    }
+    if (!checkEmail(email)) { errors.push("Geçerli bir e-posta adresi girin."); }
+    if (pass.length !== 8) { errors.push("Geçerli bir şifre girin."); }
 
-    if (pass.length !== 8) {
-      errors.push("Geçerli bir şifre girin.");
-    }
-
+    let $msg = $btn.nextElementSibling;
     if (showErrors($msg, errors)) { return; }
-
     clearErrors($msg);
     await apiBtn($btn, "Member/Login", { email: email, passcode: pass }, "Giriş başarılı.", "Bir hata oluştu.", "index.html");
   };

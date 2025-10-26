@@ -31,12 +31,8 @@ onAuthReady(() => {
       let scoreStr = parts[1];
       let score = Number(scoreStr);
 
-      if (!checkEmail(email)) {
-        errors.push(`Satır ${i}: Geçersiz e-posta (${email}).`);
-      }
-      if (!Number.isFinite(score) || score < 0 || score > 100) {
-        errors.push(`Satır ${i}: Puan 0-100 arasında olmalıdır (${scoreStr}).`);
-      }
+      if (!checkEmail(email)) { errors.push(`Satır ${i}: Geçersiz e-posta (${email}).`); }
+      if (!Number.isFinite(score) || score < 0 || score > 100) { errors.push(`Satır ${i}: Puan 0-100 arasında olmalıdır (${scoreStr}).`); }
 
       normalized.push(`${email},${scoreStr}`);
     });
@@ -46,13 +42,6 @@ onAuthReady(() => {
     req.lines = normalized.join("\n");
     clearErrors($msg);
 
-    await apiBtn(
-      this,
-      "CandidatePoint/Add",
-      req,
-      "Puanlar eklendi.",
-      ERROR_MESSAGE_DEFAULT,
-      "admin-candidate-list.html"
-    );
+    await apiBtn(this, "CandidatePoint/Add", req, "Puanlar eklendi.", ERROR_MESSAGE_DEFAULT, "admin-candidate-list.html");
   });
 });

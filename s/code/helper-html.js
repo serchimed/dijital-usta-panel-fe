@@ -58,6 +58,20 @@ function lbl(text) {
   return $l;
 }
 
+function chkComp(company) {
+  let $l = document.createElement("label");
+  $l.style.display = "flex";
+  $l.style.alignItems = "center";
+  $l.style.marginBottom = "8px";
+
+  let $s = document.createElement("span");
+  $s.textContent = company.companyName;
+  $s.style.margin = "0";
+
+  $l.append(chk(company.id, true), $s);
+  return $l;
+}
+
 function date(value) {
   let $i = document.createElement("input");
   $i.type = "date";
@@ -234,7 +248,7 @@ function checkUrl(url) {
 
 function showHeaderMsg(msg) {
   let $banner = document.createElement("div");
-  $banner.className = "header-message";
+  $banner.className = "head-msg";
   $banner.textContent = msg;
   let $header = document.querySelector("header");
   if ($header && $header.nextSibling) {
@@ -372,7 +386,7 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
   }
 
   $input.addEventListener("input", function () {
-    if (ignoreNextInput) return;
+    if (ignoreNextInput) { return; }
     search(this.value.trim());
   });
 
@@ -383,9 +397,7 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
   });
 
   $input.addEventListener("blur", function () {
-    setTimeout(() => {
-      $list.classList.remove("show");
-    }, DELAY_0);
+    setTimeout(() => { $list.classList.remove("show"); }, DELAY_0);
   });
 
   if (!AUTOCOMPLETE_LISTENER_ADDED) {

@@ -135,3 +135,10 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     return false;
   }
 }
+
+
+function logErr(result) {
+  let errText = "Bir hata oluştu.";
+  if (result && Array.isArray(result.errors) && result.errors.length) { errText = result.errors.join(", "); }
+  console.error(errText);
+}

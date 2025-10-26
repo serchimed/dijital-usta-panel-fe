@@ -19,19 +19,9 @@ onAuthReady(async () => {
   let initialRequest = getReq(id);
 
   let $city = document.getElementById("city");
-  autocomplete(
-    $city,
-    CITIES,
-    (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()),
-    (city) => city,
-    (city, $input) => {
-      $input.value = city;
-    }
-  );
+  autocomplete($city, CITIES, (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()), (city) => city, (city, $input) => { $input.value = city; });
 
-  if (USER.role === "editor" || USER.role === "admin") {
-    document.getElementById("driveUrl").parentElement.style.display = "block";
-  }
+  if (USER.role === "editor" || USER.role === "admin") { document.getElementById("driveUrl").parentElement.style.display = "block"; }
 
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;

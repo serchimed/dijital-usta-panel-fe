@@ -43,10 +43,7 @@ onAuthReady(async () => {
       let $downloadBtn = btn("btn-gray", "İndir");
       $downloadBtn.addEventListener(CLICK_EVENT, async function () {
         this.disabled = true;
-        let $msg = this.nextElementSibling;
-
-        await downloadCsv(downloadEndpoint, { fileName: file.fileName }, file.fileName, $msg);
-
+        await downloadCsv(downloadEndpoint, { fileName: file.fileName }, file.fileName, this.nextElementSibling);
         this.disabled = false;
       });
 
@@ -93,14 +90,14 @@ onAuthReady(async () => {
     $modal = createModal("Backup Onayı", $mbody);
   });
 
-  let btnBackupCheck = document.getElementById("btnBackupCheck");
-  let btnBackupApprove = document.getElementById("btnBackupApprove");
-  let backupFileInput = document.getElementById("backupFile");
+  let $btnCheck = document.getElementById("btnBackupCheck");
+  let $btnApprove = document.getElementById("btnBackupApprove");
+  let $file = document.getElementById("backupFile");
 
-  backupFileInput.value = "";
+  $file.value = "";
 
-  btnBackupCheck.addEventListener(CLICK_EVENT, async function () {
-    if (!backupFileInput.files || !backupFileInput.files[0]) {
+  $btnCheck.addEventListener(CLICK_EVENT, async function () {
+    if (!$file.files || !$file.files[0]) {
       let $mbody = div();
       let $msgDiv = div(CSS_CLASSES.modalMessage);
       showModalMessage($msgDiv, "error", "Lütfen önce bir yedek dosyası seçin");
@@ -114,18 +111,13 @@ onAuthReady(async () => {
     this.classList.remove("btn-act");
     this.classList.add("btn-gray");
 
-    btnBackupApprove.disabled = true;
+    $btnApprove.disabled = true;
 
     try {
       let formData = new FormData();
-      formData.append('File', backupFileInput.files[0]);
+      formData.append('File', $file.files[0]);
 
-      let response = await fetch(`${API}Data/CheckBackup`, {
-        method: "POST",
-        credentials: "include",
-        body: formData
-      });
-
+      let response = await fetch(`${API}Data/CheckBackup`, { method: "POST", credentials: "include", body: formData });
       if (!response.ok) {
         let $mbody = div();
         let $msgDiv = div(CSS_CLASSES.modalMessage);
@@ -138,7 +130,6 @@ onAuthReady(async () => {
       }
 
       let result = await response.json();
-
       if (!result || result.error || !result.isSuccess) {
         let $mbody = div();
         let $msgDiv = div(CSS_CLASSES.modalMessage);
@@ -151,9 +142,9 @@ onAuthReady(async () => {
       }
 
       displayBackupAnalysis(result.data);
-      btnBackupApprove.disabled = false;
-      btnBackupApprove.classList.remove("btn-gray");
-      btnBackupApprove.classList.add("btn-act");
+      $btnApprove.disabled = false;
+      $btnApprove.classList.remove("btn-gray");
+      $btnApprove.classList.add("btn-act");
 
     } catch (error) {
       let $mbody = div();
@@ -170,8 +161,8 @@ onAuthReady(async () => {
     }
   });
 
-  btnBackupApprove.addEventListener(CLICK_EVENT, function () {
-    if (!backupFileInput.files || !backupFileInput.files[0]) {
+  $btnApprove.addEventListener(CLICK_EVENT, function () {
+    if (!$file.files || !$file.files[0]) {
       let $mbody = div();
       let $msgDiv = div(CSS_CLASSES.modalMessage);
       showModalMessage($msgDiv, "error", "Lütfen önce bir yedek dosyası seçin");
@@ -183,35 +174,30 @@ onAuthReady(async () => {
 
     let $mbody = div();
     let $confirmLabel = p("Veritabanını yedek dosyası ile geri yüklemek istediğinize emin misiniz?");
-    let $warningP = p("⚠️ DİKKAT: Bu işlem geri alınamaz! Mevcut veriler yedeklenip, sistem tamamen seçili yedek dosyasına geri yüklenecektir.");
-    $warningP.style.color = "#c0392b";
-    $warningP.style.fontWeight = "bold";
-    $warningP.style.marginTop = "10px";
+    let $warnP = p("⚠️ DİKKAT: Bu işlem kolayca geri alınamaz ve tüm kullanıcıları etkiler! Mevcut veriler yedeklenip, sistem tamamen seçili yedek dosyasına geri yüklenecektir.");
+    $warnP.style.color = "#c0392b";
+    $warnP.style.fontWeight = "bold";
+    $warnP.style.marginTop = "10px";
     let $msgDiv = div(CSS_CLASSES.modalMessage);
     let $modal;
 
     let handleConfirm = async function () {
       setButtonLoading(buttons.submitBtn, true);
-      btnBackupApprove.disabled = true;
-      btnBackupApprove.classList.remove("btn-act");
-      btnBackupApprove.classList.add("btn-gray");
+      $btnApprove.disabled = true;
+      $btnApprove.classList.remove("btn-act");
+      $btnApprove.classList.add("btn-gray");
 
       try {
         let formData = new FormData();
-        formData.append('File', backupFileInput.files[0]);
+        formData.append('File', $file.files[0]);
 
-        let response = await fetch(`${API}Data/Restore`, {
-          method: "POST",
-          credentials: "include",
-          body: formData
-        });
-
+        let response = await fetch(`${API}Data/Restore`, { method: "POST", credentials: "include", body: formData });
         if (!response.ok) {
           showModalMessage($msgDiv, "error", "Geri yükleme işlemi başarısız");
           setButtonLoading(buttons.submitBtn, false);
-          btnBackupApprove.disabled = false;
-          btnBackupApprove.classList.remove("btn-gray");
-          btnBackupApprove.classList.add("btn-act");
+          $btnApprove.disabled = false;
+          $btnApprove.classList.remove("btn-gray");
+          $btnApprove.classList.add("btn-act");
           return;
         }
 
@@ -234,29 +220,26 @@ onAuthReady(async () => {
 
           showModalMessage($msgDiv, "success", successMsg);
           setButtonLoading(buttons.submitBtn, false);
-          setTimeout(() => {
-            closeModal($modal);
-            location.reload();
-          }, DELAY_2);
+          setTimeout(() => { closeModal($modal); location.reload(); }, DELAY_2);
         } else {
           showModalMessage($msgDiv, "error", result?.data || result?.message || ERROR_MESSAGE_DEFAULT);
           setButtonLoading(buttons.submitBtn, false);
-          btnBackupApprove.disabled = false;
-          btnBackupApprove.classList.remove("btn-gray");
-          btnBackupApprove.classList.add("btn-act");
+          $btnApprove.disabled = false;
+          $btnApprove.classList.remove("btn-gray");
+          $btnApprove.classList.add("btn-act");
         }
 
       } catch (error) {
         showModalMessage($msgDiv, "error", "Geri yükleme sırasında hata oluştu: " + error.message);
         setButtonLoading(buttons.submitBtn, false);
-        btnBackupApprove.disabled = false;
-        btnBackupApprove.classList.remove("btn-gray");
-        btnBackupApprove.classList.add("btn-act");
+        $btnApprove.disabled = false;
+        $btnApprove.classList.remove("btn-gray");
+        $btnApprove.classList.add("btn-act");
       }
     };
 
     let buttons = createModalButtons("İptal", "Evet, Geri Yükle", () => closeModal($modal), handleConfirm);
-    $mbody.append($confirmLabel, $warningP, buttons.buttonsDiv, $msgDiv);
+    $mbody.append($confirmLabel, $warnP, buttons.buttonsDiv, $msgDiv);
     $modal = createModal("Geri Yükleme Onayı", $mbody);
   });
 

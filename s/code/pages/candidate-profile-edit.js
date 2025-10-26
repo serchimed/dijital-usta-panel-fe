@@ -7,28 +7,16 @@ let { $customInput: $customUniversity } = autocomplete(
   universities,
   (uni, searchText) => uni.toLowerCase().includes(searchText.toLowerCase()),
   (uni) => uni,
-  (uni, $input) => {
-    $input.value = uni;
-  },
+  (uni, $input) => { $input.value = uni; },
   {
     allowCustom: true,
     customText: "Üniversitem listede yok",
     customInputPlaceholder: "Üniversitenizin adını siz yazın...",
-    onCustom: ($input, $customInput) => {
-      $input.value = "";
-    }
+    onCustom: ($input, $customInput) => { $input.value = ""; }
   }
 );
 
-autocomplete(
-  $city,
-  CITIES,
-  (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()),
-  (city) => city,
-  (city, $input) => {
-    $input.value = city;
-  }
-);
+autocomplete($city, CITIES, (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()), (city) => city, (city, $input) => { $input.value = city; });
 
 onAuthReady(async () => {
   let id = await fillInputs("Candidate/Get");
@@ -66,9 +54,7 @@ onAuthReady(async () => {
     if (showErrors($msg, errors)) { return; }
 
     let redirectUrl = "candidate-profile.html?id=" + id;
-    if (USER.role === "admin" || USER.role === "editor") {
-      redirectUrl = "admin-candidate-profile.html?id=" + id;
-    }
+    if (USER.role === "admin" || USER.role === "editor") { redirectUrl = "admin-candidate-profile.html?id=" + id; }
 
     clearErrors($msg);
     await apiBtn(this, "Candidate/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, redirectUrl);

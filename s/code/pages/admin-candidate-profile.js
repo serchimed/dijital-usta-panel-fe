@@ -3,7 +3,10 @@ let companies = [];
 let companiesLoaded = false;
 
 let $shortlistTbody = document.getElementById("CandidateShortlisted");
-if ($shortlistTbody) {
+
+function setupShortlistTable() {
+  if (!$shortlistTbody) return;
+
   $shortlistTbody.addEventListener("tableLoaded", (e) => {
     let data = e.detail.data;
     if (!data || data.length === 0) { return; }
@@ -19,12 +22,7 @@ if ($shortlistTbody) {
         let $interviewBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, true, $hireBtn, item.isInterviewResulted, item.isHired);
         let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
         $interviewBtn.$shortlistBtn = $shortlistBtn;
-        tr.lastElementChild.append(
-          $shortlistBtn,
-          $interviewBtn,
-          $hireBtn,
-          $msg
-        );
+        tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
       }
     });
   });
@@ -43,9 +41,7 @@ if ($historyTbody) {
         let companyNameCell = tr.querySelector("td:nth-child(2)");
         if (companyNameCell) {
           let link = companyNameCell.querySelector("a");
-          if (link && link.textContent === "Admin") {
-            link.outerHTML = link.textContent;
-          }
+          if (link && link.textContent === "Admin") { link.outerHTML = link.textContent; }
         }
       }
     });
@@ -100,13 +96,7 @@ onAuthReady(async () => {
         }
       };
 
-      let buttons = createModalButtons(
-        "İptal",
-        isCurrentlyApproved ? "Onayı Geri Al" : "Onayla",
-        () => closeModal($modal),
-        handleApprove
-      );
-
+      let buttons = createModalButtons("İptal", isCurrentlyApproved ? "Onayı Geri Al" : "Onayla", () => closeModal($modal), handleApprove);
       $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
       $modal = createModal("Onay", $mbody);
     });
@@ -114,8 +104,8 @@ onAuthReady(async () => {
 
   let $btnAIReview = document.getElementById("btnAIReview");
   let $msgAIReview = document.getElementById("msgAIReview");
-  let $aiScoreSpan = document.getElementById("aiScore");
-  let $aiEvaluationTextarea = document.getElementById("aiEvaluation");
+  let $spnAiScore = document.getElementById("aiScore");
+  let $txtAiEval = document.getElementById("aiEvaluation");
 
   if ($btnAIReview) {
     $btnAIReview.addEventListener(CLICK_EVENT, async function () {
@@ -173,20 +163,11 @@ onAuthReady(async () => {
         setButtonLoading(buttons.submitBtn, true);
         setMessageText($msgAIReview, LOADING_MESSAGE_WAIT);
 
-        let result = await api("AI/Evaluate", {
-          memberId: candidateId,
-          aiName: selectedAI,
-          prompt: promptValue
-        });
-
+        let result = await api("AI/Evaluate", { memberId: candidateId, aiName: selectedAI, prompt: promptValue });
         if (result && result.isSuccess) {
           if (result.data) {
-            if ($aiScoreSpan && result.data.aiScore !== undefined) {
-              $aiScoreSpan.textContent = result.data.aiScore;
-            }
-            if ($aiEvaluationTextarea && result.data.aiEvaluation !== undefined) {
-              $aiEvaluationTextarea.value = result.data.aiEvaluation;
-            }
+            if ($spnAiScore && result.data.aiScore !== undefined) { $spnAiScore.textContent = result.data.aiScore; }
+            if ($txtAiEval && result.data.aiEvaluation !== undefined) { $txtAiEval.textContent = result.data.aiEvaluation; }
           }
 
           setMessageText($msgAIReview, "");
@@ -198,22 +179,70 @@ onAuthReady(async () => {
         }
       };
 
-      let buttons = createModalButtons(
-        "İptal",
-        "Değerlendirt",
-        () => closeModal($modal),
-        handleEvaluate
-      );
+      let buttons = createModalButtons("İptal", "Değerlendirt", () => closeModal($modal), handleEvaluate);
 
       $mbody.append($aiLabel, $promptLabel, buttons.buttonsDiv, $msgDiv);
       $modal = createModal("Tekrar AI ile Değerlendir", $mbody);
     });
   }
 
-  if (document.getElementById("status") && document.getElementById("status").textContent === "İşe alım doğrulandı") {
-    $shortlistTbody.closest("details").remove();
+  let $st = document.getElementById("status");
+  let $shortlistDetails = $shortlistTbody?.closest("details");
+
+  if ($st && $st.textContent === "İşe alım doğrulandı") {
+    // Shortlist bölümünü gizle
+    if ($shortlistDetails) {
+      $shortlistDetails.style.display = "none";
+    }
+
+    // İşe alımı iptal et düğmesini ekle
+    let $candidateActions = document.getElementById("candidateActions");
+    if ($candidateActions) {
+      let $cancelHireBtn = btn("btn-danger", "İşe Alımı İptal Et");
+
+      $cancelHireBtn.addEventListener(CLICK_EVENT, async function () {
+        let $mbody = div();
+        let $confirmLabel = p("İşe alımı iptal etmek istediğinize emin misiniz?");
+        let $msgDiv = div(CSS_CLASSES.modalMessage);
+        let $modal;
+
+        let handleCancelHire = async function () {
+          setButtonLoading(buttons.submitBtn, true);
+
+          let result = await api("Candidate/HireFailed", { memberId: candidateId });
+
+          if (result && result.isSuccess) {
+            // İptal düğmesini kaldır
+            $cancelHireBtn.remove();
+
+            // Shortlist bölümünü tekrar göster ve tabloyu yükle
+            if ($shortlistDetails) {
+              $shortlistDetails.style.display = "";
+            }
+
+            // Shortlist event listener'ını kur ve tabloyu yükle
+            setupShortlistTable();
+            await loadTables("#" + $shortlistTbody.id);
+
+            showSuccessAndClose($msgDiv, $modal, "İşe alım iptal edildi.");
+          } else {
+            showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
+            setButtonLoading(buttons.submitBtn, false);
+          }
+        };
+
+        let buttons = createModalButtons("İptal", "Onayla", () => closeModal($modal), handleCancelHire);
+        $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+        $modal = createModal("İşe Alımı İptal Et", $mbody);
+      });
+
+      $candidateActions.appendChild($cancelHireBtn);
+    }
   }
   else {
+    // İşe alım doğrulanmadıysa shortlist eventlerini kur
+    setupShortlistTable();
+
     let $search = document.getElementById("companySearch");
     let $selectedId = document.getElementById("selectedCompanyId");
     let $addBtn = document.getElementById("addShortlistBtn");
@@ -248,10 +277,7 @@ onAuthReady(async () => {
       }
 
       $msg.textContent = "";
-      let result = await apiBtn(this, "CompanyShortlist/Add", {
-        memberId: candidateId,
-        companyId: companyId
-      }, "Kısa listeye eklendi", ERROR_MESSAGE_DEFAULT);
+      let result = await apiBtn(this, "CompanyShortlist/Add", { memberId: candidateId, companyId: companyId }, "Kısa listeye eklendi", ERROR_MESSAGE_DEFAULT);
 
       if (result && result.isSuccess) {
         $search.value = "";

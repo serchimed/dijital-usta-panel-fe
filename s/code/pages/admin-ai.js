@@ -12,16 +12,7 @@ onAuthReady(async () => {
       return;
     }
 
-    await apiBtn(
-      this,
-      "AI/UpdateAPIKeys",
-      {
-        apiKeyGoogle: apiKeyGoogle,
-        apiKeyOpenAI: apiKeyOpenAI
-      },
-      "API Key'ler güncellendi.",
-      "API Key güncellenemedi."
-    );
+    await apiBtn(this, "AI/UpdateAPIKeys", { apiKeyGoogle: apiKeyGoogle, apiKeyOpenAI: apiKeyOpenAI }, "API Key'ler güncellendi.", "API Key güncellenemedi.");
   });
 
   let $btnSavePrompt = document.getElementById("btnSavePrompt");
@@ -39,19 +30,11 @@ onAuthReady(async () => {
       return;
     }
 
-    await apiBtn(
-      this,
-      "AI/UpdatePrompt",
-      {
-        promptText: promptText
-      },
-      "Prompt güncellendi.",
-      "Prompt güncellenemedi."
-    );
+    await apiBtn(this, "AI/UpdatePrompt", { promptText: promptText }, "Prompt güncellendi.", "Prompt güncellenemedi.");
   });
 
   let $d = document.getElementById("AIHistoryDetails");
-  $d.addEventListener("click", async () => {
+  $d.addEventListener(CLICK_EVENT, async () => {
     if (!$d.hasAttribute("open") && !$d.dataset.loaded) {
       $d.dataset.loaded = true;
       await loadTables("#AIHistory");

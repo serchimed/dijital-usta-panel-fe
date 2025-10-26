@@ -2,9 +2,7 @@ onAuthReady(() => {
   let id = getRequiredQueryParam("id");
 
   let $year = document.getElementById("year");
-  if ($year) {
-    $year.max = new Date().getFullYear();
-  }
+  if ($year) { $year.max = new Date().getFullYear(); }
 
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;
@@ -34,7 +32,6 @@ onAuthReady(() => {
     if (wcError) { errors.push(wcError); }
 
     if (showErrors($msg, errors)) { return; }
-
     clearErrors($msg);
     await apiBtn(this, "CandidateCertificate/Add", req, "Sertifika eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html?id=" + id);
   });

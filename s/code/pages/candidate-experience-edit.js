@@ -47,7 +47,6 @@ onAuthReady(async () => {
     if (wcError) { errors.push(wcError); }
 
     if (showErrors($msg, errors)) { return; }
-
     clearErrors($msg);
     await apiBtn(this, "CandidateExperience/Update", req, SUCCESS_UPDATE_MESSAGE, ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
   });

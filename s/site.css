@@ -57,7 +57,7 @@ header img {
   height: 66px;
 }
 
-.header-message {
+.head-msg {
   background-color: #FE5200;
   color: #fff;
   padding: 21px 34px;
@@ -710,6 +710,10 @@ details>div>p.description {
 #promptText {
   max-width: 100%;
   grid-column: span 3;
+}
+
+#newCompanyWarning {
+  display: none;
 }
 
 .lbl-warn,
