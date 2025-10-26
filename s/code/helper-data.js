@@ -181,8 +181,12 @@ async function fillInputs(url, key = "memberId") {
       }
 
       let $btn = document.querySelector("main button");
-      $btn.disabled = false;
-      $btn.nextElementSibling.innerHTML = "";
+      if ($btn) {
+        $btn.disabled = false;
+        if ($btn.nextElementSibling) {
+          $btn.nextElementSibling.innerHTML = "";
+        }
+      }
     } else {
       console.error("API error:", result);
       return id;

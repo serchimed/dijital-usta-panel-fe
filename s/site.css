@@ -1063,3 +1063,27 @@ table td a {
     margin: 0;
   }
 }
+
+/* AI History - Prompt ve Answer kolonlarını kısalt */
+td[data-label="Giden Prompt"],
+td[data-label="Gelen Cevap"] {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td[data-label="Giden Prompt"]:hover,
+td[data-label="Gelen Cevap"]:hover {
+  white-space: normal;
+  overflow: visible;
+  word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  td[data-label="Giden Prompt"],
+  td[data-label="Gelen Cevap"] {
+    max-width: none;
+    white-space: normal;
+  }
+}
