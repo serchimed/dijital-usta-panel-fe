@@ -4,6 +4,45 @@ let companiesLoaded = false;
 
 let $shortlistTbody = document.getElementById("CandidateShortlisted");
 
+function createCancelHireButton(memberId, companyId, onSuccess) {
+  let $hireCancelBtn = btn("btn-danger", "İşe Alımı İptal Et");
+
+  $hireCancelBtn.addEventListener(CLICK_EVENT, async function () {
+    let $mbody = div();
+    let $confirmLabel = p("İşe alımı iptal etmek istediğinize emin misiniz?");
+    let $msgDiv = div(CSS_CLASSES.modalMessage);
+    let $modal;
+
+    let handleCancelHire = async function () {
+      setButtonLoading(buttons.submitBtn, true);
+
+      let apiParams = { memberId: memberId };
+      if (companyId) {
+        apiParams.companyId = companyId;
+      }
+
+      let result = await api("Candidate/HireFailed", apiParams);
+
+      if (result && result.isSuccess) {
+        if (onSuccess) {
+          onSuccess($hireCancelBtn);
+        }
+
+        showSuccessAndClose($msgDiv, $modal, "İşe alım iptal edildi.");
+      } else {
+        showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
+        setButtonLoading(buttons.submitBtn, false);
+      }
+    };
+
+    let buttons = createModalButtons("İptal", "Onayla", () => closeModal($modal), handleCancelHire);
+    $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+    $modal = createModal("İşe Alımı İptal Et", $mbody);
+  });
+
+  return $hireCancelBtn;
+}
+
 function setupShortlistTable() {
   if (!$shortlistTbody) return;
 
@@ -22,7 +61,16 @@ function setupShortlistTable() {
         let $interviewBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, true, $hireBtn, item.isInterviewResulted, item.isHired);
         let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
         $interviewBtn.$shortlistBtn = $shortlistBtn;
-        tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
+
+        let $hireCancelTrBtn = createCancelHireButton(candidateId, item.companyId, function ($btn) {
+          $btn.style.display = "none";
+          $hireBtn.style.display = "";
+        });
+        $hireCancelTrBtn.style.display = item.isHired ? "" : "none";
+
+        $hireBtn.addEventListener("hireSuccess", function () { $hireCancelTrBtn.style.display = ""; });
+
+        tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $hireCancelTrBtn, $msg);
       }
     });
   });
@@ -190,57 +238,23 @@ onAuthReady(async () => {
   let $shortlistDetails = $shortlistTbody?.closest("details");
 
   if ($st && $st.textContent === "İşe alım doğrulandı") {
-    // Shortlist bölümünü gizle
-    if ($shortlistDetails) {
-      $shortlistDetails.style.display = "none";
-    }
+    if ($shortlistDetails) { $shortlistDetails.style.display = "none"; }
 
-    // İşe alımı iptal et düğmesini ekle
     let $candidateActions = document.getElementById("candidateActions");
     if ($candidateActions) {
-      let $cancelHireBtn = btn("btn-danger", "İşe Alımı İptal Et");
+      let $hireCancelBtn = createCancelHireButton(candidateId, null, function ($btn) {
+        $btn.remove();
 
-      $cancelHireBtn.addEventListener(CLICK_EVENT, async function () {
-        let $mbody = div();
-        let $confirmLabel = p("İşe alımı iptal etmek istediğinize emin misiniz?");
-        let $msgDiv = div(CSS_CLASSES.modalMessage);
-        let $modal;
+        if ($shortlistDetails) { $shortlistDetails.style.display = ""; }
 
-        let handleCancelHire = async function () {
-          setButtonLoading(buttons.submitBtn, true);
-
-          let result = await api("Candidate/HireFailed", { memberId: candidateId });
-
-          if (result && result.isSuccess) {
-            // İptal düğmesini kaldır
-            $cancelHireBtn.remove();
-
-            // Shortlist bölümünü tekrar göster ve tabloyu yükle
-            if ($shortlistDetails) {
-              $shortlistDetails.style.display = "";
-            }
-
-            // Shortlist event listener'ını kur ve tabloyu yükle
-            setupShortlistTable();
-            await loadTables("#" + $shortlistTbody.id);
-
-            showSuccessAndClose($msgDiv, $modal, "İşe alım iptal edildi.");
-          } else {
-            showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
-            setButtonLoading(buttons.submitBtn, false);
-          }
-        };
-
-        let buttons = createModalButtons("İptal", "Onayla", () => closeModal($modal), handleCancelHire);
-        $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
-        $modal = createModal("İşe Alımı İptal Et", $mbody);
+        setupShortlistTable();
+        loadTables("#" + $shortlistTbody.id);
       });
 
-      $candidateActions.appendChild($cancelHireBtn);
+      $candidateActions.appendChild($hireCancelBtn);
     }
   }
   else {
-    // İşe alım doğrulanmadıysa shortlist eventlerini kur
     setupShortlistTable();
 
     let $search = document.getElementById("companySearch");

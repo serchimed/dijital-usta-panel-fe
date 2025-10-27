@@ -34,10 +34,19 @@ onAuthReady(async () => {
   });
 
   let $d = document.getElementById("AIHistoryDetails");
-  $d.addEventListener(CLICK_EVENT, async () => {
+  $d.addEventListener(CLICK_EVENT, async (e) => {
     if (!$d.hasAttribute("open") && !$d.dataset.loaded) {
       $d.dataset.loaded = true;
       await loadTables("#AIHistory");
+
+      setTimeout(() => {
+        document.querySelectorAll('td[data-label="Giden Prompt"], td[data-label="Gelen Cevap"]').forEach($td => {
+          $td.addEventListener(CLICK_EVENT, function(e) {
+            e.stopPropagation();
+            this.classList.toggle('expanded');
+          });
+        });
+      }, 100);
     }
   });
 });

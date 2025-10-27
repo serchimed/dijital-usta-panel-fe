@@ -15,11 +15,25 @@ onAuthReady(async () => {
     for (let company of result.data) {
       let $tr = tr();
 
-      $tr.append(tda(company.companyName, "admin-company-profile.html?id=" + company.id));
-      $tr.append(td(company.city));
-      $tr.append(td(company.responsibleMemberName));
-      $tr.append(tda(company.trendyolUrl, company.trendyolUrl));
-      $tr.append(tda(company.webUrl, company.webUrl));
+      let $tdCompanyName = tda(company.companyName, "admin-company-profile.html?id=" + company.id);
+      $tdCompanyName.setAttribute("data-label", "Firma");
+      $tr.append($tdCompanyName);
+
+      let $tdCity = td(company.city);
+      $tdCity.setAttribute("data-label", "İl");
+      $tr.append($tdCity);
+
+      let $tdResponsible = td(company.responsibleMemberName);
+      $tdResponsible.setAttribute("data-label", "Yetkili");
+      $tr.append($tdResponsible);
+
+      let $tdTrendyol = tda(company.trendyolUrl, company.trendyolUrl);
+      $tdTrendyol.setAttribute("data-label", "Trendyol Satıcı Profili");
+      $tr.append($tdTrendyol);
+
+      let $tdWeb = tda(company.webUrl, company.webUrl);
+      $tdWeb.setAttribute("data-label", "Web Sitesi");
+      $tr.append($tdWeb);
 
       let $btn = createBlockButton(company.id, company.isBlocked, company.companyName, "Company/Block", "Company/Unblock", "companyId");
       $tr.append(tdbtn($btn));

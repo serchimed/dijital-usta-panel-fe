@@ -17,6 +17,7 @@ onAuthReady(() => {
     let errors = [];
     if (!req.companyName) { errors.push("Çalışılan firma adını giriniz."); }
     if (!req.city) { errors.push("İl bilgisini giriniz."); }
+    else if (!CITIES.includes(req.city)) { errors.push(`Sadece şu iller geçerli: ${CITIES.join(", ")}`); }
     if (!req.editorNameSurname) { errors.push("Firma yetkilisi adını ve soyadını giriniz."); }
     if (!req.phone) { errors.push("Firma yetkilisi telefonunu giriniz."); }
     else if (!checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }

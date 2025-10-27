@@ -21,6 +21,7 @@ onAuthReady(() => {
     let errors = [];
     if (!req.companyName) { errors.push("Firma adını giriniz."); }
     if (!req.city) { errors.push("İl bilgisini giriniz."); }
+    else if (!CITIES.includes(req.city)) { errors.push(`Sadece şu iller geçerli: ${CITIES.join(", ")}`); }
     if (!req.responsibleMemberName) { errors.push("Firma yetkilisi adı soyadı giriniz."); }
     if (!req.email) { errors.push("Firma yetkilisi eposta adresini giriniz."); }
     if (req.email && !checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }

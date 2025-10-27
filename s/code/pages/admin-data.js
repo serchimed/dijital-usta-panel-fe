@@ -37,8 +37,14 @@ onAuthReady(async () => {
     $tbody.innerHTML = "";
     for (let file of files) {
       let $tr = tr();
-      $tr.append(td(file.fileName));
-      $tr.append(td(file.sizeKB));
+
+      let $tdFileName = td(file.fileName);
+      $tdFileName.setAttribute("data-label", "Dosya Adı");
+      $tr.append($tdFileName);
+
+      let $tdSize = td(file.sizeKB);
+      $tdSize.setAttribute("data-label", "Boyut (KB)");
+      $tr.append($tdSize);
 
       let $downloadBtn = btn("btn-gray", "İndir");
       $downloadBtn.addEventListener(CLICK_EVENT, async function () {
@@ -262,12 +268,31 @@ onAuthReady(async () => {
     let $summaryTable = document.getElementById("summaryTable");
     $summaryTable.innerHTML = "";
     let $tr = tr();
-    $tr.append(td(data.summary.totalRecordsInBackup || 0));
-    $tr.append(td(data.summary.totalRecordsInSystem || 0));
-    $tr.append(td(data.summary.newRecordsCount || 0));
-    $tr.append(td(data.summary.updatedRecordsCount || 0));
-    $tr.append(td(data.summary.deletedRecordsCount || 0));
-    $tr.append(td(data.summary.unchangedRecordsCount || 0));
+
+    let $tdBackupTotal = td(data.summary.totalRecordsInBackup || 0);
+    $tdBackupTotal.setAttribute("data-label", "Yedekteki Toplam");
+    $tr.append($tdBackupTotal);
+
+    let $tdSystemTotal = td(data.summary.totalRecordsInSystem || 0);
+    $tdSystemTotal.setAttribute("data-label", "Sistemdeki Toplam");
+    $tr.append($tdSystemTotal);
+
+    let $tdNew = td(data.summary.newRecordsCount || 0);
+    $tdNew.setAttribute("data-label", "Yeni");
+    $tr.append($tdNew);
+
+    let $tdUpdated = td(data.summary.updatedRecordsCount || 0);
+    $tdUpdated.setAttribute("data-label", "Güncellenen");
+    $tr.append($tdUpdated);
+
+    let $tdDeleted = td(data.summary.deletedRecordsCount || 0);
+    $tdDeleted.setAttribute("data-label", "Silinen");
+    $tr.append($tdDeleted);
+
+    let $tdUnchanged = td(data.summary.unchangedRecordsCount || 0);
+    $tdUnchanged.setAttribute("data-label", "Değişmeyen");
+    $tr.append($tdUnchanged);
+
     $summaryTable.append($tr);
 
     let $recordsByTypeTable = document.getElementById("recordsByTypeTable");
@@ -275,15 +300,36 @@ onAuthReady(async () => {
     if (data.recordsByType && Array.isArray(data.recordsByType)) {
       for (let record of data.recordsByType) {
         let $tr = tr();
+
         let $tdType = td();
         $tdType.append(strong(record.typeName || '-'));
+        $tdType.setAttribute("data-label", "Veri Tipi");
         $tr.append($tdType);
-        $tr.append(td(record.totalInBackup || 0));
-        $tr.append(td(record.totalInSystem || 0));
-        $tr.append(td(record.new || 0));
-        $tr.append(td(record.updated || 0));
-        $tr.append(td(record.deleted || 0));
-        $tr.append(td(record.unchanged || 0));
+
+        let $tdBackup = td(record.totalInBackup || 0);
+        $tdBackup.setAttribute("data-label", "Yedekte");
+        $tr.append($tdBackup);
+
+        let $tdSystem = td(record.totalInSystem || 0);
+        $tdSystem.setAttribute("data-label", "Sistemde");
+        $tr.append($tdSystem);
+
+        let $tdNew = td(record.new || 0);
+        $tdNew.setAttribute("data-label", "Yeni");
+        $tr.append($tdNew);
+
+        let $tdUpdated = td(record.updated || 0);
+        $tdUpdated.setAttribute("data-label", "Güncellenen");
+        $tr.append($tdUpdated);
+
+        let $tdDeleted = td(record.deleted || 0);
+        $tdDeleted.setAttribute("data-label", "Silinen");
+        $tr.append($tdDeleted);
+
+        let $tdUnchanged = td(record.unchanged || 0);
+        $tdUnchanged.setAttribute("data-label", "Değişmeyen");
+        $tr.append($tdUnchanged);
+
         $recordsByTypeTable.append($tr);
       }
     }
@@ -330,12 +376,23 @@ onAuthReady(async () => {
       let $tbody = tbody();
       for (let record of group.records) {
         let $tr = tr();
-        $tr.append(td(record.id));
+
+        let $tdId = td(record.id);
+        $tdId.setAttribute("data-label", "ID");
+        $tr.append($tdId);
+
         if (showDates) {
-          $tr.append(td(record.backupCreatedAt || '-'));
-          $tr.append(td(record.currentCreatedAt || '-'));
+          let $tdBackupDate = td(record.backupCreatedAt || '-');
+          $tdBackupDate.setAttribute("data-label", "Yedek Tarihi");
+          $tr.append($tdBackupDate);
+
+          let $tdCurrentDate = td(record.currentCreatedAt || '-');
+          $tdCurrentDate.setAttribute("data-label", "Sistem Tarihi");
+          $tr.append($tdCurrentDate);
         } else {
-          $tr.append(td(record.createdAt || record.backupCreatedAt || '-'));
+          let $tdDate = td(record.createdAt || record.backupCreatedAt || '-');
+          $tdDate.setAttribute("data-label", "Tarih");
+          $tr.append($tdDate);
         }
         $tbody.append($tr);
       }

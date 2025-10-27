@@ -49,6 +49,7 @@ onAuthReady(async () => {
     if (!req.university) { errors.push("Üniversite adını giriniz."); }
     if (!req.major) { errors.push("Bölüm bilgisini giriniz."); }
     if (!req.city) { errors.push("İl bilgisini giriniz."); }
+    else if (!CITIES.includes(req.city)) { errors.push(`Sadece şu iller geçerli: ${CITIES.join(", ")}`); }
     if (!req.county) { errors.push("İlçe bilgisini giriniz."); }
 
     if (showErrors($msg, errors)) { return; }

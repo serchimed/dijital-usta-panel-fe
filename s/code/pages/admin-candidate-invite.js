@@ -1,11 +1,16 @@
+let $city = document.getElementById("city");
+autocomplete($city, CITIES, (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()), (city) => city, (city, $input) => { $input.value = city; });
+
 onAuthReady(() => {
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;
   $btn.addEventListener(CLICK_EVENT, async function () {
-    let req = { lines: val("lines") };
+    let req = { lines: val("lines"), city: val("city") };
     req.lines = (req.lines || "").trim();
 
     let errors = [];
+    if (!req.city) { errors.push("İl bilgisini giriniz."); }
+    else if (!CITIES.includes(req.city)) { errors.push(`Sadece şu iller geçerli: ${CITIES.join(", ")}`); }
     if (!req.lines) {
       errors.push("E-posta adreslerini ve puanlarını giriniz.");
       if (showErrors($msg, errors)) { return; }

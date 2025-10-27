@@ -390,6 +390,12 @@ function createHireApproveButton(memberId, companyId, displayName, isInterviewRe
 
       if (result && result.isSuccess) {
         setBtnState($btn, false, "Adayın işe alındığı onaylandı");
+
+        let $statusSpan = document.getElementById("status");
+        if ($statusSpan) { $statusSpan.textContent = "İşe alım doğrulandı"; }
+
+        $btn.dispatchEvent(new CustomEvent("hireSuccess", { bubbles: true }));
+
         showSuccessAndClose($msgDiv, $modal, `${displayName} işe alındı!`);
       } else {
         showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);

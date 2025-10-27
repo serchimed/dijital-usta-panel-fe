@@ -41,6 +41,7 @@ onAuthReady(async () => {
     if (!req.email) { errors.push("E-posta adresini giriniz."); }
     else if (!checkEmail(req.email)) { errors.push("Geçerli eposta adresini giriniz."); }
     if (!req.city) { errors.push("İl bilgisini giriniz."); }
+    else if (!CITIES.includes(req.city)) { errors.push(`Sadece şu iller geçerli: ${CITIES.join(", ")}`); }
     if (!req.sector) { errors.push("Sektör bilgisini giriniz."); }
     if (!req.webUrl) { errors.push("Web sitesi bilgisini giriniz."); }
     else if (!checkUrl(req.webUrl)) { errors.push("Geçerli bir web sitesi URL'si giriniz."); }
