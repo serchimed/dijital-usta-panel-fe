@@ -12,6 +12,40 @@ $tbl.addEventListener("tableLoaded", function (e) {
   });
 });
 
+let $expTbl = document.getElementById("CandidateExperience");
+if ($expTbl) {
+  $expTbl.addEventListener("tableLoaded", function (e) {
+    if (e.detail.error || !e.detail.data || e.detail.data.length === 0) { return; }
+
+    let rows = this.querySelectorAll("tr");
+    e.detail.data.forEach((item, index) => {
+      let $row = rows[index];
+      if (!$row || !item.id) { return; }
+
+      let $link = a("Düzenle", `candidate-experience-edit.html?id=${item.id}`);
+      $link.target = "_blank";
+      $row.lastElementChild.append($link);
+    });
+  });
+}
+
+let $certTbl = document.getElementById("CandidateCertificate");
+if ($certTbl) {
+  $certTbl.addEventListener("tableLoaded", function (e) {
+    if (e.detail.error || !e.detail.data || e.detail.data.length === 0) { return; }
+
+    let rows = this.querySelectorAll("tr");
+    e.detail.data.forEach((item, index) => {
+      let $row = rows[index];
+      if (!$row || !item.id) { return; }
+
+      let $link = a("Düzenle", `candidate-certificate-edit.html?id=${item.id}`);
+      $link.target = "_blank";
+      $row.lastElementChild.append($link);
+    });
+  });
+}
+
 onAuthReady(async () => {
   await Promise.all([
     fillSpans("Candidate/Get"),

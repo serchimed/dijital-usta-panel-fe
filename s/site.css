@@ -249,6 +249,10 @@ p {
   line-height: 1.5;
 }
 
+main button + p {
+  white-space: pre-line;
+}
+
 ul,
 ol {
   margin: 13px 0 21px 21px;
@@ -733,6 +737,21 @@ details>div>p.description {
 
 #newCompanyWarning {
   display: none;
+}
+
+#motivationLetterWarning,
+#newCompanyWarning {
+  border: 2px solid #e20707;
+  background-color: #ffebeb;
+  padding: 21px;
+  border-radius: 8px;
+  margin: 21px 0;
+}
+
+#motivationLetterWarning p,
+#newCompanyWarning p {
+  color: #e20707;
+  margin: 8px 0;
 }
 
 .lbl-warn,

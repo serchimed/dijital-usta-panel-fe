@@ -17,19 +17,14 @@ function createCancelHireButton(memberId, companyId, onSuccess) {
       setButtonLoading(buttons.submitBtn, true);
 
       let apiParams = { memberId: memberId };
-      if (companyId) {
-        apiParams.companyId = companyId;
-      }
+      if (companyId) { apiParams.companyId = companyId; }
 
       let result = await api("Candidate/HireFailed", apiParams);
-
       if (result && result.isSuccess) {
-        if (onSuccess) {
-          onSuccess($hireCancelBtn);
-        }
+        if (onSuccess) { onSuccess($hireCancelBtn); }
 
         showSuccessAndClose($msgDiv, $modal, "İşe alım iptal edildi.");
-        set("status","İşe alım tamamlanamadı ya da iptal edildi");
+        document.getElementById("status").textContent = "İşe alım tamamlanamadı ya da iptal edildi";
       } else {
         showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
         setButtonLoading(buttons.submitBtn, false);
@@ -63,9 +58,10 @@ function setupShortlistTable() {
         let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
         $interviewBtn.$shortlistBtn = $shortlistBtn;
 
-        let $hireCancelTrBtn = createCancelHireButton(candidateId, item.companyId, function ($btn) {
+        let $hireCancelTrBtn = createCancelHireButton(candidateId, item.companyId, async function ($btn) {
           $btn.style.display = "none";
           $hireBtn.style.display = "";
+          await loadTables("#" + $shortlistTbody.id);
         });
         $hireCancelTrBtn.style.display = item.isHired ? "" : "none";
 
