@@ -31,6 +31,7 @@ let PUBLIC_PAGES = [
   "error-server",
   "candidate-invite-accept",
   "concent",
+  "company-concent",
   "404"
 ];
 

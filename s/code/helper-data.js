@@ -136,6 +136,11 @@ async function fillSpans(url, key = "memberId") {
         }
       }
     }
+
+    let name = result.data.displayName || result.data.companyName;
+    if (name && name !== "-") {
+      document.title = name + " | " + document.title;
+    }
   }
 
   if (!result.isSuccess) { console.error("API error:", result); }
