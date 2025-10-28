@@ -700,6 +700,11 @@ details>div>input[type="file"] {
   width: 100%;
 }
 
+details>div>input.tblfilter {
+  grid-column: span 3;
+  width: 100%;
+}
+
 details details {
   grid-column: span 3;
   width: 100%;
@@ -985,7 +990,7 @@ td[data-label="Gelen Cevap"].expanded {
   details>div>label:has(textarea),
   details>div>label:has(table),
   details>div>table {
-    grid-column: span 1;
+    grid-column: span 3;
   }
 
   footer div {

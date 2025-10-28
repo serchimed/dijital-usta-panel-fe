@@ -29,6 +29,7 @@ function createCancelHireButton(memberId, companyId, onSuccess) {
         }
 
         showSuccessAndClose($msgDiv, $modal, "İşe alım iptal edildi.");
+        set("status","İşe alım tamamlanamadı ya da iptal edildi");
       } else {
         showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);
         setButtonLoading(buttons.submitBtn, false);

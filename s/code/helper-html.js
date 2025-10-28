@@ -141,9 +141,10 @@ function p(text) {
   return $p;
 }
 
-function td(text) {
+function td(text, label) {
   let $td = document.createElement("td");
   if (text) { $td.textContent = text; }
+  if (label) { $td.setAttribute("data-label", label); }
   return $td;
 }
 
@@ -181,16 +182,16 @@ function strong(text) {
   return $s;
 }
 
-function tda(text, href) {
-  let $td = td();
+function tda(text, href, label) {
+  let $td = td(null, label);
   let $a = a(text, href);
   $a.target = "_blank";
   $td.append($a);
   return $td;
 }
 
-function tdbtn(btn) {
-  let $td = td();
+function tdbtn(btn, label) {
+  let $td = td(null, label);
   $td.append(btn, p());
   return $td;
 }

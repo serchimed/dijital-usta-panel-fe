@@ -14,16 +14,16 @@ onAuthReady(async () => {
 
     for (let candidate of result.data) {
       let $tr = tr();
-      $tr.append(tda(candidate.displayName, "admin-candidate-profile.html?id=" + candidate.id));
-      $tr.append(td(candidate.gender));
-      $tr.append(td(formatDateLong(candidate.birthDate)));
-      $tr.append(td(candidate.city));
-      $tr.append(td(candidate.university));
-      $tr.append(td(candidate.major));
-      $tr.append(td(candidate.status));
+      $tr.append(tda(candidate.displayName, "admin-candidate-profile.html?id=" + candidate.id, "Aday"));
+      $tr.append(td(candidate.gender, "Cinsiyet"));
+      $tr.append(td(formatDateLong(candidate.birthDate), "Doğum Tarihi"));
+      $tr.append(td(candidate.city, "İl"));
+      $tr.append(td(candidate.university, "Üniversite"));
+      $tr.append(td(candidate.major, "Bölüm"));
+      $tr.append(td(candidate.status, "Durum"));
 
       let $btn = createBlockButton(candidate.id, candidate.isBlocked, candidate.displayName, "Member/Block", "Member/Unblock", "memberId");
-      $tr.append(tdbtn($btn));
+      $tr.append(tdbtn($btn, ""));
 
       tbody.append($tr);
     }
