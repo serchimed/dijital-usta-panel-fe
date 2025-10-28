@@ -54,7 +54,7 @@ header {
 }
 
 header img {
-  height: 66px;
+  width: 500px;
 }
 
 .head-msg {
@@ -1033,6 +1033,10 @@ td[data-label="Gelen Cevap"].expanded {
   header {
     padding: 21px;
     margin-top: 13px;
+  }
+
+  header img {
+    width: 321px;
   }
 
   main {

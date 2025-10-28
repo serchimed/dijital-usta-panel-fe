@@ -12,7 +12,8 @@ onAuthReady(() => {
       name: val("name"),
       organization: val("organization"),
       year: val("year"),
-      description: val("description")
+      description: val("description"),
+      isOngoing: document.getElementById("isOngoing").checked
     };
 
     let errors = [];

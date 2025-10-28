@@ -3,7 +3,6 @@ function getReq(id) {
     memberId: USER.id,
     companyId: id,
     companyName: val("companyName"),
-    city: val("city"),
     sector: val("sector"),
     responsibleMemberName: val("responsibleMemberName"),
     email: val("email"),
@@ -17,9 +16,6 @@ function getReq(id) {
 onAuthReady(async () => {
   let id = await fillInputs("Company/Get", "companyId");
   let initialRequest = getReq(id);
-
-  let $city = document.getElementById("city");
-  autocomplete($city, CITIES, (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()), (city) => city, (city, $input) => { $input.value = city; });
 
   if (USER.role === "editor" || USER.role === "admin") { document.getElementById("driveUrl").parentElement.style.display = "block"; }
 
@@ -40,8 +36,6 @@ onAuthReady(async () => {
     else if (!checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
     if (!req.email) { errors.push("E-posta adresini giriniz."); }
     else if (!checkEmail(req.email)) { errors.push("Geçerli eposta adresini giriniz."); }
-    if (!req.city) { errors.push("İl bilgisini giriniz."); }
-    else if (!CITIES.includes(req.city)) { errors.push(`Sadece şu iller geçerli: ${CITIES.join(", ")}`); }
     if (!req.sector) { errors.push("Sektör bilgisini giriniz."); }
     if (!req.webUrl) { errors.push("Web sitesi bilgisini giriniz."); }
     else if (!checkUrl(req.webUrl)) { errors.push("Geçerli bir web sitesi URL'si giriniz."); }

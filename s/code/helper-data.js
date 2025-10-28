@@ -77,7 +77,12 @@ async function loadTables(querySelector = "table.load tbody") {
 
         if (template) {
           let href = template === key ? value : template.replace(/\{([^}]+)\}/g, (_, token) => item[token] ?? "");
-          $td = tda(value || href || "", href || "#");
+
+          if (href.includes("00000000-0000-0000-0000-000000000000")) {
+            $td = td("");
+          } else {
+            $td = tda(value || href || "", href || "#");
+          }
         } else {
           $td = td(value);
         }
