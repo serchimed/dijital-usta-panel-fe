@@ -1113,7 +1113,12 @@ td[data-label="Gelen Cevap"].expanded {
 
   table td a,
   table td button {
-    margin: 0;
+    margin: 4px;
+  }
+
+  table td button {
+    white-space: normal;
+    word-break: keep-all;
   }
 
   table td,
@@ -1121,7 +1126,6 @@ td[data-label="Gelen Cevap"].expanded {
   table td span {
     word-wrap: break-word;
     overflow-wrap: break-word;
-    word-break: break-all;
     max-width: 100%;
   }
 
