@@ -140,6 +140,15 @@ async function fillSpans(url, key = "memberId") {
           $s.textContent = v;
         }
       }
+
+      let placeholder = `{${prop}}`;
+      let $links = document.querySelectorAll(`a[href*="${placeholder}"]`);
+      if ($links.length > 0) {
+        let v = result.data[prop] || "";
+        $links.forEach($link => {
+          $link.href = $link.href.replace(placeholder, v);
+        });
+      }
     }
 
     let name = result.data.displayName || result.data.companyName;
