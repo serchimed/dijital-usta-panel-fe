@@ -36,7 +36,7 @@ let PUBLIC_PAGES = [
 ];
 
 let PAGE_ROLES = {
-  "index": ["admin", "editor"],
+  "index": ["admin"],
   "logout": ["admin", "editor", "candidate", "company"],
 
   "admin-company-list": ["admin", "editor"],
@@ -142,7 +142,7 @@ function buildAuthenticatedMenu() {
 
   $nav.innerHTML = "";
 
-  if (USER.role === "editor" || USER.role === "admin") {
+  if (USER.role === "admin") {
     if (page === "index") {
       let $li = li();
       $li.append(spn("Ana Sayfa", "current-page"));
@@ -184,8 +184,10 @@ function updateLogoLink() {
     $logoLink.href = `candidate-profile.html?id=${USER.id}`;
   } else if (role === "company") {
     $logoLink.href = "company-candidate-list.html";
-  } else if (role === "admin" || role === "editor") {
+  } else if (role === "admin") {
     $logoLink.href = "index.html";
+  } else if (role === "editor") {
+    $logoLink.href = "admin-company-list.html";
   }
 }
 

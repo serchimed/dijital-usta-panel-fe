@@ -28,6 +28,10 @@ async function initAuth() {
 
   let allowedRoles = PAGE_ROLES[page];
   if (!allowedRoles || !allowedRoles.includes(USER.role.toLowerCase())) {
+    if (USER.role.toLowerCase() === "editor" && page === "index") {
+      window.location.replace("admin-company-list.html");
+      return;
+    }
     showHeaderMsg("Erişim izniniz yok, yönlendiriliyorsunuz...");
     hideOverlay();
     setTimeout(() => window.location.replace("access-denied.html"), DELAY_2);

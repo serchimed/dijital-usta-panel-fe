@@ -7,7 +7,14 @@ onReady(() => {
 
   let prms = new URLSearchParams(window.location.search);
   let prmEmail = prms.get("email");
-  if (prmEmail) { $email.value = prmEmail; }
+  if (prmEmail) {
+    let regex = /[?&]email=([^&]*)/;
+    let match = window.location.search.match(regex);
+    if (match && match[1].includes('+')) {
+      prmEmail = decodeURIComponent(match[1]);
+    }
+    $email.value = prmEmail;
+  }
 
   let handleLogin = async function () {
     let email = $email.value.trim();

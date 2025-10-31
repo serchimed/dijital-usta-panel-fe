@@ -141,6 +141,28 @@ async function fillSpans(url, key = "memberId") {
         }
       }
 
+      if (prop === "hiredCompanyName") {
+        let $span = document.getElementById("hiredCompanyName");
+        if ($span) {
+          let v = result.data[prop] || "-";
+          let $parentLink = $span.closest("a");
+          if ($parentLink && (v === "-" || v === "")) {
+            $parentLink.removeAttribute("href");
+          }
+        }
+      }
+
+      if (prop === "candidateName") {
+        let $span = document.getElementById("candidateName");
+        if ($span) {
+          let v = result.data[prop] || "-";
+          let $parentLink = $span.closest("a");
+          if ($parentLink && (v === "-" || v === "")) {
+            $parentLink.removeAttribute("href");
+          }
+        }
+      }
+
       let placeholder = `{${prop}}`;
       let $links = document.querySelectorAll(`a[href*="${placeholder}"]`);
       if ($links.length > 0) {

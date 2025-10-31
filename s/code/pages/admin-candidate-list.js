@@ -1,4 +1,9 @@
 onAuthReady(async () => {
+  if (USER && USER.role === "editor") {
+    let $link = document.querySelector('a[href="admin-candidate-list-included.html"]');
+    if ($link) { $link.style.visibility = "hidden"; }
+  }
+
   let $exportMsg = document.getElementById("exportMsg");
   let $exportBtn = document.getElementById("exportBtn");
   $exportBtn.addEventListener(CLICK_EVENT, async function () {

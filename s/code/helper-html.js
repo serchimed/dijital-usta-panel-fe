@@ -215,9 +215,10 @@ function set(id, val) {
 }
 
 function formatDateLong(dateStr) {
-  if (!dateStr) return "-";
+  if (!dateStr) { return "-"; }
   let dt = new Date(dateStr);
-  if (isNaN(dt.getTime())) return dateStr;
+  if (isNaN(dt.getTime())) { return dateStr; }
+  if (dt.getFullYear() === 1) { return ""; }
   return dt.toLocaleDateString("tr-TR", { day: '2-digit', month: 'long', year: 'numeric' });
 }
 

@@ -25,6 +25,7 @@ function createInviteInfoCell(entity, config) {
 
     let $btnResend = btn("btn-act", "Davet Gönder");
     $btnResend.style.marginTop = "8px";
+    $btnResend.style.marginBottom = "15px";
     $btnResend.addEventListener(CLICK_EVENT, async function () {
       let $msg = this.nextElementSibling;
       if (!$msg || $msg.tagName !== "P") {
@@ -32,10 +33,31 @@ function createInviteInfoCell(entity, config) {
         this.after($msg);
       }
 
-      let params = {};
-      params[config.idParamKey] = entity.id;
+      let $mbody = div();
+      let $confirmLabel = p("Davet e-postası göndermek istediğinize emin misiniz?");
+      let $msgDiv = div(CSS_CLASSES.modalMessage);
+      let $modal;
 
-      await apiBtn(this, config.endpoint, params, "Davet e-postası gönderildi.", "E-posta gönderilemedi.", null, $msg);
+      let handleSend = async () => {
+        setButtonLoading(buttons.submitBtn, true);
+
+        let params = {};
+        params[config.idParamKey] = entity.id;
+
+        let result = await api(config.endpoint, params);
+        if (result && result.isSuccess) {
+          showSuccessAndClose($msgDiv, $modal, "Davet e-postası gönderildi.");
+          $msg.textContent = "Davet e-postası gönderildi.";
+          $msg.className = "success";
+        } else {
+          showModalMessage($msgDiv, "error", result?.message || "E-posta gönderilemedi.");
+          setButtonLoading(buttons.submitBtn, false);
+        }
+      };
+
+      let buttons = createModalButtons("İptal", "Gönder", () => closeModal($modal), handleSend);
+      $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+      $modal = createModal("Davet Gönder", $mbody);
     });
     $tdInvite.append(document.createElement("br"), $btnResend, p());
   }

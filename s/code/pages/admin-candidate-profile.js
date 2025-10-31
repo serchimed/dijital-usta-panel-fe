@@ -102,6 +102,14 @@ onAuthReady(async () => {
     $letter.style.height = "auto";
   }
 
+  if (USER && USER.role && USER.role.toLowerCase() === "editor") {
+    let $aiDetails = document.getElementById("detailsAI");
+    if ($aiDetails) { $aiDetails.style.display = "none"; }
+
+    let $surveyLink = document.querySelector('a.qs[href*="admin-candidate-survey.html"]');
+    if ($surveyLink) { $surveyLink.style.display = "none"; }
+  }
+
   let $btnAIApprove = document.getElementById("btnAIApprove");
   let $msgAIApprove = document.getElementById("msgAIApprove");
   let $aiApprovedSpan = document.getElementById("aiApproved");

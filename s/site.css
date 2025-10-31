@@ -951,8 +951,8 @@ main a {
   display: block;
 }
 
-p a,
-label a {
+p:not(details *) a,
+label:not(details *) a {
   display: inline-block;
 }
 
