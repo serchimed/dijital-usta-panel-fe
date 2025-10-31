@@ -284,7 +284,23 @@ label {
   font-size: 15px;
 }
 
-label span {
+label.chk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+label.chk input[type="checkbox"] {
+  margin-left: 0;
+}
+
+label.chk span {
+  display: inline;
+  font-size: 15px;
+  margin-block: 0;
+}
+
+label:not(.chk) span {
   margin-block: 5px;
   display: block;
   font-size: 21px;

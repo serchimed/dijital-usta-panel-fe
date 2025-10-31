@@ -23,7 +23,7 @@ function createInviteInfoCell(entity, config) {
     inviteText = "Davet beklemede";
     $tdInvite.textContent = inviteText;
 
-    let $btnResend = btn("btn-act", "Daveti Tekrar Gönder");
+    let $btnResend = btn("btn-act", "Davet Gönder");
     $btnResend.style.marginTop = "8px";
     $btnResend.addEventListener(CLICK_EVENT, async function () {
       let $msg = this.nextElementSibling;
