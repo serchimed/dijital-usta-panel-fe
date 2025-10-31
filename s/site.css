@@ -258,7 +258,7 @@ p {
   line-height: 1.5;
 }
 
-main button + p {
+main button+p {
   white-space: pre-line;
 }
 
@@ -292,6 +292,8 @@ label.chk {
 
 label.chk input[type="checkbox"] {
   margin-left: 0;
+  display: inline-block;
+  margin-right: 3px;
 }
 
 label.chk span {
@@ -786,7 +788,7 @@ details>div>p.description {
 #lblAccept span {
   display: inline;
   margin: 0;
-  vertical-align: middle;
+  vertical-align: super;
 }
 
 .lbl-warn,
@@ -1166,7 +1168,7 @@ td[data-label="Gelen Cevap"].expanded {
   }
 
   table td:not([data-label]),
-  table td[data-label=""] {lblAccept
+  table td[data-label=""] {
     justify-content: flex-end;
   }
 

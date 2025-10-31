@@ -46,7 +46,7 @@ onAuthReady(async () => {
       $tdSize.setAttribute("data-label", "Boyut (KB)");
       $tr.append($tdSize);
 
-      let $downloadBtn = btn("btn-gray", "İndir");
+      let $downloadBtn = btn("btn-act", "İndir");
       $downloadBtn.addEventListener(CLICK_EVENT, async function () {
         this.disabled = true;
         await downloadCsv(downloadEndpoint, { fileName: file.fileName }, file.fileName, this.nextElementSibling);
