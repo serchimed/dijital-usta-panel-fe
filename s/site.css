@@ -165,6 +165,15 @@ nav li a:hover {
   color: #FE5200;
 }
 
+nav li .current-page {
+  display: block;
+  padding: 8px 27px;
+  color: #FE5200;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+}
+
 footer {
   color: #fff;
   background-color: #FE5200;

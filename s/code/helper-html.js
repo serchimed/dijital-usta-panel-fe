@@ -182,6 +182,13 @@ function strong(text) {
   return $s;
 }
 
+function spn(text, className) {
+  let $s = document.createElement("span");
+  if (text) { $s.textContent = text; }
+  if (className) { $s.className = className; }
+  return $s;
+}
+
 function tda(text, href, label) {
   let $td = td(null, label);
   let $a = a(text, href);

@@ -122,7 +122,11 @@ function buildGuestMenu() {
   $nav.innerHTML = "";
 
   MENU.guest.forEach(item => {
-    if (item.href !== page) {
+    if (item.href === page) {
+      let $li = li();
+      $li.append(spn(item.text, "current-page"));
+      $nav.append($li);
+    } else {
       $nav.append(lia(item.text, item.href + ".html"));
     }
   });
@@ -139,13 +143,25 @@ function buildAuthenticatedMenu() {
   $nav.innerHTML = "";
 
   if (USER.role === "editor" || USER.role === "admin") {
-    $nav.append(lia("Ana Sayfa", "index.html"));
+    if (page === "index") {
+      let $li = li();
+      $li.append(spn("Ana Sayfa", "current-page"));
+      $nav.append($li);
+    } else {
+      $nav.append(lia("Ana Sayfa", "index.html"));
+    }
   }
 
   let role = USER.role.toLowerCase();
   let items = MENU[role] || [];
   items.forEach(item => {
-    if (item.href !== page) { $nav.append(lia(item.text, item.href + ".html")); }
+    if (item.href === page) {
+      let $li = li();
+      $li.append(spn(item.text, "current-page"));
+      $nav.append($li);
+    } else {
+      $nav.append(lia(item.text, item.href + ".html"));
+    }
   });
 
   $nav.append(li(""));

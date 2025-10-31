@@ -100,9 +100,18 @@ function createConfirmationModal(options) {
     let result = await api(apiEndpoint, apiParams);
 
     if (result && result.isSuccess && result.data) {
-      showModalMessage($msgDiv, "success", result.data);
-      setButtonLoading(buttons.submitBtn, false);
-      setTimeout(() => { closeModal($modal); }, DELAY_2);
+      let message = typeof result.data === 'object' && result.data.message
+        ? result.data.message
+        : result.data;
+
+      if (result.data.status === "Already Running") {
+        showModalMessage($msgDiv, "error", message);
+        setButtonLoading(buttons.submitBtn, false);
+      } else {
+        showModalMessage($msgDiv, "success", message);
+        setButtonLoading(buttons.submitBtn, false);
+        setTimeout(() => { closeModal($modal); }, DELAY_2);
+      }
     } else {
       showModalMessage($msgDiv, "error", result?.data || ERROR_MESSAGE_DEFAULT);
       setButtonLoading(buttons.submitBtn, false);
