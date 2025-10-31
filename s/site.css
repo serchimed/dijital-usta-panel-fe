@@ -767,6 +767,12 @@ details>div>p.description {
   display: none;
 }
 
+#lblAccept span {
+  display: inline;
+  margin: 0;
+  vertical-align: middle;
+}
+
 .lbl-warn,
 .lbl-err {
   color: #FE5200;
@@ -927,7 +933,8 @@ main a {
   display: block;
 }
 
-p a {
+p a,
+label a {
   display: inline-block;
 }
 

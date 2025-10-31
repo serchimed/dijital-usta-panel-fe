@@ -35,6 +35,14 @@ onAuthReady(async () => {
       $tdWeb.setAttribute("data-label", "Web Sitesi");
       $tr.append($tdWeb);
 
+      let $tdInvite = createInviteInfoCell(company, {
+        isAcceptedKey: "isAccepted",
+        acceptedAtKey: "acceptedAt",
+        endpoint: "Company/SendInviteCompanyEmail",
+        idParamKey: "companyId"
+      });
+      $tr.append($tdInvite);
+
       let $btn = createBlockButton(company.id, company.isBlocked, company.companyName, "Company/Block", "Company/Unblock", "companyId");
       $tr.append(tdbtn($btn));
 

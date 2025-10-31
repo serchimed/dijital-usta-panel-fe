@@ -13,6 +13,7 @@ onReady(() => {
   let prmCompany = prms.get("company");
   if (prmCompany == "1") {
     $lblAccept.style.display = "block";
+    $lblAccept.dataset.visible = "true";
   }
 
   let handleSubmit = async function () {
@@ -22,7 +23,7 @@ onReady(() => {
     if (!checkEmail(email)) { errors.push("Geçerli bir e-posta adresi girin."); }
 
     let $isCompanyAccepted = document.getElementById("isCompanyAccepted");
-    if ($lblAccept && $lblAccept.style.display !== "none" && !$isCompanyAccepted.checked) {
+    if ($lblAccept && $lblAccept.dataset.visible === "true" && !$isCompanyAccepted.checked) {
       errors.push("Firma Sözleşmesi ve Gizlilik Politikasını kabul etmelisiniz.");
     }
 

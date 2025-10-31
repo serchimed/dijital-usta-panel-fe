@@ -4,6 +4,45 @@ function setMessageText($element, text) {
   }
 }
 
+function createInviteInfoCell(entity, config) {
+  let inviteText = "-";
+  let $tdInvite = td(null);
+  $tdInvite.setAttribute("data-label", "Davet Bilgisi");
+
+  let isAccepted = entity[config.isAcceptedKey];
+  let acceptedAt = entity[config.acceptedAtKey];
+
+  if (isAccepted) {
+    if (acceptedAt && acceptedAt !== "0001-01-01T00:00:00") {
+      inviteText = formatDateLong(acceptedAt) + " tarihinde davet kabul edildi";
+    } else {
+      inviteText = "Davet kabul edildi";
+    }
+    $tdInvite.textContent = inviteText;
+  } else {
+    inviteText = "Davet beklemede";
+    $tdInvite.textContent = inviteText;
+
+    let $btnResend = btn("btn-act", "Daveti Tekrar Gönder");
+    $btnResend.style.marginTop = "8px";
+    $btnResend.addEventListener(CLICK_EVENT, async function () {
+      let $msg = this.nextElementSibling;
+      if (!$msg || $msg.tagName !== "P") {
+        $msg = p();
+        this.after($msg);
+      }
+
+      let params = {};
+      params[config.idParamKey] = entity.id;
+
+      await apiBtn(this, config.endpoint, params, "Davet e-postası gönderildi.", "E-posta gönderilemedi.", null, $msg);
+    });
+    $tdInvite.append(document.createElement("br"), $btnResend, p());
+  }
+
+  return $tdInvite;
+}
+
 function getTodayDateString() {
   return new Date().toISOString().split('T')[0];
 }
