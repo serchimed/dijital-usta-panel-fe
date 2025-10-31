@@ -9,15 +9,28 @@ onReady(() => {
   let prmEmail = prms.get("email");
   if (prmEmail) { $email.value = prmEmail; }
 
+  let $lblAccept = document.getElementById("lblAccept");
+  let prmCompany = prms.get("company");
+  if (prmCompany == "1") {
+    $lblAccept.style.display = "block";
+  }
+
   let handleSubmit = async function () {
     let email = $email.value.trim();
 
     let errors = [];
     if (!checkEmail(email)) { errors.push("Geçerli bir e-posta adresi girin."); }
+
+    let $isCompanyAccepted = document.getElementById("isCompanyAccepted");
+    if ($lblAccept.style.display !== "none" && !$isCompanyAccepted.checked) {
+      errors.push("Firma Sözleşmesi ve Gizlilik Politikasını kabul etmelisiniz.");
+    }
+
     if (showErrors($msg, errors)) { return; }
     clearErrors($msg);
 
-    let result = await apiBtn($btn, "Member/NewPasscode", { email: email }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
+    let prmToken = prms.get("token");
+    let result = await apiBtn($btn, "Member/NewPasscode", { email: email, ref: prmToken, isCompanyAccepted: $isCompanyAccepted.checked }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
     if (result && result.isSuccess) {
       setTimeout(() => { window.location.href = `login.html?email=${encodeURIComponent(email)}`; }, DELAY_2);
     }

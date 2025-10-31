@@ -763,6 +763,10 @@ details>div>p.description {
   margin: 8px 0;
 }
 
+#lblAccept {
+  display: none;
+}
+
 .lbl-warn,
 .lbl-err {
   color: #FE5200;
@@ -1139,7 +1143,7 @@ td[data-label="Gelen Cevap"].expanded {
   }
 
   table td:not([data-label]),
-  table td[data-label=""] {
+  table td[data-label=""] {lblAccept
     justify-content: flex-end;
   }
 
