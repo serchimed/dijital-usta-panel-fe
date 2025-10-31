@@ -22,7 +22,7 @@ onReady(() => {
     if (!checkEmail(email)) { errors.push("Geçerli bir e-posta adresi girin."); }
 
     let $isCompanyAccepted = document.getElementById("isCompanyAccepted");
-    if ($lblAccept.style.display !== "none" && !$isCompanyAccepted.checked) {
+    if ($lblAccept && $lblAccept.style.display !== "none" && !$isCompanyAccepted.checked) {
       errors.push("Firma Sözleşmesi ve Gizlilik Politikasını kabul etmelisiniz.");
     }
 
