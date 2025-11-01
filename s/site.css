@@ -712,7 +712,6 @@ details>div>table,
 details>div>p {
   grid-column: span 3;
   width: 100%;
-  margin-top: 0;
 }
 
 details>div>h4 {

@@ -123,7 +123,7 @@ async function fillSpans(url, key = "memberId") {
       let $s = document.getElementById(prop);
       if ($s) {
         let v = result.data[prop] || "-";
-        if ((prop === "start" || prop === "end" || prop.toLowerCase().includes("date")) && v && v !== "-") {
+        if ((prop === "start" || prop === "end" || prop.toLowerCase().includes("date") || prop.endsWith("At")) && v && v !== "-") {
           if (v.startsWith("0001-01-01")) { v = "-"; }
           else { v = formatDateLong(v); }
         }
