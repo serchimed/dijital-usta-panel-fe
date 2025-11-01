@@ -11,7 +11,6 @@ let CSS_CLASSES = {
 };
 
 function createModal(title, bodyContent) {
-  // Mevcut tüm modalları kapat
   let existingOverlays = document.querySelectorAll(`.${CSS_CLASSES.modalOverlay}`);
   existingOverlays.forEach($o => $o.remove());
 

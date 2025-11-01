@@ -66,10 +66,12 @@ async function loadTables(querySelector = "table.load tbody") {
         let label = th.textContent || key;
 
         if ((key === "start" || key === "end" || key.toLowerCase().includes("date")) && value && value !== "-") {
-          value = formatDateLong(value);
+          if (value.startsWith("0001-01-01")) { value = "-"; }
+          else { value = formatDateLong(value); }
         }
         else if (key === "createdAt" && value && value !== "-") {
-          value = formatTimeLong(value);
+          if (value.startsWith("0001-01-01")) { value = "-"; }
+          else { value = formatTimeLong(value); }
         }
 
         let template = th.dataset?.url;
@@ -122,7 +124,8 @@ async function fillSpans(url, key = "memberId") {
       if ($s) {
         let v = result.data[prop] || "-";
         if ((prop === "start" || prop === "end" || prop.toLowerCase().includes("date")) && v && v !== "-") {
-          v = formatDateLong(v);
+          if (v.startsWith("0001-01-01")) { v = "-"; }
+          else { v = formatDateLong(v); }
         }
 
         let tag = ($s.tagName || "").toLowerCase();
@@ -167,9 +170,7 @@ async function fillSpans(url, key = "memberId") {
       let $links = document.querySelectorAll(`a[href*="${placeholder}"]`);
       if ($links.length > 0) {
         let v = result.data[prop] || "";
-        $links.forEach($link => {
-          $link.href = $link.href.replace(placeholder, v);
-        });
+        $links.forEach($link => { $link.href = $link.href.replace(placeholder, v); });
       }
     }
 
@@ -206,27 +207,26 @@ async function fillInputs(url, key = "memberId") {
           if (tag === "textarea") {
             $i.value = v ?? "";
           } else if (tag === "input" && type === "date" && v) {
-            $i.value = formatDateInput(v);
+            if (v.startsWith("0001-01-01")) {
+              $i.value = "";
+            } else {
+              $i.value = formatDateInput(v);
+            }
           } else if (tag === "input" && (type === "checkbox" || type === "radio")) {
             if (type === "checkbox") {
               $i.checked = Boolean(v);
             } else {
               $i.checked = ($i.value == v);
             }
-          } else if ("value" in $i) {
-            $i.value = v ?? "";
-          } else {
-            $i.textContent = v ?? "";
-          }
+          } else if ("value" in $i) { $i.value = v ?? ""; }
+          else { $i.textContent = v ?? ""; }
         }
       }
 
       let $btn = document.querySelector("main button");
       if ($btn) {
         $btn.disabled = false;
-        if ($btn.nextElementSibling) {
-          $btn.nextElementSibling.innerHTML = "";
-        }
+        if ($btn.nextElementSibling) { $btn.nextElementSibling.innerHTML = ""; }
       }
     } else {
       console.error("API error:", result);
