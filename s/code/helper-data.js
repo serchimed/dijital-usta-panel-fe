@@ -123,8 +123,16 @@ async function fillSpans(url, key = "memberId") {
       let $s = document.getElementById(prop);
       if ($s) {
         let v = result.data[prop] || "-";
+        if (prop === "hireApprovedAt") {
+          console.debug(`hireApprovedAt raw value:`, result.data[prop]);
+          console.debug(`hireApprovedAt after || "-":`, v);
+          console.debug(`Checking conditions: endsWith("At")?`, prop.endsWith("At"), `v !== "-"?`, v !== "-");
+        }
         if ((prop === "start" || prop === "end" || prop.toLowerCase().includes("date") || prop.endsWith("At")) && v && v !== "-") {
-          if (v.startsWith("0001-01-01")) { v = "-"; }
+          if (v.startsWith("0001-01-01")) {
+            console.debug(`Skipping empty date for ${prop}: ${v}`);
+            v = "-";
+          }
           else { v = formatDateLong(v); }
         }
 
