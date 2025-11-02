@@ -22,7 +22,7 @@ onAuthReady(() => {
       memberId: id,
       company: val("company"),
       start: val("start"),
-      end: val("end"),
+      end: val("end") ? val("end") : null,
       position: val("position"),
       description: val("description")
     };
