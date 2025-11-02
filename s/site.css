@@ -669,7 +669,7 @@ summary::-webkit-details-marker {
 
 details.faq {
   background-color: #fff;
-  border: 2px solid #FE5200;
+  border: 1px solid #FE5200;
   border-radius: 8px;
   margin: 13px 0;
   box-shadow: none;
@@ -683,7 +683,7 @@ details.faq[open] {
 details.faq summary {
   background-color: transparent;
   padding: 13px 21px;
-  color: #033366;
+  color: #000;
   transition: background-color 0.2s ease;
   border-radius: 6px;
 }
@@ -707,6 +707,26 @@ details.faq summary::before {
 
 details.faq[open] summary::before {
   color: #fff;
+}
+
+details.faq > *:not(summary) {
+  padding: 21px;
+  border-top: none;
+  animation: slideDown 0.3s ease;
+}
+
+details.faq p {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+details.faq ul {
+  margin: 8px 0 8px 21px;
+  line-height: 1.6;
+}
+
+details.faq li {
+  margin-bottom: 5px;
 }
 
 details>*:not(summary) {
