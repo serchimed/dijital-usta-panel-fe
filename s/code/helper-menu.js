@@ -54,7 +54,7 @@ let PAGE_ROLES = {
   "admin-ai": ["admin"],
   "admin-data": ["admin"],
   "admin-profile": ["admin"],
-  "admin-profile-edit": ["admin"],
+  "admin-profile-edit": ["admin", "editor"],
 
   "company-profile": ["company"],
   "company-profile-edit": ["company", "admin", "editor"],
