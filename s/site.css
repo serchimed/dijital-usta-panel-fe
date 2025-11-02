@@ -221,6 +221,7 @@ footer div a:visited {
   float: right;
   vertical-align: middle;
   color: #fff;
+  margin-left: 13px;
 }
 
 footer div:last-child {
@@ -664,6 +665,48 @@ details[open] summary::before {
 
 summary::-webkit-details-marker {
   display: none;
+}
+
+details.faq {
+  background-color: #fff;
+  border: 2px solid #FE5200;
+  border-radius: 8px;
+  margin: 13px 0;
+  box-shadow: none;
+}
+
+details.faq[open] {
+  border-color: #FE5200;
+  box-shadow: 0 2px 8px rgba(254, 82, 0, 0.15);
+}
+
+details.faq summary {
+  background-color: transparent;
+  padding: 13px 21px;
+  color: #033366;
+  transition: background-color 0.2s ease;
+  border-radius: 6px;
+}
+
+details.faq summary:hover {
+  background-color: #fff5f0;
+}
+
+details.faq[open] summary {
+  background-color: #FE5200;
+  color: #fff;
+}
+
+details.faq[open] summary:hover {
+  background-color: #e04700;
+}
+
+details.faq summary::before {
+  color: #FE5200;
+}
+
+details.faq[open] summary::before {
+  color: #fff;
 }
 
 details>*:not(summary) {
@@ -1216,4 +1259,39 @@ td[data-label="Gelen Cevap"].expanded {
   td[data-label="Gelen Cevap"] {
     max-width: none;
   }
+
+  .contact-container {
+    flex-direction: column;
+  }
+
+  .contact-container > div:first-child {
+    order: -1;
+  }
+}
+
+.contact-container {
+  display: flex;
+  gap: 21px;
+  margin-top: 21px;
+  align-items: stretch;
+}
+
+.contact-container > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-container > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-container > div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
