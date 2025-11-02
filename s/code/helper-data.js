@@ -4,20 +4,20 @@ let INTERVIEW_RESULTS = ["Mülakat yapıldı, sonucu olumlu", "Mülakat yapıld�
 function formatFieldValue(value, fieldName) {
   if (!value || value === "-") return value;
 
-  const isDateField = fieldName === "start" ||
+  let isDateField = fieldName === "start" ||
                       fieldName === "end" ||
                       fieldName.toLowerCase().includes("date");
-  const isTimeField = fieldName === "createdAt" || fieldName.endsWith("At");
+  let isTimeField = fieldName === "createdAt" || fieldName.endsWith("At");
 
-  if (value.startsWith("0001-01-01")) {
+  if (typeof value === "string" && value.startsWith("0001-01-01")) {
     return "-";
   }
 
-  if (isDateField) {
+  if (isDateField && value) {
     return formatDateLong(value);
   }
 
-  if (isTimeField) {
+  if (isTimeField && value) {
     return formatTimeLong(value);
   }
 
@@ -27,7 +27,7 @@ function formatFieldValue(value, fieldName) {
 function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
-    const later = () => {
+    let later = () => {
       clearTimeout(timeout);
       func(...args);
     };
@@ -39,7 +39,7 @@ function debounce(func, wait) {
 function setFilters() {
   let $fis = document.querySelectorAll('.tblfilter');
   $fis.forEach($i => {
-    const filterTable = debounce(function () {
+    let filterTable = debounce(function () {
       let tbl = $i.nextElementSibling;
       let txt = this.value.toLowerCase();
       let rows = tbl.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
