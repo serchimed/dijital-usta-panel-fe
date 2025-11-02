@@ -672,7 +672,7 @@ details.faq {
   border: 1px solid #FE5200;
   border-radius: 8px;
   margin: 13px 0;
-  box-shadow: none;
+  padding: 8px;
 }
 
 details.faq[open] {
@@ -686,6 +686,7 @@ details.faq summary {
   color: #000;
   transition: background-color 0.2s ease;
   border-radius: 6px;
+  margin-bottom: 13px;
 }
 
 details.faq summary:hover {
@@ -709,7 +710,7 @@ details.faq[open] summary::before {
   color: #fff;
 }
 
-details.faq > *:not(summary) {
+details.faq>*:not(summary) {
   padding: 21px;
   border-top: none;
   animation: slideDown 0.3s ease;
@@ -718,6 +719,9 @@ details.faq > *:not(summary) {
 details.faq p {
   margin-bottom: 8px;
   line-height: 1.6;
+  padding: 8px;
+  padding-left: 34px;
+  padding-right: 34px;
 }
 
 details.faq ul {
@@ -1280,35 +1284,41 @@ td[data-label="Gelen Cevap"].expanded {
     max-width: none;
   }
 
-  .contact-container {
+  .contact {
     flex-direction: column;
   }
 
-  .contact-container > div:first-child {
+  .contact>div:first-child {
     order: -1;
   }
 }
 
-.contact-container {
+.contact {
   display: flex;
   gap: 21px;
   margin-top: 21px;
   align-items: stretch;
 }
 
-.contact-container > div {
+.contact>div {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-.contact-container > div:first-child {
+.contact>div:first-child {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.contact-container > div img {
+.contact>div:last-child {
+  background-color: #f5f5f5;
+  padding: 21px;
+  border-radius: 8px;
+}
+
+.contact>div img {
   width: 100%;
   height: 100%;
   object-fit: cover;
