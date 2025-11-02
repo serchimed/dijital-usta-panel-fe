@@ -733,6 +733,10 @@ details.faq li {
   margin-bottom: 5px;
 }
 
+details.faq ul li p {
+  padding: 0;
+}
+
 details>*:not(summary) {
   padding: 21px;
   border-top: 1px solid #e2e8f0;
@@ -1297,6 +1301,7 @@ td[data-label="Gelen Cevap"].expanded {
   display: flex;
   gap: 21px;
   margin-top: 21px;
+  margin-bottom: 21px;
   align-items: stretch;
 }
 
@@ -1313,9 +1318,15 @@ td[data-label="Gelen Cevap"].expanded {
 }
 
 .contact>div:last-child {
-  background-color: #f5f5f5;
+  background-color: #c8c2bf;
   padding: 21px;
   border-radius: 8px;
+}
+
+.contact>div label {
+  margin-top: 0;
+  font-weight: bold;
+  color: #033366;
 }
 
 .contact>div img {
