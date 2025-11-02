@@ -146,8 +146,8 @@ function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblo
   return $wrapper;
 }
 
-function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement, $interviewBtn, isInterviewResulted, isHired) {
-  let isDisabled = isHired || isInterviewResulted;
+function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement, $interviewBtn, isInterviewResulted, isHired, isHireInformed) {
+  let isDisabled = isHired || isHireInformed || isInterviewResulted;
   let btnClass = isDisabled ? "btn-gray" : "btn-act";
   let $btn = btn(btnClass, isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
   $btn.dataset.memberId = memberId;
@@ -157,6 +157,9 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
   if (isHired) {
     $btn.disabled = true;
     $btn.title = "Aday işe alındığı için kısa liste değiştirilemez";
+  } else if (isHireInformed) {
+    $btn.disabled = true;
+    $btn.title = "Adayın işe alındığı bildirildiği için kısa liste değiştirilemez";
   } else if (isInterviewResulted) {
     $btn.disabled = true;
     $btn.title = "Mülakat sonucu bildirildiği için kısa liste değiştirilemez";
@@ -222,14 +225,17 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
   return $btn;
 }
 
-function createInterviewReportButton(candidateId, companyId, displayName, isShortlisted, $hireBtn, isInterviewResulted, isHired) {
-  let isDisabled = isHired || !isShortlisted || isInterviewResulted;
+function createInterviewReportButton(candidateId, companyId, displayName, isShortlisted, $hireBtn, isInterviewResulted, isHired, isHireInformed) {
+  let isDisabled = isHired || isHireInformed || !isShortlisted || isInterviewResulted;
   let btnClass = isDisabled ? "btn-gray" : "btn-act";
   let $btn = btn(btnClass, "Mülakat Sonucu Bildir");
 
   if (isHired) {
     $btn.disabled = true;
     $btn.title = "Aday işe alındığı için mülakat sonucu değiştirilemez";
+  } else if (isHireInformed) {
+    $btn.disabled = true;
+    $btn.title = "Adayın işe alındığı bildirildiği için mülakat sonucu değiştirilemez";
   } else if (!isShortlisted) {
     $btn.disabled = true;
     $btn.title = "Kısa listeye eklenmeden mülakat sonucu bildirilemez";

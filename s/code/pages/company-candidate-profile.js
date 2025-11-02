@@ -37,8 +37,8 @@ onAuthReady(async () => {
   } else {
     let $msg = p();
     let $hireInformBtn = createHireInformButton(candidateId, USER.companyId, candidateName, isInterviewResulted, isInterviewSuccess, isHired, isHireInformed);
-    let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, isShortlisted, $hireInformBtn, isInterviewResulted, isHired);
-    let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg, $interviewBtn, isInterviewResulted, isHired);
+    let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, isShortlisted, $hireInformBtn, isInterviewResulted, isHired, isHireInformed);
+    let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg, $interviewBtn, isInterviewResulted, isHired, isHireInformed);
     $interviewBtn.$shortlistBtn = $shortlistBtn;
 
     $actionButtons.append($shortlistBtn, $interviewBtn, $hireInformBtn, $msg);

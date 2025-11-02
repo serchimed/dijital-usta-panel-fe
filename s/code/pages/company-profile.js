@@ -10,8 +10,8 @@ if ($tbody) {
       if (item && item.memberId) {
         let $msg = p();
         let $hireBtn = createHireInformButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired, item.isHireInformed);
-        let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, true, $hireBtn, item.isInterviewResulted, item.isHired);
-        let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
+        let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, true, $hireBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
+        let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
         $interviewBtn.$shortlistBtn = $shortlistBtn;
 
         tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);

@@ -54,8 +54,8 @@ function setupShortlistTable() {
       if (item && item.companyId && candidateId) {
         let $msg = p();
         let $hireBtn = createHireApproveButton(candidateId, item.companyId, candidateName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired);
-        let $interviewBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, true, $hireBtn, item.isInterviewResulted, item.isHired);
-        let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired);
+        let $interviewBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, true, $hireBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
+        let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
         $interviewBtn.$shortlistBtn = $shortlistBtn;
 
         let $hireCancelTrBtn = createCancelHireButton(candidateId, item.companyId, async function ($btn) {
