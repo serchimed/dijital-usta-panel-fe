@@ -29,7 +29,12 @@ function getTomorrow() {
 }
 
 function getMsgLine(msg) {
-  return `<tr><td colspan="99" class="graytr">${msg}</td></tr>`;
+  let $tr = tr();
+  let $td = td(msg);
+  $td.colSpan = 99;
+  $td.className = "graytr";
+  $tr.append($td);
+  return $tr;
 }
 
 function div(className) {
@@ -336,7 +341,7 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
   }
 
   async function search(text) {
-    $list.innerHTML = "";
+    $list.textContent = "";
     $list.classList.remove("show");
 
     if (!text) return;

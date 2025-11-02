@@ -71,7 +71,7 @@ onAuthReady(async () => {
     $warnNewCompany.style.display = "none";
   } else {
     $warnNewCompany.style.display = "block";
-    $list.innerHTML = "";
+    $list.textContent = "";
     result.data.forEach(company => { $list.append(chkComp(company)); });
   }
 

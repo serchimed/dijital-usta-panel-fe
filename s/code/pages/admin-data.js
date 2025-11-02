@@ -24,17 +24,19 @@ onAuthReady(async () => {
     let result = await api(apiEndpoint, {});
 
     if (!result || result.error || !result.isSuccess) {
-      $tbody.innerHTML = getMsgLine("Veri yüklenemedi");
+      $tbody.textContent = "";
+      $tbody.append(getMsgLine("Veri yüklenemedi"));
       return;
     }
 
     let files = result.data;
     if (!Array.isArray(files) || files.length === 0) {
-      $tbody.innerHTML = getMsgLine("Veri yok");
+      $tbody.textContent = "";
+      $tbody.append(getMsgLine("Veri yok"));
       return;
     }
 
-    $tbody.innerHTML = "";
+    $tbody.textContent = "";
     for (let file of files) {
       let $tr = tr();
 
@@ -266,7 +268,7 @@ onAuthReady(async () => {
     document.getElementById("backupAnalysisResults").style.display = "block";
 
     let $summaryTable = document.getElementById("summaryTable");
-    $summaryTable.innerHTML = "";
+    $summaryTable.textContent = "";
     let $tr = tr();
 
     let $tdBackupTotal = td(data.summary.totalRecordsInBackup || 0);
@@ -296,7 +298,7 @@ onAuthReady(async () => {
     $summaryTable.append($tr);
 
     let $recordsByTypeTable = document.getElementById("recordsByTypeTable");
-    $recordsByTypeTable.innerHTML = "";
+    $recordsByTypeTable.textContent = "";
     if (data.recordsByType && Array.isArray(data.recordsByType)) {
       for (let record of data.recordsByType) {
         let $tr = tr();
@@ -341,10 +343,12 @@ onAuthReady(async () => {
 
   function displayRecordGroup(records, sectionId, showDates) {
     let $section = document.getElementById(sectionId);
-    $section.innerHTML = "";
+    $section.textContent = "";
 
     if (!records || records.length === 0) {
-      $section.innerHTML = '<p class="graytr">Hiç kayıt yok</p>';
+      let $emptyMsg = p("Hiç kayıt yok");
+      $emptyMsg.className = "graytr";
+      $section.append($emptyMsg);
       return;
     }
 

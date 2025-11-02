@@ -1,9 +1,45 @@
 let CITIES = ["Balıkesir", "Denizli", "Gaziantep", "Nevşehir", "Ordu"];
 let INTERVIEW_RESULTS = ["Mülakat yapıldı, sonucu olumlu", "Mülakat yapıldı sonucu başarısız, aday beğenilmedi", "Mülakat yapıldı sonucu başarısız, aday mülakata katılmadı", "Mülakat yapıldı sonucu başarısız, aday teklifi reddetti", "Mülakat iptal edildi"];
+
+function formatFieldValue(value, fieldName) {
+  if (!value || value === "-") return value;
+
+  const isDateField = fieldName === "start" ||
+                      fieldName === "end" ||
+                      fieldName.toLowerCase().includes("date");
+  const isTimeField = fieldName === "createdAt" || fieldName.endsWith("At");
+
+  if (value.startsWith("0001-01-01")) {
+    return "-";
+  }
+
+  if (isDateField) {
+    return formatDateLong(value);
+  }
+
+  if (isTimeField) {
+    return formatTimeLong(value);
+  }
+
+  return value;
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 function setFilters() {
   let $fis = document.querySelectorAll('.tblfilter');
   $fis.forEach($i => {
-    $i.addEventListener('input', function () {
+    const filterTable = debounce(function () {
       let tbl = $i.nextElementSibling;
       let txt = this.value.toLowerCase();
       let rows = tbl.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
@@ -18,7 +54,9 @@ function setFilters() {
         if (rowText.includes(txt)) { $r.style.display = ''; }
         else { $r.style.display = 'none'; }
       }
-    });
+    }, DELAY_0);
+
+    $i.addEventListener('input', filterTable);
   });
 }
 
@@ -33,11 +71,13 @@ async function loadTables(querySelector = "table.load tbody") {
   req[key] = id;
 
   for (let tbody of tBodies) {
-    tbody.innerHTML = getMsgLine("Yükleniyor...");
+    tbody.textContent = "";
+    tbody.append(getMsgLine("Yükleniyor..."));
 
     let result = await api(`${tbody.id}/GetAll`, req);
     if (!result || result.error || !result.isSuccess) {
-      tbody.innerHTML = getMsgLine("Veri yüklenemedi");
+      tbody.textContent = "";
+      tbody.append(getMsgLine("Veri yüklenemedi"));
       tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: null, error: true } }));
       continue;
     }
@@ -48,7 +88,8 @@ async function loadTables(querySelector = "table.load tbody") {
     }
 
     if (!Array.isArray(data) || data.length === 0) {
-      tbody.innerHTML = getMsgLine("Veri yok");
+      tbody.textContent = "";
+      tbody.append(getMsgLine("Veri yok"));
       tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: [], error: false } }));
       continue;
     }
@@ -65,14 +106,7 @@ async function loadTables(querySelector = "table.load tbody") {
         let value = item[key] ?? "";
         let label = th.textContent || key;
 
-        if ((key === "start" || key === "end" || key.toLowerCase().includes("date")) && value && value !== "-") {
-          if (value.startsWith("0001-01-01")) { value = "-"; }
-          else { value = formatDateLong(value); }
-        }
-        else if (key === "createdAt" && value && value !== "-") {
-          if (value.startsWith("0001-01-01")) { value = "-"; }
-          else { value = formatTimeLong(value); }
-        }
+        value = formatFieldValue(value, key);
 
         let template = th.dataset?.url;
         let $td;
@@ -96,7 +130,7 @@ async function loadTables(querySelector = "table.load tbody") {
       fragment.append($tr);
     }
 
-    tbody.innerHTML = "";
+    tbody.textContent = "";
     tbody.append(fragment);
     tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: data, error: false } }));
   }
@@ -123,10 +157,7 @@ async function fillSpans(url, key = "memberId") {
       let $s = document.getElementById(prop);
       if ($s) {
         let v = result.data[prop] || "-";
-        if ((prop === "start" || prop === "end" || prop.toLowerCase().includes("date") || prop.endsWith("At")) && v && v !== "-") {
-          if (v.startsWith("0001-01-01")) { v = "-"; }
-          else { v = formatDateLong(v); }
-        }
+        v = formatFieldValue(v, prop);
 
         let tag = ($s.tagName || "").toLowerCase();
         if (tag === "img") {
@@ -135,7 +166,7 @@ async function fillSpans(url, key = "memberId") {
         } else if (tag === "textarea") {
           $s.value = v;
         } else if (prop.endsWith("Url") && v && v !== "-") {
-          $s.innerHTML = "";
+          $s.textContent = "";
           let $a = a(v, v);
           $a.target = "_blank";
           $s.append($a);
@@ -207,7 +238,8 @@ async function fillInputs(url, key = "memberId") {
           if (tag === "textarea") {
             $i.value = v ?? "";
           } else if (tag === "input" && type === "date" && v) {
-            if (v.startsWith("0001-01-01")) {
+            let formattedDate = formatFieldValue(v, prop);
+            if (formattedDate === "-") {
               $i.value = "";
             } else {
               $i.value = formatDateInput(v);
@@ -226,7 +258,7 @@ async function fillInputs(url, key = "memberId") {
       let $btn = document.querySelector("main button");
       if ($btn) {
         $btn.disabled = false;
-        if ($btn.nextElementSibling) { $btn.nextElementSibling.innerHTML = ""; }
+        if ($btn.nextElementSibling) { $btn.nextElementSibling.textContent = ""; }
       }
     } else {
       console.error("API error:", result);

@@ -2,7 +2,7 @@ onAuthReady(async () => {
   let result = await api("Admin/GetAdmins", {});
   if (result && result.isSuccess) {
     let tbody = document.querySelector("table tbody");
-    tbody.innerHTML = "";
+    tbody.textContent = "";
 
     for (let admin of result.data) {
       let $tr = tr();

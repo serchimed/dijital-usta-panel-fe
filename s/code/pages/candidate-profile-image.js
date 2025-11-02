@@ -13,7 +13,7 @@ onAuthReady(async () => {
       let $img = document.createElement("img");
       $img.src = base64String;
       $img.alt = "Profil Fotoğrafı";
-      $preview.innerHTML = "";
+      $preview.textContent = "";
       $preview.append($img);
     } else { $preview.textContent = "Fotoğraf yüklenmedi"; }
   } catch (error) { $preview.textContent = "Fotoğraf yüklenemedi"; }
@@ -73,7 +73,7 @@ onAuthReady(async () => {
       $img.src = base64String;
       $img.alt = "Önizleme";
       $img.style.height = "222px";
-      $preview.innerHTML = "";
+      $preview.textContent = "";
       $preview.append($img);
 
       $btn.disabled = false;

@@ -119,7 +119,7 @@ function buildGuestMenu() {
   let page = path.split("/").pop() || "index.html";
   page = page.replace(".html", "");
 
-  $nav.innerHTML = "";
+  $nav.textContent = "";
 
   MENU.guest.forEach(item => {
     if (item.href === page) {
@@ -140,7 +140,7 @@ function buildAuthenticatedMenu() {
   let page = path.split("/").pop() || "index.html";
   page = page.replace(".html", "");
 
-  $nav.innerHTML = "";
+  $nav.textContent = "";
 
   if (USER.role === "admin") {
     if (page === "index") {

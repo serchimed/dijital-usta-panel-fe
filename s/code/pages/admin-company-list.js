@@ -10,7 +10,7 @@ onAuthReady(async () => {
   let result = await api("Company/GetAll", {});
   if (result && result.isSuccess) {
     let tbody = document.querySelector("table tbody");
-    tbody.innerHTML = "";
+    tbody.textContent = "";
 
     for (let company of result.data) {
       let $tr = tr();

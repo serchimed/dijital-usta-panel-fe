@@ -4,15 +4,21 @@ onReady(async () => {
   if (email) { set("email", email); }
 
   let $list = document.getElementById("companiesList");
-  $list.innerHTML = "<p>Firmalar yükleniyor...</p>";
+  let $loadingMsg = p("Firmalar yükleniyor...");
+  $list.textContent = "";
+  $list.append($loadingMsg);
 
   let result = await api("Company/GetForCandidateCity", { email: val("email") });
   if (!result || result.error || !result.isSuccess || !Array.isArray(result.data)) {
-    $list.innerHTML = "<p class='lbl-err'>Firmalar yüklenemedi. Sayfayı yenileyin.</p>";
+    let $errorMsg = p("Firmalar yüklenemedi. Sayfayı yenileyin.");
+    $errorMsg.className = "lbl-err";
+    $list.textContent = "";
+    $list.append($errorMsg);
   } else if (result.data.length === 0) {
-    $list.innerHTML = "<p>Şehrinizde henüz firma bulunmamaktadır.</p>";
+    $list.textContent = "";
+    $list.append(p("Şehrinizde henüz firma bulunmamaktadır."));
   } else {
-    $list.innerHTML = "";
+    $list.textContent = "";
     result.data.forEach(company => { $list.append(chkComp(company)); });
   }
 
