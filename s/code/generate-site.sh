@@ -6,15 +6,16 @@ TEMP_FILE="${OUTPUT_FILE}.tmp"
 echo "Generating bundled site.js..."
 
 HELPERS=(
+  "helper-event.js"
   "helper-html.js"
   "helper-modal.js"
   "helper-menu.js"
-  "helper-event.js"
   "helper-api.js"
   "helper-data.js"
   "helper-action-buttons.js"
   "helper-auth.js"
 )
+
 
 > "${TEMP_FILE}"
 
