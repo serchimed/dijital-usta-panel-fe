@@ -65,14 +65,8 @@ function lbl(text) {
 
 function chkComp(company) {
   let $l = document.createElement("label");
-  $l.style.display = "flex";
-  $l.style.alignItems = "center";
-  $l.style.marginBottom = "8px";
-
   let $s = document.createElement("span");
   $s.textContent = company.companyName;
-  $s.style.margin = "0";
-
   $l.append(chk(company.id, true), $s);
   return $l;
 }

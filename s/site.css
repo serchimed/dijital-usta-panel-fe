@@ -793,6 +793,21 @@ details>div>p.description {
   vertical-align: super;
 }
 
+#companiesList label {
+  margin: 0;
+  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+  padding: 1px;
+}
+
+#companiesList label span {
+  margin-bottom: 1px;
+  margin-left: 8px;
+  padding: 1px;
+  font-size: 15px;
+}
+
 .lbl-warn,
 .lbl-err {
   color: #FE5200;
