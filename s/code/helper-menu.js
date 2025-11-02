@@ -32,7 +32,9 @@ let PUBLIC_PAGES = [
   "candidate-invite-accept",
   "concent",
   "company-concent",
-  "404"
+  "404",
+  "faq",
+  "contact"
 ];
 
 let PAGE_ROLES = {
