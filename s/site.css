@@ -358,7 +358,6 @@ button {
   cursor: pointer;
   margin: 13px 0 21px;
   font-weight: 600;
-
 }
 
 button:hover {
@@ -368,6 +367,10 @@ button:hover {
 
 button:active {
   background-color: #022447;
+}
+
+#actionButtons {
+  padding: 21px;
 }
 
 #actionButtons button {

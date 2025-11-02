@@ -53,7 +53,7 @@ let PAGE_ROLES = {
   "admin-point-update": ["admin"],
   "admin-ai": ["admin"],
   "admin-data": ["admin"],
-  "admin-profile": ["admin"],
+  "admin-profile": ["admin", "editor"],
   "admin-profile-edit": ["admin", "editor"],
 
   "company-profile": ["company"],
