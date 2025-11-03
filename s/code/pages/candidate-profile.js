@@ -107,12 +107,20 @@ onAuthReady(async () => {
   let $warnNewCompany = document.getElementById("newCompanyWarning");
   let $list = document.getElementById("companiesList");
   let result = await api("Company/GetNewForCandidateCity", { memberId: USER.id });
-  if (!result || result.error || !result.isSuccess || !Array.isArray(result.data) || result.data.length === 0) {
-    $warnNewCompany.classList.add("none");
+  if (!result || !result.isSuccess || (result.errors && result.errors.length > 0) || !Array.isArray(result.data) || result.data.length === 0) {
+    if ($warnNewCompany) {
+      $warnNewCompany.classList.add("none");
+    }
   } else {
-    $warnNewCompany.classList.remove("none");
-    $list.textContent = "";
-    result.data.forEach(company => { $list.append(chkComp(company)); });
+    if ($warnNewCompany) {
+      $warnNewCompany.classList.remove("none");
+    }
+    if ($list) {
+      $list.textContent = "";
+      result.data.forEach(company => {
+        $list.append(chkComp(company));
+      });
+    }
   }
 
   let $btnGiveAccess = document.getElementById("giveAccessButton");
