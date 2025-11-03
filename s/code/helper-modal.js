@@ -45,7 +45,9 @@ function createModal(title, bodyContent) {
 }
 
 function closeModal($o) {
-  if ($o && $o.parentNode) { $o.remove(); }
+  if ($o && $o.parentNode) {
+    $o.remove();
+  }
 }
 
 function showModalMessage($msgDiv, type, message) {
@@ -55,7 +57,9 @@ function showModalMessage($msgDiv, type, message) {
 }
 
 function setButtonLoading($btn, isLoading) {
-  if (!$btn) return;
+  if (!$btn) {
+    return;
+  }
 
   if (isLoading) {
     if (!$btn.dataset.originalText) {
@@ -85,7 +89,7 @@ function createModalButtons(cancelText, submitText, onCancel, onSubmit) {
 }
 
 function createConfirmationModal(options) {
-  let { confirmMessage, apiEndpoint, apiParams = {}, confirmButtonText = "Onayla", sourceButton } = options;
+  let { confirmMessage, apiEndpoint, apiParams = {}, confirmButtonText = "Onayla", sourceButton, onSuccess } = options;
 
   let $mbody = div();
   let $confirmLabel = p(confirmMessage);
@@ -94,7 +98,9 @@ function createConfirmationModal(options) {
 
   let handleConfirm = async function () {
     setButtonLoading(buttons.submitBtn, true);
-    if (sourceButton) sourceButton.disabled = true;
+    if (sourceButton) {
+      sourceButton.disabled = true;
+    }
 
     let result = await api(apiEndpoint, apiParams);
 
@@ -109,14 +115,21 @@ function createConfirmationModal(options) {
       } else {
         showModalMessage($msgDiv, "success", message);
         setButtonLoading(buttons.submitBtn, false);
-        setTimeout(() => { closeModal($modal); }, DELAY_2);
+        setTimeout(() => {
+          closeModal($modal);
+          if (onSuccess) {
+            onSuccess();
+          }
+        }, DELAY_2);
       }
     } else {
       showModalMessage($msgDiv, "error", result?.data || ERROR_MESSAGE_DEFAULT);
       setButtonLoading(buttons.submitBtn, false);
     }
 
-    if (sourceButton) sourceButton.disabled = false;
+    if (sourceButton) {
+      sourceButton.disabled = false;
+    }
   };
 
   let buttons = createModalButtons("İptal", confirmButtonText, () => closeModal($modal), handleConfirm);

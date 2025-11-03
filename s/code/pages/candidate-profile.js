@@ -15,16 +15,36 @@ $tbl.addEventListener("tableLoaded", function (e) {
 let $expTbl = document.getElementById("CandidateExperience");
 if ($expTbl) {
   $expTbl.addEventListener("tableLoaded", function (e) {
-    if (e.detail.error || !e.detail.data || e.detail.data.length === 0) { return; }
+    if (e.detail.error || !e.detail.data || e.detail.data.length === 0) {
+      return;
+    }
 
     let rows = this.querySelectorAll("tr");
     e.detail.data.forEach((item, index) => {
       let $row = rows[index];
-      if (!$row || !item.id) { return; }
+      if (!$row || !item.id) {
+        return;
+      }
 
       let $link = a("Düzenle", `candidate-experience-edit.html?id=${item.id}`);
       $link.target = "_blank";
-      $row.lastElementChild.append($link);
+
+      let $deleteBtn = btn("btn-del", "Sil");
+      $deleteBtn.addEventListener(CLICK_EVENT, function () {
+        createConfirmationModal({
+          confirmMessage: "Bu deneyimi silmek istediğinizden emin misiniz?",
+          apiEndpoint: "CandidateExperience/Delete",
+          apiParams: {
+            memberId: USER.id,
+            experienceId: item.id
+          },
+          confirmButtonText: "Sil",
+          sourceButton: $deleteBtn,
+          onSuccess: () => $row.remove()
+        });
+      });
+
+      $row.lastElementChild.append($link, " ", $deleteBtn);
     });
   });
 }
@@ -32,16 +52,36 @@ if ($expTbl) {
 let $certTbl = document.getElementById("CandidateCertificate");
 if ($certTbl) {
   $certTbl.addEventListener("tableLoaded", function (e) {
-    if (e.detail.error || !e.detail.data || e.detail.data.length === 0) { return; }
+    if (e.detail.error || !e.detail.data || e.detail.data.length === 0) {
+      return;
+    }
 
     let rows = this.querySelectorAll("tr");
     e.detail.data.forEach((item, index) => {
       let $row = rows[index];
-      if (!$row || !item.id) { return; }
+      if (!$row || !item.id) {
+        return;
+      }
 
       let $link = a("Düzenle", `candidate-certificate-edit.html?id=${item.id}`);
       $link.target = "_blank";
-      $row.lastElementChild.append($link);
+
+      let $deleteBtn = btn("btn-del", "Sil");
+      $deleteBtn.addEventListener(CLICK_EVENT, function () {
+        createConfirmationModal({
+          confirmMessage: "Bu sertifikayı silmek istediğinizden emin misiniz?",
+          apiEndpoint: "CandidateCertificate/Delete",
+          apiParams: {
+            memberId: USER.id,
+            certificateId: item.id
+          },
+          confirmButtonText: "Sil",
+          sourceButton: $deleteBtn,
+          onSuccess: () => $row.remove()
+        });
+      });
+
+      $row.lastElementChild.append($link, " ", $deleteBtn);
     });
   });
 }
