@@ -47,7 +47,8 @@ onAuthReady(async () => {
       major: val("major"),
       classYear: val("classYear") || "",
       phone: val("phone"),
-      county: val("county")
+      county: val("county"),
+      languages : val("languages") || ""
     };
 
     let errors = [];

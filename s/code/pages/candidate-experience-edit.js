@@ -1,5 +1,9 @@
 onAuthReady(async () => {
-  let experienceId = await fillInputs("CandidateExperience/Get");
+  let req = {
+    memberId: USER.id,
+    experienceId: getId("id")
+  };
+  await fillInputsViaReq("CandidateExperience/Get", req);
 
   let $isOngoing = document.getElementById("isOngoing");
   let $end = document.getElementById("end");
@@ -25,15 +29,12 @@ onAuthReady(async () => {
   let $msg = $btn.nextElementSibling;
 
   $btn.addEventListener(CLICK_EVENT, async function () {
-    let req = {
-      memberId: USER.id,
-      experienceId: experienceId,
-      company: val("company"),
-      start: val("start"),
-      end: val("end"),
-      position: val("position"),
-      description: val("description")
-    };
+    req.company = val("company");
+    req.start = val("start");
+    req.isOngoing = $isOngoing.checked ? "true" : "false";
+    req.end = val("end") ? val("end") : null;
+    req.position = val("position");
+    req.description = val("description");
 
     let errors = [];
     if (!req.company) { errors.push("Çalışılan firma adını giriniz."); }

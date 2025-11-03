@@ -5,8 +5,8 @@ function formatFieldValue(value, fieldName) {
   if (!value || value === "-") return value;
 
   let isDateField = fieldName === "start" ||
-                      fieldName === "end" ||
-                      fieldName.toLowerCase().includes("date");
+    fieldName === "end" ||
+    fieldName.toLowerCase().includes("date");
   let isTimeField = fieldName === "createdAt" || fieldName.endsWith("At");
 
   if (typeof value === "string" && value.startsWith("0001-01-01")) {
@@ -215,56 +215,62 @@ async function fillSpans(url, key = "memberId") {
   return id;
 }
 
+async function fillInputsViaReq(url, req) {
+  let result = await api(url, req);
+  if (!result || result.error) {
+    console.error("Data fetch error:", result);
+    return Object.values(req)[0];
+  }
+
+  if (result.isSuccess) {
+    for (let prop in result.data) {
+      let $i = document.getElementById(prop);
+      if ($i) {
+        let v = result.data[prop];
+        let tag = ($i.tagName || "").toLowerCase();
+        let type = ($i.type || "").toLowerCase();
+
+        if (tag === "textarea") {
+          $i.value = v ?? "";
+        } else if (tag === "input" && type === "date" && v) {
+          let formattedDate = formatFieldValue(v, prop);
+          if (formattedDate === "-") {
+            $i.value = "";
+          } else {
+            $i.value = formatDateInput(v);
+          }
+        } else if (tag === "input" && (type === "checkbox" || type === "radio")) {
+          if (type === "checkbox") {
+            $i.checked = Boolean(v);
+          } else {
+            $i.checked = ($i.value == v);
+          }
+        } else if ("value" in $i) { $i.value = v ?? ""; }
+        else { $i.textContent = v ?? ""; }
+      }
+    }
+
+    let $btn = document.querySelector("main button");
+    if ($btn) {
+      $btn.disabled = false;
+      if ($btn.nextElementSibling) { $btn.nextElementSibling.textContent = ""; }
+    }
+
+    return req.certificateId || req.experienceId || req.memberId || Object.values(req)[0];
+  } else {
+    console.error("API error:", result);
+    return req.certificateId || req.experienceId || req.memberId || Object.values(req)[0];
+  }
+}
+
 async function fillInputs(url, key = "memberId") {
   let id = getId(key);
   if (id) {
     let req = {};
     req[key] = id;
 
-    let result = await api(url, req);
-    if (!result || result.error) {
-      console.error("Data fetch error:", result);
-      return id;
-    }
-
-    if (result.isSuccess) {
-      for (let prop in result.data) {
-        let $i = document.getElementById(prop);
-        if ($i) {
-          let v = result.data[prop];
-          let tag = ($i.tagName || "").toLowerCase();
-          let type = ($i.type || "").toLowerCase();
-
-          if (tag === "textarea") {
-            $i.value = v ?? "";
-          } else if (tag === "input" && type === "date" && v) {
-            let formattedDate = formatFieldValue(v, prop);
-            if (formattedDate === "-") {
-              $i.value = "";
-            } else {
-              $i.value = formatDateInput(v);
-            }
-          } else if (tag === "input" && (type === "checkbox" || type === "radio")) {
-            if (type === "checkbox") {
-              $i.checked = Boolean(v);
-            } else {
-              $i.checked = ($i.value == v);
-            }
-          } else if ("value" in $i) { $i.value = v ?? ""; }
-          else { $i.textContent = v ?? ""; }
-        }
-      }
-
-      let $btn = document.querySelector("main button");
-      if ($btn) {
-        $btn.disabled = false;
-        if ($btn.nextElementSibling) { $btn.nextElementSibling.textContent = ""; }
-      }
-    } else {
-      console.error("API error:", result);
-      return id;
-    }
+    return await fillInputsViaReq(url, req);
   }
 
-  return id;
+  return null;
 }

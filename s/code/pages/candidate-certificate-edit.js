@@ -1,5 +1,9 @@
 onAuthReady(async () => {
-  let certificateId = await fillInputs("CandidateCertificate/Get");
+  let req = {
+    memberId: USER.id,
+    certificateId: getId("id")
+  };
+  await fillInputsViaReq("CandidateCertificate/Get", req);
 
   let $year = document.getElementById("year");
   if ($year) { $year.max = new Date().getFullYear(); }
@@ -8,14 +12,10 @@ onAuthReady(async () => {
   let $msg = $btn.nextElementSibling;
 
   $btn.addEventListener(CLICK_EVENT, async function () {
-    let req = {
-      memberId: USER.id,
-      certificateId: certificateId,
-      name: val("name"),
-      organization: val("organization"),
-      year: val("year"),
-      description: val("description")
-    };
+    req.name = val("name");
+    req.organization = val("organization");
+    req.year = val("year");
+    req.description = val("description");
 
     let errors = [];
     if (!req.name) { errors.push("Sertifika adını giriniz."); }
