@@ -37,8 +37,8 @@ onReady(() => {
     if (showErrors($msg, errors)) { return; }
     clearErrors($msg);
 
-    let prmToken = prms.get("token");
-    let result = await apiBtn($btn, "Member/NewPasscode", { email: email, ref: prmToken, isCompanyAccepted: $isCompanyAccepted.checked }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
+    let prmRef = prms.get("ref");
+    let result = await apiBtn($btn, "Member/NewPasscode", { email: email, ref: prmRef, isCompanyAccepted: $isCompanyAccepted.checked }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
     if (result && result.isSuccess) {
       setTimeout(() => { window.location.href = `login.html?email=${encodeURIComponent(email)}`; }, DELAY_2);
     }
