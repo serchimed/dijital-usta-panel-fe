@@ -241,7 +241,15 @@ function checkEmail(email) {
 
 function checkPhone(phone) {
   if (!phone || typeof phone !== "string") return false;
-  return /^0\d{10}$/.test(phone);
+  if (phone.length !== 11) return false;
+  if (phone[0] !== '0') return false;
+
+  for (let i = 0; i < phone.length; i++) {
+    let charCode = phone.charCodeAt(i);
+    if (charCode < 48 || charCode > 57) return false;
+  }
+
+  return true;
 }
 
 function checkUrl(url) {
