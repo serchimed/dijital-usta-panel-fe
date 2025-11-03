@@ -68,9 +68,9 @@ onAuthReady(async () => {
   let $list = document.getElementById("companiesList");
   let result = await api("Company/GetNewForCandidateCity", { memberId: USER.id });
   if (!result || result.error || !result.isSuccess || !Array.isArray(result.data) || result.data.length === 0) {
-    $warnNewCompany.style.display = "none";
+    $warnNewCompany.classList.add("none");
   } else {
-    $warnNewCompany.style.display = "block";
+    $warnNewCompany.classList.remove("none");
     $list.textContent = "";
     result.data.forEach(company => { $list.append(chkComp(company)); });
   }
