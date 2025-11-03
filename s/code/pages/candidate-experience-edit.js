@@ -31,7 +31,7 @@ onAuthReady(async () => {
   $btn.addEventListener(CLICK_EVENT, async function () {
     req.company = val("company");
     req.start = val("start");
-    req.isOngoing = $isOngoing.checked ? "true" : "false";
+    req.isOngoing = $isOngoing.checked ? true : false;
     req.end = val("end") ? val("end") : null;
     req.position = val("position");
     req.description = val("description");
