@@ -9,7 +9,9 @@ function getReq(id) {
     phone: val("phone"),
     webUrl: val("webUrl"),
     trendyolUrl: val("trendyolUrl"),
-    driveUrl: val("driveUrl")
+    driveUrl: val("driveUrl"),
+    county: val("county"),
+    languages: val("languages")
   };
 }
 

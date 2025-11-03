@@ -56,12 +56,12 @@ onAuthReady(async () => {
   let $letter = document.getElementById("motivationLetter");
   if ($letter && $letter.value.trim() && $letter.value.trim() != "-") {
     $letter.style.height = "333px";
-    if ($warnLetter) { $warnLetter.style.display = "none"; }
+    if ($warnLetter) { $warnLetter.classList.add("none"); }
     let $links = document.querySelectorAll('a[href*="candidate-letter-add.html"]');
     if ($links) { $links.forEach(link => link.remove()); }
   } else {
     if ($letter) { $letter.remove(); }
-    if ($warnLetter) { $warnLetter.style.display = "block"; }
+    if ($warnLetter) { $warnLetter.classList.remove("none"); }
   }
 
   let $warnNewCompany = document.getElementById("newCompanyWarning");
