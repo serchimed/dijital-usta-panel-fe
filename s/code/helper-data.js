@@ -41,7 +41,7 @@ function setFilters() {
   $fis.forEach($i => {
     let filterTable = debounce(function () {
       let tbl = $i.nextElementSibling;
-      let txt = this.value.toLowerCase();
+      let txt = ($i.value || '').toLowerCase();
       let rows = tbl.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
       for (let i = 0; i < rows.length; i++) {

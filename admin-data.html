@@ -150,6 +150,65 @@
         <p></p>
       </div>
     </details>
+
+    <details>
+      <summary>CSV İşlemleri</summary>
+      <div>
+        <p class="description">Şirket verilerini CSV dosyasından içe aktarabilirsiniz.</p>
+
+        <h4>Adım 1: CSV Dosyası Seçin</h4>
+        <input type="file" id="csvFile" accept=".csv" autocomplete="off" />
+
+        <h4>Adım 2: İçe Aktarma Ayarları</h4>
+        <p>
+          <label for="conflictOption">Çakışma Durumunda:</label>
+          <select id="conflictOption">
+            <option value="error">Hata Ver</option>
+            <option value="overwrite">Üzerine Yaz</option>
+            <option value="skip">Atla</option>
+          </select>
+        </p>
+
+        <p>
+          <label>
+            <input type="checkbox" id="isDryRun" />
+            Test Modu (Sadece Analiz Et, Veri Ekleme)
+          </label>
+        </p>
+
+        <h4>Adım 3: İçe Aktarmayı Başlat</h4>
+        <button id="btnCsvImport" class="btn-act">CSV'yi İçe Aktar</button>
+        <p></p>
+
+        <div id="csvImportResults" class="none mt30">
+          <h3>İçe Aktarma Sonuçları</h3>
+
+          <details open>
+            <summary>Genel Özet</summary>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Toplam Kayıt</th>
+                    <th>Eklenen</th>
+                    <th>Güncellenen</th>
+                    <th>Atlanan</th>
+                    <th>Hatalı</th>
+                    <th>Mod</th>
+                  </tr>
+                </thead>
+                <tbody id="csvSummaryTable"></tbody>
+              </table>
+            </div>
+          </details>
+
+          <details id="csvErrorsSection" class="none">
+            <summary>Hatalar</summary>
+            <div id="csvErrorsList"></div>
+          </details>
+        </div>
+      </div>
+    </details>
   </main>
   <footer>
     <div>

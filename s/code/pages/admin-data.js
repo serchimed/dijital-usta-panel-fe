@@ -417,5 +417,139 @@ onAuthReady(async () => {
     }
   }
 
+  let $btnCsvImport = document.getElementById("btnCsvImport");
+  let $csvFile = document.getElementById("csvFile");
+  let $conflictOption = document.getElementById("conflictOption");
+  let $isDryRun = document.getElementById("isDryRun");
+
+  $csvFile.value = "";
+
+  $btnCsvImport.addEventListener(CLICK_EVENT, async function () {
+    if (!$csvFile.files || !$csvFile.files[0]) {
+      let $mbody = div();
+      let $msgDiv = div(CSS_CLASSES.modalMessage);
+      showModalMessage($msgDiv, "error", "Lütfen önce bir CSV dosyası seçin");
+      $mbody.append($msgDiv);
+      let $modal = createModal("Uyarı", $mbody);
+      setTimeout(() => closeModal($modal), DELAY_2);
+      return;
+    }
+
+    this.disabled = true;
+    this.classList.remove("btn-act");
+    this.classList.add("btn-gray");
+
+    try {
+      let formData = new FormData();
+      formData.append('file', $csvFile.files[0]);
+      formData.append('onConflict', $conflictOption.value);
+      formData.append('isDryRun', $isDryRun.checked);
+
+      let response = await fetch(`${API}Company/Import`, { method: "POST", credentials: "include", body: formData });
+
+      if (!response.ok) {
+        let $mbody = div();
+        let $msgDiv = div(CSS_CLASSES.modalMessage);
+        showModalMessage($msgDiv, "error", "CSV import işlemi başarısız");
+        $mbody.append($msgDiv);
+        let $modal = createModal("Hata", $mbody);
+        setTimeout(() => closeModal($modal), DELAY_2);
+        document.getElementById("csvImportResults").classList.add("none");
+        return;
+      }
+
+      let result = await response.json();
+
+      if (!result || result.error || !result.isSuccess) {
+        let $mbody = div();
+        let $msgDiv = div(CSS_CLASSES.modalMessage);
+        showModalMessage($msgDiv, "error", result?.message || "CSV import işlemi başarısız");
+        $mbody.append($msgDiv);
+        let $modal = createModal("Hata", $mbody);
+        setTimeout(() => closeModal($modal), DELAY_2);
+        document.getElementById("csvImportResults").classList.add("none");
+        return;
+      }
+
+      displayCsvImportResults(result.data, result.errors);
+
+    } catch (error) {
+      let $mbody = div();
+      let $msgDiv = div(CSS_CLASSES.modalMessage);
+      showModalMessage($msgDiv, "error", "CSV import sırasında hata oluştu: " + error.message);
+      $mbody.append($msgDiv);
+      let $modal = createModal("Hata", $mbody);
+      setTimeout(() => closeModal($modal), DELAY_2);
+      document.getElementById("csvImportResults").classList.add("none");
+    } finally {
+      this.disabled = false;
+      this.classList.remove("btn-gray");
+      this.classList.add("btn-act");
+    }
+  });
+
+  function displayCsvImportResults(data, errors) {
+    if (!data) {
+      let $mbody = div();
+      let $msgDiv = div(CSS_CLASSES.modalMessage);
+      showModalMessage($msgDiv, "error", "Import sonuç verisi hatalı");
+      $mbody.append($msgDiv);
+      let $modal = createModal("Hata", $mbody);
+      setTimeout(() => closeModal($modal), DELAY_2);
+      document.getElementById("csvImportResults").classList.add("none");
+      return;
+    }
+
+    document.getElementById("csvImportResults").classList.remove("none");
+
+    let $csvSummaryTable = document.getElementById("csvSummaryTable");
+    $csvSummaryTable.textContent = "";
+    let $tr = tr();
+
+    let $tdTotal = td(data.totalRecords || 0);
+    $tdTotal.setAttribute("data-label", "Toplam Kayıt");
+    $tr.append($tdTotal);
+
+    let $tdAdded = td(data.addedRecordsCount || 0);
+    $tdAdded.setAttribute("data-label", "Eklenen");
+    $tr.append($tdAdded);
+
+    let $tdUpdated = td(data.updatedRecordsCount || 0);
+    $tdUpdated.setAttribute("data-label", "Güncellenen");
+    $tr.append($tdUpdated);
+
+    let $tdSkipped = td(data.skippedRecordsCount || 0);
+    $tdSkipped.setAttribute("data-label", "Atlanan");
+    $tr.append($tdSkipped);
+
+    let $tdError = td(data.errorRecordsCount || 0);
+    $tdError.setAttribute("data-label", "Hatalı");
+    $tr.append($tdError);
+
+    let $tdMode = td(data.isDryRun ? "Test Modu" : "Gerçek");
+    $tdMode.setAttribute("data-label", "Mod");
+    $tr.append($tdMode);
+
+    $csvSummaryTable.append($tr);
+
+    let $csvErrorsSection = document.getElementById("csvErrorsSection");
+    let $csvErrorsList = document.getElementById("csvErrorsList");
+
+    if (errors && Array.isArray(errors) && errors.length > 0) {
+      $csvErrorsSection.classList.remove("none");
+      $csvErrorsList.textContent = "";
+
+      let $ul = document.createElement("ul");
+      for (let error of errors) {
+        let $li = document.createElement("li");
+        $li.textContent = error;
+        $ul.append($li);
+      }
+      $csvErrorsList.append($ul);
+    } else {
+      $csvErrorsSection.classList.add("none");
+    }
+  }
+
   setFilters();
 });
