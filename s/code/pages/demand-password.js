@@ -27,20 +27,26 @@ onReady(() => {
     let email = $email.value.trim();
 
     let errors = [];
-    if (!checkEmail(email)) { errors.push("Geçerli bir e-posta adresi girin."); }
+    if (!checkEmail(email)) {
+      errors.push("Geçerli bir e-posta adresi girin.");
+    }
 
     let $isCompanyAccepted = document.getElementById("isCompanyAccepted");
     if ($lblAccept && $lblAccept.dataset.visible === "true" && !$isCompanyAccepted.checked) {
       errors.push("Firma Sözleşmesi ve Gizlilik Politikasını kabul etmelisiniz.");
     }
 
-    if (showErrors($msg, errors)) { return; }
+    if (showErrors($msg, errors)) {
+      return;
+    }
     clearErrors($msg);
 
     let prmRef = prms.get("ref");
-    let result = await apiBtn($btn, "Member/NewPasscode", { email: email, token: prmRef, isCompanyAccepted: $isCompanyAccepted.checked }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
+    let result = await apiBtn($btn, "Member/NewPasscode", { email: email, token: prmRef || "", isCompanyAccepted: $isCompanyAccepted.checked }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
     if (result && result.isSuccess) {
-      setTimeout(() => { window.location.href = `login.html?email=${encodeURIComponent(email)}`; }, DELAY_2);
+      setTimeout(() => {
+        window.location.href = `login.html?email=${encodeURIComponent(email)}`;
+      }, DELAY_2);
     }
   };
 
