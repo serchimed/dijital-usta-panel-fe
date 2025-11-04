@@ -7,7 +7,7 @@ $tbl.addEventListener("tableLoaded", function (e) {
     let $row = rows[index];
     if (!$row) { return; }
 
-    let $btn = createBlockButton(item.companyId, item.isBlocked, item.companyName, "CandidateCompany/Block", "CandidateCompany/Unblock", "companyId");
+    let $btn = createBlockButton(item.companyId, !item.isAllowed, item.companyName, "CandidateCompany/Block", "CandidateCompany/Unblock", "companyId", "İzni Kaldır", "İzin Ver");
     $row.lastElementChild.append($btn);
   });
 });
@@ -107,11 +107,8 @@ onAuthReady(async () => {
   let $warnNewCompany = document.getElementById("newCompanyWarning");
   let $list = document.getElementById("companiesList");
   let result = await api("Company/GetNewForCandidateCity", { memberId: USER.id });
-  if (!result || !result.isSuccess || (result.errors && result.errors.length > 0) || !Array.isArray(result.data) || result.data.length === 0) {
-    if ($warnNewCompany) {
-      $warnNewCompany.classList.add("none");
-    }
-  } else {
+
+  if (result && result.isSuccess && Array.isArray(result.data) && result.data.length > 0) {
     if ($warnNewCompany) {
       $warnNewCompany.classList.remove("none");
     }
@@ -120,6 +117,13 @@ onAuthReady(async () => {
       result.data.forEach(company => {
         $list.append(chkComp(company));
       });
+    }
+  } else {
+    if (!result || !result.isSuccess) {
+      console.error("Yeni şirketler API hatası:", result);
+    }
+    if ($warnNewCompany) {
+      $warnNewCompany.classList.add("none");
     }
   }
 

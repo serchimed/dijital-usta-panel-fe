@@ -95,8 +95,8 @@ function showSuccessAndClose($msgDiv, $modal, message) {
   setTimeout(() => closeModal($modal), DELAY_2);
 }
 
-function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblockEndpoint, idKey = "memberId") {
-  let $btn = btn("btn-act", isBlocked ? "Engeli Kaldır" : "Engelle");
+function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblockEndpoint, idKey = "memberId", btnBlockText = "Engelle", btnUnblockText = "Engeli Kaldır"  ) {
+  let $btn = btn("btn-act", isBlocked ? btnUnblockText : btnBlockText);
   $btn.dataset.entityId = entityId;
   $btn.dataset.isBlocked = isBlocked;
 
