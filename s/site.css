@@ -835,10 +835,6 @@ details>div>p.description {
   line-height: 29px;
 }
 
-#newCompanyWarning {
-  display: none;
-}
-
 #motivationLetterWarning,
 #newCompanyWarning {
   border: 2px solid #e20707;
