@@ -251,11 +251,10 @@ h3.sh3 {
   background: linear-gradient(to right, #FE5200, #ff8a5c, rgba(255, 255, 255, 0.3));
   color: #fff;
   padding: 15px 21px;
-  border-radius: 8px;
+  border-radius: 0;
   margin-top: 40px;
   margin-bottom: 21px;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(254, 82, 0, 0.2);
 }
 
 h4 {
@@ -682,6 +681,7 @@ details.faq {
   background-color: #fff;
   border: none;
   border-top: 1px solid #e2e8f0;
+  border-radius: 0;
   margin: 13px 0;
   padding: 8px;
 }
@@ -697,19 +697,12 @@ details.faq summary {
   color: #000;
   transition: background-color 0.2s ease;
   margin-bottom: 13px;
-}
-
-details.faq summary:hover {
-  background-color: #fff5f0;
+  border-radius: 0;
 }
 
 details.faq[open] summary {
   background-color: #fff5f0;
   color: #000;
-}
-
-details.faq[open] summary:hover {
-  background-color: #ffe8db;
 }
 
 details.faq summary::before {
