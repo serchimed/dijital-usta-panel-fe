@@ -10,7 +10,7 @@ onAuthReady(async () => {
       $tr.append(td(candidate.email));
       $tr.append(td(candidate.city));
       $tr.append(td(candidate.status));
-      $tr.append(td(formatDateTimeLong(candidate.wordpressRegisterDate)));
+      $tr.append(td(formatTimeLong(candidate.wordpressRegisterDate)));
       tbody.append($tr);
     }
   } else { logErr(result); }
