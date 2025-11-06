@@ -678,7 +678,7 @@ summary::-webkit-details-marker {
 }
 
 details.faq {
-  background-color: #fff;
+  background: linear-gradient(to right, #fff, #f8f9fa);
   border: none;
   border-top: 1px solid #e2e8f0;
   border-radius: 0;
@@ -698,11 +698,6 @@ details.faq summary {
   transition: background-color 0.2s ease;
   margin-bottom: 13px;
   border-radius: 0;
-}
-
-details.faq[open] summary {
-  background-color: #fff5f0;
-  color: #000;
 }
 
 details.faq summary::before {
