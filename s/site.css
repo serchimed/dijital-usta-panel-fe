@@ -247,6 +247,17 @@ h3 {
   color: #033366;
 }
 
+h3.sh3 {
+  background: linear-gradient(to right, #FE5200, #ff8a5c, rgba(255, 255, 255, 0.3));
+  color: #fff;
+  padding: 15px 21px;
+  border-radius: 8px;
+  margin-top: 40px;
+  margin-bottom: 21px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(254, 82, 0, 0.2);
+}
+
 h4 {
   font-size: 19px;
   line-height: 23px;
@@ -669,8 +680,8 @@ summary::-webkit-details-marker {
 
 details.faq {
   background-color: #fff;
-  border: 1px solid #FE5200;
-  border-radius: 8px;
+  border: none;
+  border-top: 1px solid #e2e8f0;
   margin: 13px 0;
   padding: 8px;
 }
@@ -685,7 +696,6 @@ details.faq summary {
   padding: 13px 21px;
   color: #000;
   transition: background-color 0.2s ease;
-  border-radius: 6px;
   margin-bottom: 13px;
 }
 
@@ -694,12 +704,12 @@ details.faq summary:hover {
 }
 
 details.faq[open] summary {
-  background-color: #FE5200;
-  color: #fff;
+  background-color: #fff5f0;
+  color: #000;
 }
 
 details.faq[open] summary:hover {
-  background-color: #e04700;
+  background-color: #ffe8db;
 }
 
 details.faq summary::before {
@@ -707,7 +717,7 @@ details.faq summary::before {
 }
 
 details.faq[open] summary::before {
-  color: #fff;
+  color: #FE5200;
 }
 
 details.faq>*:not(summary) {
