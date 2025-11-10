@@ -21,7 +21,8 @@ onAuthReady(async () => {
   }
 
   let candidateName = document.getElementById("displayName")?.textContent;
-  let isShortlisted = infoResult.data.isShortlisted || false;
+  let isCurrentlyShortlisted = infoResult.data.isCurrentlyShortlisted || false;
+  let isShortlistRemovedDueToOtherHire = infoResult.data.isShortlistRemovedDueToOtherHire || false;
   let isInterviewResulted = infoResult.data.isInterviewResulted || false;
   let interviewResult = infoResult.data.interviewResult || "";
   let isInterviewSuccess = infoResult.data.isInterviewSuccess || false;
@@ -37,8 +38,8 @@ onAuthReady(async () => {
   } else {
     let $msg = p();
     let $hireInformBtn = createHireInformButton(candidateId, USER.companyId, candidateName, isInterviewResulted, isInterviewSuccess, isHired, isHireInformed);
-    let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, isShortlisted, $hireInformBtn, isInterviewResulted, isHired, isHireInformed);
-    let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isShortlisted, $msg, $interviewBtn, isInterviewResulted, isHired, isHireInformed);
+    let $interviewBtn = createInterviewReportButton(candidateId, USER.companyId, candidateName, isCurrentlyShortlisted, $hireInformBtn, isInterviewResulted, isHired, isHireInformed);
+    let $shortlistBtn = createShortlistButton(candidateId, USER.companyId, candidateName, isCurrentlyShortlisted, $msg, $interviewBtn, isInterviewResulted, isHired, isHireInformed);
     $interviewBtn.$shortlistBtn = $shortlistBtn;
 
     $actionButtons.append($shortlistBtn, $interviewBtn, $hireInformBtn, $msg);
