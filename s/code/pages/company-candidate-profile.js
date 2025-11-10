@@ -31,7 +31,11 @@ onAuthReady(async () => {
 
   let $actionButtons = document.getElementById("actionButtons");
 
-  if (isInterviewResulted && interviewResult && !isInterviewSuccess) {
+  if (isShortlistRemovedDueToOtherHire) {
+    let $warnP = p(`Aday başka bir firma tarafından işe alındı`);
+    $warnP.className = "lbl-warn";
+    $actionButtons.append($warnP);
+  } else if (isInterviewResulted && interviewResult && !isInterviewSuccess) {
     let $resultP = p(`Mülakat Sonucu: ${interviewResult}`);
     $resultP.className = "lbl-warn";
     $actionButtons.append($resultP);

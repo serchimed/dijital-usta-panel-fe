@@ -8,13 +8,19 @@ if ($tbody) {
     rows.forEach((tr, index) => {
       let item = data[index];
       if (item && item.memberId) {
-        let $msg = p();
-        let $hireBtn = createHireInformButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired, item.isHireInformed);
-        let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, item.isCurrentlyShortlisted, $hireBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
-        let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isCurrentlyShortlisted, $msg, $interviewBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
-        $interviewBtn.$shortlistBtn = $shortlistBtn;
+        if (item.isShortlistRemovedDueToOtherHire) {
+          let $warnP = p(`Aday başka bir firma tarafından işe alındı`);
+          $warnP.className = "lbl-warn";
+          tr.lastElementChild.append($warnP);
+        } else {
+          let $msg = p();
+          let $hireBtn = createHireInformButton(item.memberId, USER.companyId, item.displayName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired, item.isHireInformed);
+          let $interviewBtn = createInterviewReportButton(item.memberId, USER.companyId, item.displayName, item.isCurrentlyShortlisted, $hireBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
+          let $shortlistBtn = createShortlistButton(item.memberId, USER.companyId, item.displayName, item.isCurrentlyShortlisted, $msg, $interviewBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
+          $interviewBtn.$shortlistBtn = $shortlistBtn;
 
-        tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
+          tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $msg);
+        }
       }
     });
   });
