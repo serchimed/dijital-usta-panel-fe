@@ -1,5 +1,6 @@
 onAuthReady(async () => {
-  let id = getId("id");
+  let prms = new URLSearchParams(window.location.search);
+  let id = prms.get("id");
   if (!id) {
     window.location.href = "admin-settings.html";
     return;
