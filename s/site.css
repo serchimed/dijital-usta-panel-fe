@@ -805,7 +805,7 @@ details>div>input[type="file"] {
 details>div>input.tblfilter {
   grid-column: span 3;
   width: 100%;
-  margin-top: -8px;
+  margin-bottom: -19px;
 }
 
 details details {
@@ -897,6 +897,9 @@ details>div>p.description {
   margin-top: -27px;
 }
 
+.mr8 {
+  margin-right: 8px;
+}
 
 .mt30 {
   margin-top: 30px;
