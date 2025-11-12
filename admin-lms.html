@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yapay Zeka Ayarları | Dijital Usta</title>
+  <title>Öğrenim Yönetim Sistemi | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
   <link rel="stylesheet" href="./s/site.css" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
@@ -19,47 +19,49 @@
     <ul></ul>
   </nav>
   <main>
-    <h2>Yapay Zeka Ayarları</h2>
-
-    <details>
-      <summary>API Ayarları</summary>
-      <div>
-        <label for="apiKeyGoogle">Google API Key
-          <input type="password" id="apiKeyGoogle" autocomplete="off" />
-        </label>
-        <label for="apiKeyOpenAI">OpenAI API Key
-          <input type="password" id="apiKeyOpenAI" autocomplete="off" />
-        </label>
-
-        <button id="btnSaveAPI">Güncelle</button>
-        <p></p>
-      </div>
-    </details>
+    <h2>Öğrenim Yönetim Sistemi (LMS)</h2>
 
     <details open>
-      <summary>Prompt Güncelleme</summary>
+      <summary>Eğitimler</summary>
       <div>
-        <textarea id="promptText"></textarea>
-        <button id="btnSavePrompt">Güncelle</button>
-        <p></p>
-      </div>
-    </details>
-
-    <details id="AIHistoryDetails">
-      <summary>Kullanım Geçmişi</summary>
-      <div>
+        <p><a href="admin-add-training.html">Yeni Eğitim Ekle</a></p>
         <input type="text" class="tblfilter" placeholder="filtrele" />
         <table>
           <thead>
             <tr>
-              <th id="aiName">AI</th>
-              <th id="prompt">Giden Prompt</th>
-              <th id="answer">Gelen Cevap</th>
-              <th id="candidateName" data-url="admin-candidate-profile.html?id={candidateId}">Aday</th>
-              <th id="createdAt">Zaman</th>
             </tr>
           </thead>
-          <tbody id="AIHistory"></tbody>
+          <tbody id="Training"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>Anketler</summary>
+      <div>
+        <p><a href="admin-add-questionnaire.html">Yeni Anket Ekle</a></p>
+        <input type="text" class="tblfilter" placeholder="filtrele" />
+        <table>
+          <thead>
+            <tr>
+            </tr>
+          </thead>
+          <tbody id="Questionnaire"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>Sınavlar</summary>
+      <div>
+        <p><a href="admin-add-exam.html">Yeni Sınav Ekle</a></p>
+        <input type="text" class="tblfilter" placeholder="filtrele" />
+        <table>
+          <thead>
+            <tr>
+            </tr>
+          </thead>
+          <tbody id="Exam"></tbody>
         </table>
       </div>
     </details>
@@ -79,7 +81,7 @@
   </footer>
 
   <script src="./s/site.js" defer></script>
-  <script src="./s/code/pages/admin-ai.js" defer></script>
+  <script src="./s/code/pages/admin-lms.js" defer></script>
 </body>
 
 </html>

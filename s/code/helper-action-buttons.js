@@ -441,18 +441,18 @@ function createHireApproveButton(memberId, companyId, displayName, isInterviewRe
     let $modal;
 
     let handleHire = async function () {
-      let url = $urlInput.value.trim();
-      if (!url || !checkUrl(url)) {
-        showModalMessage($msgDiv, "error", "Geçerli bir evrak linkini giriniz.");
-        return;
-      }
+      // let url = $urlInput.value.trim();
+      // if (!url || !checkUrl(url)) {
+      //   showModalMessage($msgDiv, "error", "Geçerli bir evrak linkini giriniz.");
+      //   return;
+      // }
 
       setButtonLoading(buttons.submitBtn, true);
 
       let result = await api("Candidate/Hire", {
         candidateId: memberId,
         companyId: companyId,
-        hirePaperDriveUrl: url
+        hirePaperDriveUrl: "https://drive.google.com/drive/u/0/folders"
       });
 
       if (result && result.isSuccess) {

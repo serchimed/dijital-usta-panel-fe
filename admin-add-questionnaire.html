@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adaylar | Dijital Usta</title>
+  <title>Anket Ekleme | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
   <link rel="stylesheet" href="./s/site.css" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
@@ -19,32 +19,16 @@
     <ul></ul>
   </nav>
   <main>
-    <h2>Adaylar</h2>
-    <p>
-      <a href="admin-candidate-list-included.html" class="qs mt27e">Tüm adaylar listesi</a>
-      <a href="admin-point-update.html" class="qs mt27e">Toplu Puan Güncelle</a>
-      <a href="admin-candidate-invite.html" class="qs mt27e">TOBB ETÜ Eğitiminden Geçenleri Davet Et</a>
-    </p>
-    <input type="text" class="tblfilter" placeholder="filtrele" />
-    <table>
-      <thead>
-        <tr>
-          <th>Aday</th>
-          <th>Cinsiyet</th>
-          <th>Doğum Tarihi</th>
-          <th>İl</th>
-          <th>Üniversite</th>
-          <th>Bölüm</th>
-          <th>Durum</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <h2>Anket Ekleme</h2>
 
-    <button id="exportBtn">CSV Olarak Dışa Aktar</button>
-    <p id="exportMsg"></p>
+    <label for="name">Anket Adı
+      <input type="text" id="name" />
+    </label>
 
+    <!-- Diğer alanlar eklenecek -->
+
+    <button>Kaydet</button>
+    <p></p>
   </main>
   <footer>
     <div>
@@ -60,7 +44,7 @@
     </div>
   </footer>
   <script src="./s/site.js" defer></script>
-  <script src="./s/code/pages/admin-candidate-list.js" defer></script>
+  <script src="./s/code/pages/admin-add-questionnaire.js" defer></script>
 </body>
 
 </html>

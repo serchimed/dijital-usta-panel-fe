@@ -15,7 +15,7 @@ onAuthReady(() => {
       sector: val("sector"),
       webUrl: val("webUrl"),
       trendyolUrl: val("trendyolUrl"),
-      driveUrl: val("driveUrl")
+      // driveUrl: val("driveUrl")
     };
 
     let errors = [];
@@ -28,7 +28,7 @@ onAuthReady(() => {
     if (req.phone && !checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
     if (req.webUrl && !checkUrl(req.webUrl)) { errors.push("Geçerli bir web sitesi URL'si giriniz."); }
     if (req.trendyolUrl && !checkUrl(req.trendyolUrl)) { errors.push("Geçerli bir Trendyol profil URL'si giriniz."); }
-    if (req.driveUrl && !checkUrl(req.driveUrl)) { errors.push("Geçerli bir Drive klasör URL'si giriniz."); }
+    // if (req.driveUrl && !checkUrl(req.driveUrl)) { errors.push("Geçerli bir Drive klasör URL'si giriniz."); }
     if (showErrors($msg, errors)) { return; }
 
     clearErrors($msg);

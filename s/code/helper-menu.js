@@ -3,10 +3,10 @@ let MENU = {
     { text: "Firmalar", href: "admin-company-list" },
     { text: "Adaylar", href: "admin-candidate-list" },
     { text: "Adminler ve Editörler", href: "admin-and-editor-list" },
-    { text: "Toplu Puan Güncelle", href: "admin-point-update" },
-    { text: "TOBB ETÜ Eğitiminden Geçenleri Davet Et", href: "admin-candidate-invite" },
-    { text: "Yapay Zeka Ayarları", href: "admin-ai" },
-    { text: "Data İşlemleri", href: "admin-data" }
+    { text: "LMS İşlemleri", href: "admin-lms" },
+    { text: "Data İşlemleri", href: "admin-data" },
+    { text: "Ayarlar", href: "admin-settings" }
+
   ],
   "company": [
     { text: "Adaylar", href: "company-candidate-list" }
@@ -53,7 +53,16 @@ let PAGE_ROLES = {
   "admin-candidate-invite": ["admin"],
   "admin-candidate-survey": ["admin"],
   "admin-point-update": ["admin"],
-  "admin-ai": ["admin"],
+  "admin-ai-history": ["admin"],
+  "admin-settings": ["admin"],
+  "admin-email-edit": ["admin"],
+  "admin-lms": ["admin"],
+  "admin-add-training": ["admin"],
+  "admin-edit-training": ["admin"],
+  "admin-add-questionnaire": ["admin"],
+  "admin-edit-questionnaire": ["admin"],
+  "admin-add-exam": ["admin"],
+  "admin-edit-exam": ["admin"],
   "admin-data": ["admin"],
   "admin-profile": ["admin", "editor"],
   "admin-profile-edit": ["admin", "editor"],
