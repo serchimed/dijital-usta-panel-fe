@@ -805,12 +805,13 @@ details>div>input[type="file"] {
 details>div>input.tblfilter {
   grid-column: span 3;
   width: 100%;
+  margin-top: -8px;
 }
 
 details details {
   grid-column: span 3;
   width: 100%;
-  margin-bottom: 13px;
+  margin: 5px 0;
 }
 
 details>div>p.description {
@@ -848,11 +849,7 @@ details>div>p.description {
   margin: 8px 0;
 }
 
-#lblAccept {
-  display: none;
-}
-
-#lblAccept span {
+#isCompanyAccepted span {
   display: inline;
   margin: 0;
   vertical-align: super;

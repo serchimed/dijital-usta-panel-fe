@@ -30,6 +30,7 @@ let PUBLIC_PAGES = [
   "error-client",
   "error-server",
   "candidate-invite-accept",
+  "company-invite-accept",
   "concent",
   "company-concent",
   "404",
