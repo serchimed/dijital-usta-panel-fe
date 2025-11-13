@@ -149,6 +149,7 @@ async function fillSpans(url, key = "memberId") {
   let result = await api(url, req);
   if (!result || result.error) {
     console.error("Data fetch error:", result);
+    showHeaderMsg("Veriler yüklenemedi, lütfen sayfayı yenileyin.");
     return null;
   }
 
@@ -219,6 +220,7 @@ async function fillInputsViaReq(url, req) {
   let result = await api(url, req);
   if (!result || result.error) {
     console.error("Data fetch error:", result);
+    showHeaderMsg("Veriler yüklenemedi, lütfen sayfayı yenileyin.");
     return Object.values(req)[0];
   }
 

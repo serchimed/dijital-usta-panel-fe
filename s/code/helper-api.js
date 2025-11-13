@@ -4,8 +4,10 @@ let SUCCESS_UPDATE_MESSAGE = "Güncelleme başarılı.";
 let LOADING_MESSAGE = "İşlem yapılıyor...";
 let LOADING_MESSAGE_WAIT = "İşlem yapılıyor, lütfen bekleyiniz.";
 
-async function api(callName, data = {}) {
+async function api(callName, data = {}, retries = 0) {
   let url = `${API}${callName}`;
+  let maxRetries = 2;
+  let retryDelay = 1000;
 
   try {
     let response = await fetch(url, {
@@ -17,6 +19,11 @@ async function api(callName, data = {}) {
 
     if (response.status >= 500) {
       console.error("API call failed:", callName, response.text());
+      if (retries < maxRetries) {
+        console.log(`Retrying ${callName} (${retries + 1}/${maxRetries})...`);
+        await new Promise(resolve => setTimeout(resolve, retryDelay * (retries + 1)));
+        return api(callName, data, retries + 1);
+      }
       return { error: true, status: response.status, message: "Server error" };
     }
 
@@ -31,6 +38,11 @@ async function api(callName, data = {}) {
     return result;
   } catch (error) {
     console.error("API call failed:", callName, error);
+    if (retries < maxRetries) {
+      console.log(`Retrying ${callName} after network error (${retries + 1}/${maxRetries})...`);
+      await new Promise(resolve => setTimeout(resolve, retryDelay * (retries + 1)));
+      return api(callName, data, retries + 1);
+    }
     return { error: true, message: error.message };
   }
 }
