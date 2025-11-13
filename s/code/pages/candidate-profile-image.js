@@ -44,23 +44,29 @@ onAuthReady(async () => {
       return;
     }
 
-    let img = new Image();
-    img.onload = function () {
-      if (this.width < 150 || this.height < 150) {
-        $msg.textContent = "• Fotoğraf boyutu çok küçük. Minimum 150x150 piksel olmalıdır.";
-        return;
-      }
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      let img = new Image();
+      img.onload = function () {
+        if (this.width < 150 || this.height < 150) {
+          $msg.textContent = "• Fotoğraf boyutu çok küçük. Minimum 150x150 piksel olmalıdır.";
+          return;
+        }
 
-      if (this.width > 1500 || this.height > 1500) {
-        $msg.textContent = "• Fotoğraf boyutu çok büyük. Maksimum 1500x1500 piksel olmalıdır.";
-        return;
-      }
+        if (this.width > 1500 || this.height > 1500) {
+          $msg.textContent = "• Fotoğraf boyutu çok büyük. Maksimum 1500x1500 piksel olmalıdır.";
+          return;
+        }
 
-      convertToBase64(file);
+        convertToBase64(file);
+      };
+
+      img.onerror = function () { $msg.textContent = "• Fotoğraf dosyası okunamadı."; };
+      img.src = e.target.result;
     };
 
-    img.onerror = function () { $msg.textContent = "• Fotoğraf dosyası okunamadı."; };
-    img.src = URL.createObjectURL(file);
+    reader.onerror = function () { $msg.textContent = "• Dosya okunurken bir hata oluştu"; };
+    reader.readAsDataURL(file);
   }
 
   function convertToBase64(file) {

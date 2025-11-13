@@ -1,6 +1,4 @@
 onAuthReady(() => {
-  let id = getRequiredQueryParam("id");
-
   let $isOngoing = document.getElementById("isOngoing");
   let $end = document.getElementById("end");
 
@@ -19,7 +17,7 @@ onAuthReady(() => {
   let $msg = $btn.nextElementSibling;
   $btn.addEventListener(CLICK_EVENT, async function () {
     let req = {
-      memberId: id,
+      memberId: USER.id,
       company: val("company"),
       start: val("start"),
       isOngoing: $isOngoing.checked ? true : false,
@@ -42,6 +40,6 @@ onAuthReady(() => {
     if (showErrors($msg, errors)) { return; }
 
     clearErrors($msg);
-    await apiBtn(this, "CandidateExperience/Add", req, "Deneyim eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html?id=" + id);
+    await apiBtn(this, "CandidateExperience/Add", req, "Deneyim eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
   });
 });

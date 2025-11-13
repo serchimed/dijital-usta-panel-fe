@@ -1,6 +1,4 @@
 onAuthReady(() => {
-  let id = getRequiredQueryParam("id");
-
   let $year = document.getElementById("year");
   if ($year) { $year.max = new Date().getFullYear(); }
 
@@ -8,7 +6,7 @@ onAuthReady(() => {
   let $msg = $btn.nextElementSibling;
   $btn.addEventListener(CLICK_EVENT, async function () {
     let req = {
-      memberId: id,
+      memberId: USER.id,
       name: val("name"),
       organization: val("organization"),
       year: val("year"),
@@ -33,6 +31,6 @@ onAuthReady(() => {
 
     if (showErrors($msg, errors)) { return; }
     clearErrors($msg);
-    await apiBtn(this, "CandidateCertificate/Add", req, "Sertifika eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html?id=" + id);
+    await apiBtn(this, "CandidateCertificate/Add", req, "Sertifika eklendi.", ERROR_MESSAGE_DEFAULT, "candidate-profile.html");
   });
 });

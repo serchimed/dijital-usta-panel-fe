@@ -69,7 +69,7 @@ onAuthReady(async () => {
       return;
     }
 
-    let redirectUrl = "candidate-profile.html?id=" + id;
+    let redirectUrl = "candidate-profile.html";
     if (USER.role === "admin" || USER.role === "editor") { redirectUrl = "admin-candidate-profile.html?id=" + id; }
 
     clearErrors($msg);
