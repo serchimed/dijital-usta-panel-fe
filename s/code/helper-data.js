@@ -162,7 +162,7 @@ async function fillSpans(url, key = "memberId") {
         let tag = ($s.tagName || "").toLowerCase();
         if (tag === "img") {
           $s.src = v;
-          if (!v || v === "-") { $s.src = "./s/profile.png"; }
+          if (!v || v === "-") { $s.src = "./s/profile.jpg"; }
         } else if (tag === "textarea") {
           $s.value = v;
         } else if (prop.endsWith("Url") && v && v !== "-") {

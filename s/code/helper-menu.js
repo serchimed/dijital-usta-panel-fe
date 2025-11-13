@@ -187,19 +187,19 @@ function buildAuthenticatedMenu() {
 }
 
 function updateLogoLink() {
-  let $logoLink = document.querySelector("header a");
-  if (!$logoLink || !USER) return;
+  let $l = document.querySelector("header a");
+  if (!$l || !USER) return;
 
   let role = USER.role.toLowerCase();
 
   if (role === "candidate") {
-    $logoLink.href = `candidate-profile.html?id=${USER.id}`;
+    $l.href = "candidate-profile.html";
   } else if (role === "company") {
-    $logoLink.href = "company-candidate-list.html";
+    $l.href = "company-candidate-list.html";
   } else if (role === "admin") {
-    $logoLink.href = "index.html";
+    $l.href = "index.html";
   } else if (role === "editor") {
-    $logoLink.href = "admin-company-list.html";
+    $l.href = "admin-company-list.html";
   }
 }
 
