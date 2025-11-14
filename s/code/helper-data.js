@@ -77,8 +77,15 @@ async function loadTables(querySelector = "table.load tbody") {
     let result = await api(`${tbody.id}/GetAll`, req);
     if (!result || result.error || !result.isSuccess) {
       tbody.textContent = "";
-      tbody.append(getMsgLine("Veri yüklenemedi"));
-      tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: null, error: true } }));
+      let errorMsg = "Veri yüklenemedi";
+      if (result && result.isNetworkError) {
+        errorMsg = "Bağlantı hatası. Veriler yüklenemedi.";
+      } else if (result && result.message) {
+        errorMsg = `Veri yüklenemedi: ${result.message}`;
+      }
+      tbody.append(getMsgLine(errorMsg));
+      tbody.dispatchEvent(new CustomEvent("tableLoaded", { detail: { data: null, error: true, message: errorMsg } }));
+      console.error(`Failed to load table ${tbody.id}:`, result);
       continue;
     }
 
@@ -148,8 +155,16 @@ async function fillSpans(url, key = "memberId") {
 
   let result = await api(url, req);
   if (!result || result.error) {
-    console.error("Data fetch error:", result);
-    showHeaderMsg("Veriler yüklenemedi, lütfen sayfayı yenileyin.");
+    console.error("Data fetch error for fillSpans:", result);
+    let errorMsg = "Veriler yüklenemedi";
+    if (result && result.isNetworkError) {
+      errorMsg = "Bağlantı hatası. Veriler yüklenemedi. Lütfen internet bağlantınızı kontrol edip sayfayı yenileyin.";
+    } else if (result && result.message) {
+      errorMsg = `Veriler yüklenemedi: ${result.message}. Lütfen sayfayı yenileyin.`;
+    } else {
+      errorMsg = "Veriler yüklenemedi, lütfen sayfayı yenileyin.";
+    }
+    showHeaderMsg(errorMsg);
     return null;
   }
 
@@ -219,8 +234,16 @@ async function fillSpans(url, key = "memberId") {
 async function fillInputsViaReq(url, req) {
   let result = await api(url, req);
   if (!result || result.error) {
-    console.error("Data fetch error:", result);
-    showHeaderMsg("Veriler yüklenemedi, lütfen sayfayı yenileyin.");
+    console.error("Data fetch error for fillInputs:", result);
+    let errorMsg = "Veriler yüklenemedi";
+    if (result && result.isNetworkError) {
+      errorMsg = "Bağlantı hatası. Veriler yüklenemedi. Lütfen internet bağlantınızı kontrol edip sayfayı yenileyin.";
+    } else if (result && result.message) {
+      errorMsg = `Veriler yüklenemedi: ${result.message}. Lütfen sayfayı yenileyin.`;
+    } else {
+      errorMsg = "Veriler yüklenemedi, lütfen sayfayı yenileyin.";
+    }
+    showHeaderMsg(errorMsg);
     return Object.values(req)[0];
   }
 

@@ -6,22 +6,29 @@ let LOADING_MESSAGE_WAIT = "İşlem yapılıyor, lütfen bekleyiniz.";
 
 async function api(callName, data = {}, retries = 0) {
   let url = `${API}${callName}`;
-  let maxRetries = 2;
+  let maxRetries = 3;
   let retryDelay = 1000;
 
   try {
+    let controller = new AbortController();
+    let timeoutId = setTimeout(() => controller.abort(), 30000);
+
     let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(data),
+      signal: controller.signal
     });
 
-    if (response.status >= 500) {
-      console.error("API call failed:", callName, response.text());
+    clearTimeout(timeoutId);
+
+    if (response.status >= 500 || response.status === 408 || response.status === 429) {
+      console.error("API call failed:", callName, "Status:", response.status);
       if (retries < maxRetries) {
-        console.log(`Retrying ${callName} (${retries + 1}/${maxRetries})...`);
-        await new Promise(resolve => setTimeout(resolve, retryDelay * (retries + 1)));
+        let delay = retryDelay * Math.pow(2, retries);
+        console.log(`Retrying ${callName} (${retries + 1}/${maxRetries}) after ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
         return api(callName, data, retries + 1);
       }
       return { error: true, status: response.status, message: "Server error" };
@@ -38,12 +45,16 @@ async function api(callName, data = {}, retries = 0) {
     return result;
   } catch (error) {
     console.error("API call failed:", callName, error);
-    if (retries < maxRetries) {
-      console.log(`Retrying ${callName} after network error (${retries + 1}/${maxRetries})...`);
-      await new Promise(resolve => setTimeout(resolve, retryDelay * (retries + 1)));
+    if (error.name === 'AbortError') {
+      console.error("Request timeout for:", callName);
+    }
+    if (retries < maxRetries && (error.name === 'AbortError' || error.name === 'TypeError' || error.message.includes('fetch') || error.message.includes('network'))) {
+      let delay = retryDelay * Math.pow(2, retries);
+      console.log(`Retrying ${callName} after error (${retries + 1}/${maxRetries}) in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
       return api(callName, data, retries + 1);
     }
-    return { error: true, message: error.message };
+    return { error: true, message: error.message, isNetworkError: true };
   }
 }
 
