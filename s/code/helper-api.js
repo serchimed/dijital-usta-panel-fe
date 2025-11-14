@@ -4,15 +4,35 @@ let SUCCESS_UPDATE_MESSAGE = "Güncelleme başarılı.";
 let LOADING_MESSAGE = "İşlem yapılıyor...";
 let LOADING_MESSAGE_WAIT = "İşlem yapılıyor, lütfen bekleyiniz.";
 
+// Retry edilebilir HTTP status kodları
+function isRetryableStatus(status) {
+  return status >= 500 || status === 408 || status === 429;
+}
+
+// Retry edilebilir network hataları
+function isRetryableError(error) {
+  return error.name === 'AbortError'
+    || error.name === 'TypeError'
+    || error.message.includes('fetch')
+    || error.message.includes('network');
+}
+
+// Exponential backoff delay hesapla
+function getRetryDelay(retries, baseDelay = 1000) {
+  return baseDelay * Math.pow(2, retries);
+}
+
 async function api(callName, data = {}, retries = 0) {
   let url = `${API}${callName}`;
   let maxRetries = 3;
-  let retryDelay = 1000;
+  let requestTimeout = 30000; // 30 saniye
 
   try {
+    // Timeout kontrolü için AbortController
     let controller = new AbortController();
-    let timeoutId = setTimeout(() => controller.abort(), 30000);
+    let timeoutId = setTimeout(() => controller.abort(), requestTimeout);
 
+    // API isteği gönder
     let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -23,38 +43,53 @@ async function api(callName, data = {}, retries = 0) {
 
     clearTimeout(timeoutId);
 
-    if (response.status >= 500 || response.status === 408 || response.status === 429) {
+    // Server hatası veya rate limit - retry yap
+    if (isRetryableStatus(response.status)) {
       console.error("API call failed:", callName, "Status:", response.status);
+
       if (retries < maxRetries) {
-        let delay = retryDelay * Math.pow(2, retries);
+        let delay = getRetryDelay(retries);
         console.log(`Retrying ${callName} (${retries + 1}/${maxRetries}) after ${delay}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));
         return api(callName, data, retries + 1);
       }
+
       return { error: true, status: response.status, message: "Server error" };
     }
 
+    // Diğer HTTP hataları (4xx gibi) - retry yapma
     if (!response.ok) {
       let text = await response.text();
       console.error(`HTTP ${response.status} from ${url}: ${text}`);
       return { error: true, status: response.status, message: text };
     }
 
+    // Başarılı yanıt
     let result = await response.json();
     console.debug("API response:", callName, result);
     return result;
+
   } catch (error) {
     console.error("API call failed:", callName, error);
+
+    // Timeout hatası
     if (error.name === 'AbortError') {
       console.error("Request timeout for:", callName);
     }
-    if (retries < maxRetries && (error.name === 'AbortError' || error.name === 'TypeError' || error.message.includes('fetch') || error.message.includes('network'))) {
-      let delay = retryDelay * Math.pow(2, retries);
+
+    // Network hatası - retry yap
+    if (retries < maxRetries && isRetryableError(error)) {
+      let delay = getRetryDelay(retries);
       console.log(`Retrying ${callName} after error (${retries + 1}/${maxRetries}) in ${delay}ms...`);
       await new Promise(resolve => setTimeout(resolve, delay));
       return api(callName, data, retries + 1);
     }
-    return { error: true, message: error.message, isNetworkError: true };
+
+    return {
+      error: true,
+      message: error.message,
+      isNetworkError: true
+    };
   }
 }
 
