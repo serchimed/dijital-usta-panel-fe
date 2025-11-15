@@ -84,8 +84,9 @@ echo "  File size: $(wc -c < "${OUTPUT_FILE}") bytes"
 echo ""
 
 # Update HTML files with new version
-echo "Updating script tags in HTML files..."
+echo "Updating script and CSS tags in HTML files..."
 HTML_COUNT=0
+CSS_COUNT=0
 
 # Find all HTML files in project root
 for html_file in "${PROJECT_ROOT}"/*.html; do
@@ -101,10 +102,18 @@ for html_file in "${PROJECT_ROOT}"/*.html; do
     if grep -q 'src="./s/code/pages/' "${html_file}"; then
       sed -i -E 's#src="(./s/code/pages/[^"]+\.js)(\?v=[0-9]+)?"#src="\1?v='"${NEW_VERSION}"'"#g' "${html_file}"
     fi
+
+    # Update ./s/site.css references
+    if grep -q 'href="./s/site\.css' "${html_file}"; then
+      # Remove old version parameter if exists, then add new one
+      sed -i -E 's#href="./s/site\.css(\?v=[0-9]+)?"#href="./s/site.css?v='"${NEW_VERSION}"'"#g' "${html_file}"
+      ((CSS_COUNT++))
+    fi
   fi
 done
 
-echo "  ✓ Updated ${HTML_COUNT} HTML files"
+echo "  ✓ Updated ${HTML_COUNT} HTML files (JS)"
+echo "  ✓ Updated ${CSS_COUNT} HTML files (CSS)"
 
 # Save new version
 echo "${NEW_VERSION}" > "${VERSION_FILE}"
@@ -112,4 +121,6 @@ echo "  ✓ Version saved: ${NEW_VERSION}"
 
 echo ""
 echo "All helpers are now bundled in correct order!"
-echo "HTML files now use: <script src=\"./s/site.js?v=${NEW_VERSION}\"></script>"
+echo "HTML files now use:"
+echo "  <link rel=\"stylesheet\" href=\"./s/site.css?v=${NEW_VERSION}\" />"
+echo "  <script src=\"./s/site.js?v=${NEW_VERSION}\"></script>"
