@@ -22,10 +22,10 @@ function getRetryDelay(retries, baseDelay = 1000) {
   return baseDelay * Math.pow(2, retries);
 }
 
-async function api(callName, data = {}, retries = 0) {
+async function api(callName, data = {}, retries = 0, timeout = 10000) {
   let url = `${API}${callName}`;
   let maxRetries = 3;
-  let requestTimeout = 300000; // 5 dakika (backup download/upload için)
+  let requestTimeout = timeout; // Default 10 saniye, data işlemleri için 300000 (5 dakika)
 
   try {
     // Timeout kontrolü için AbortController
@@ -52,7 +52,7 @@ async function api(callName, data = {}, retries = 0) {
         console.log(`Retrying ${callName} (${retries + 1}/${maxRetries}) after ${delay}ms...`);
         showHeaderMsg(`Bağlantı sorunları yaşanıyor, tekrar deneniyor... (${retries + 1}/${maxRetries})`);
         await new Promise(resolve => setTimeout(resolve, delay));
-        return api(callName, data, retries + 1);
+        return api(callName, data, retries + 1, timeout);
       }
 
       return { error: true, status: response.status, message: "Server error" };
@@ -84,7 +84,7 @@ async function api(callName, data = {}, retries = 0) {
       console.log(`Retrying ${callName} after error (${retries + 1}/${maxRetries}) in ${delay}ms...`);
       showHeaderMsg(`Ağ bağlantısı kurulamadı, tekrar deneniyor... (${retries + 1}/${maxRetries})`);
       await new Promise(resolve => setTimeout(resolve, delay));
-      return api(callName, data, retries + 1);
+      return api(callName, data, retries + 1, timeout);
     }
 
     return {

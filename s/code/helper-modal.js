@@ -89,7 +89,7 @@ function createModalButtons(cancelText, submitText, onCancel, onSubmit) {
 }
 
 function createConfirmationModal(options) {
-  let { confirmMessage, apiEndpoint, apiParams = {}, confirmButtonText = "Onayla", sourceButton, onSuccess } = options;
+  let { confirmMessage, apiEndpoint, apiParams = {}, confirmButtonText = "Onayla", sourceButton, onSuccess, timeout } = options;
 
   let $mbody = div();
   let $confirmLabel = p(confirmMessage);
@@ -102,7 +102,7 @@ function createConfirmationModal(options) {
       sourceButton.disabled = true;
     }
 
-    let result = await api(apiEndpoint, apiParams);
+    let result = await api(apiEndpoint, apiParams, 0, timeout);
 
     if (result && result.isSuccess) {
       let message = result.data && typeof result.data === 'object' && result.data.message

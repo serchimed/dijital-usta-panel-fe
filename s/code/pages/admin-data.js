@@ -5,7 +5,8 @@ onAuthReady(async () => {
       confirmMessage: "Wordpress güncel CSV'sini indirmeyi başlatmak istediğinize emin misiniz?",
       apiEndpoint: "Data/GetWordpressData",
       confirmButtonText: "Başlat",
-      sourceButton: this
+      sourceButton: this,
+      timeout: 300000 // 5 dakika - büyük veri işlemi
     });
   });
 
@@ -15,7 +16,8 @@ onAuthReady(async () => {
       confirmMessage: "Wordpress verilerini eşlemek istediğinize emin misiniz?",
       apiEndpoint: "Data/SyncWordpressData",
       confirmButtonText: "Eşle",
-      sourceButton: this
+      sourceButton: this,
+      timeout: 300000 // 5 dakika - büyük veri işlemi
     });
   });
 
@@ -76,7 +78,7 @@ onAuthReady(async () => {
       setButtonLoading(buttons.submitBtn, true);
       btnTriggerBackup.disabled = true;
 
-      let result = await api("Data/TriggerBackup", {});
+      let result = await api("Data/TriggerBackup", {}, 0, 300000); // 5 dakika timeout
 
       if (result && result.isSuccess) {
         showModalMessage($msgDiv, "success", "Yedek başarıyla oluşturuldu!");
