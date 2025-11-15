@@ -241,7 +241,7 @@ function createInterviewReportButton(candidateId, companyId, displayName, isShor
     $btn.title = "Kısa listeye eklenmeden mülakat sonucu bildirilemez";
   } else if (isInterviewResulted) {
     $btn.disabled = true;
-    $btn.title = "Mülakat sonucu zaten bildirilmiş";
+    $btn.title = "Mülakat sonucu bildirildi ve değiştirilemez";
   }
 
   $btn.addEventListener(CLICK_EVENT, async function () {
@@ -320,7 +320,7 @@ function createInterviewReportButton(candidateId, companyId, displayName, isShor
 
       if (result && result.isSuccess) {
         // Mülakat düğmesini disable et
-        setBtnState($btn, false, "Mülakat sonucu zaten bildirilmiş");
+        setBtnState($btn, false, "Mülakat sonucu bildirildi ve değiştirilemez");
 
         // Kısa listeye ekle düğmesini disable et (eğer referans varsa)
         if ($btn.$shortlistBtn) {
