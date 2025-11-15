@@ -50,6 +50,7 @@ async function api(callName, data = {}, retries = 0) {
       if (retries < maxRetries) {
         let delay = getRetryDelay(retries);
         console.log(`Retrying ${callName} (${retries + 1}/${maxRetries}) after ${delay}ms...`);
+        showHeaderMsg(`Bağlantı sorunları yaşanıyor, tekrar deneniyor... (${retries + 1}/${maxRetries})`);
         await new Promise(resolve => setTimeout(resolve, delay));
         return api(callName, data, retries + 1);
       }
@@ -81,6 +82,7 @@ async function api(callName, data = {}, retries = 0) {
     if (retries < maxRetries && isRetryableError(error)) {
       let delay = getRetryDelay(retries);
       console.log(`Retrying ${callName} after error (${retries + 1}/${maxRetries}) in ${delay}ms...`);
+      showHeaderMsg(`Ağ bağlantısı kurulamadı, tekrar deneniyor... (${retries + 1}/${maxRetries})`);
       await new Promise(resolve => setTimeout(resolve, delay));
       return api(callName, data, retries + 1);
     }
