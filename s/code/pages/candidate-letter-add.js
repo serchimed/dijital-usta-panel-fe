@@ -13,6 +13,20 @@ onAuthReady(() => {
     let $msg = $btn.nextElementSibling;
     if (showErrors($msg, errors)) { return; }
     clearErrors($msg);
-    await apiBtn(this, "CandidateLetter/Add", req, "Motivasyon mektubu eklendi.", "Motivasyon mektubu ekleme başarısız oldu, lütfen tekrar deneyiniz.", "candidate-profile.html");
+
+    // Özel yükleme mesajı göster
+    $btn.disabled = true;
+    $msg.textContent = "Yapay zeka mektubunuzu değerlendiriyor lütfen bekleyiniz.";
+
+    let result = await api("CandidateLetter/Add", req, 0, 60000);
+    if (!result || result.error || !result.isSuccess) {
+      $msg.textContent = "Motivasyon mektubu ekleme başarısız oldu, lütfen tekrar deneyiniz.";
+      $btn.disabled = false;
+    } else {
+      $msg.textContent = "Motivasyon mektubu eklendi.";
+      setTimeout(() => {
+        location.href = "candidate-profile.html";
+      }, DELAY_1);
+    }
   });
 });

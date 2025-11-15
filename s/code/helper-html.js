@@ -263,6 +263,9 @@ function checkUrl(url) {
 }
 
 function showHeaderMsg(msg) {
+  let $existingBanners = document.querySelectorAll(".head-msg");
+  $existingBanners.forEach($b => $b.remove());
+
   let $banner = document.createElement("div");
   $banner.className = "head-msg";
   $banner.textContent = msg;

@@ -322,6 +322,10 @@ label:not(.chk) span {
   max-width: 100%;
 }
 
+td span {
+  font-size: 15px;
+}
+
 label img {
   width: 222px;
   border: 1px solid #777;

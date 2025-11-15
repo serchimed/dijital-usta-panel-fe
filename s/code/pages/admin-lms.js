@@ -1,5 +1,4 @@
 onAuthReady(async () => {
-  // Eğitimler
   await loadTables("#Training");
   let trainingTbody = document.getElementById("Training");
   if (trainingTbody) {
@@ -17,7 +16,6 @@ onAuthReady(async () => {
     } else { logErr(trainingResult); }
   }
 
-  // Anketler
   await loadTables("#Questionnaire");
   let questionnaireTbody = document.getElementById("Questionnaire");
   if (questionnaireTbody) {
@@ -35,7 +33,6 @@ onAuthReady(async () => {
     } else { logErr(questionnaireResult); }
   }
 
-  // Sınavlar
   await loadTables("#Exam");
   let examTbody = document.getElementById("Exam");
   if (examTbody) {

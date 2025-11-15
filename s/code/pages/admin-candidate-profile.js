@@ -122,30 +122,31 @@ onAuthReady(async () => {
 
   if ($btnAIApprove && $aiApprovedSpan) {
     let isApproved = $aiApprovedSpan.textContent.trim() === "Evet";
-    $btnAIApprove.innerText = isApproved ? "AI Değerlendirmesi Onayını Geri Al" : "AI Değerlendirmesini Onayla";
+    $btnAIApprove.innerText = "AI Onayını Kaldır";
+    $btnAIApprove.disabled = !isApproved;
+
+    if (!isApproved) {
+      $btnAIApprove.classList.remove("btn-act");
+      $btnAIApprove.classList.add("btn-gray");
+    }
 
     $btnAIApprove.addEventListener(CLICK_EVENT, async function () {
-      let isCurrentlyApproved = $aiApprovedSpan.textContent.trim() === "Evet";
-      let endpoint = isCurrentlyApproved ? "AI/Unapprove" : "AI/Approve";
-      let confirmMessage = isCurrentlyApproved
-        ? "AI değerlendirmesi onayını geri almak istediğinize emin misiniz?"
-        : "AI değerlendirmesini onaylamak istediğinize emin misiniz?";
-
       let $mbody = div();
-      let $confirmLabel = p(confirmMessage);
+      let $confirmLabel = p("AI değerlendirmesi onayını kaldırmak istediğinize emin misiniz?");
       let $msgDiv = div(CSS_CLASSES.modalMessage);
       let $modal;
 
-      let handleApprove = async function () {
+      let handleUnapprove = async function () {
         setButtonLoading(buttons.submitBtn, true);
         setMessageText($msgAIApprove, LOADING_MESSAGE_WAIT);
 
-        let result = await api(endpoint, { memberId: candidateId });
+        let result = await api("AI/Unapprove", { memberId: candidateId });
 
         if (result && result.isSuccess) {
-          isCurrentlyApproved = !isCurrentlyApproved;
-          $aiApprovedSpan.textContent = isCurrentlyApproved ? "Evet" : "Hayır";
-          $btnAIApprove.innerText = isCurrentlyApproved ? "AI Değerlendirmesi Onayını Geri Al" : "AI Değerlendirmesini Onayla";
+          $aiApprovedSpan.textContent = "Hayır";
+          $btnAIApprove.disabled = true;
+          $btnAIApprove.classList.remove("btn-act");
+          $btnAIApprove.classList.add("btn-gray");
           setMessageText($msgAIApprove, "");
           closeModal($modal);
         } else {
@@ -155,9 +156,153 @@ onAuthReady(async () => {
         }
       };
 
-      let buttons = createModalButtons("İptal", isCurrentlyApproved ? "Onayı Geri Al" : "Onayla", () => closeModal($modal), handleApprove);
+      let buttons = createModalButtons("İptal", "Onayı Kaldır", () => closeModal($modal), handleUnapprove);
       $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
-      $modal = createModal("Onay", $mbody);
+      $modal = createModal("AI Onayını Kaldır", $mbody);
+    });
+  }
+
+  // AI Geçmişini yükle
+  await loadAIHistory();
+
+  // AI Geçmişini Yükle
+  async function loadAIHistory() {
+    let $tbody = document.getElementById("CandidateAIHistory");
+    if (!$tbody) return;
+
+    $tbody.textContent = "";
+    $tbody.append(getMsgLine("Yükleniyor..."));
+
+    let result = await api("AIHistory/GetCandidate", { memberId: candidateId });
+
+    if (!result || result.error || !result.isSuccess) {
+      $tbody.textContent = "";
+      $tbody.append(getMsgLine("Veri yüklenemedi"));
+      return;
+    }
+
+    let data = result.data;
+    if (!Array.isArray(data) || data.length === 0) {
+      $tbody.textContent = "";
+      $tbody.append(getMsgLine("Veri yok"));
+      return;
+    }
+
+    $tbody.textContent = "";
+    data.forEach(item => {
+      let $tr = tr();
+
+      let aiName = item.aiName || "-";
+      let prompt = item.prompt || "-";
+      let answer = item.answer || "-";
+      let createdAt = item.createdAt || "-";
+      let aiId = item.id || item.Id;
+
+      let $tdAI = td(aiName, "AI");
+
+      let $tdPrompt = td(null, "Prompt");
+      if (prompt.length > 100) {
+        let truncated = prompt.substring(0, 100) + "...";
+        let $truncated = spn(truncated);
+        $truncated.style.display = "inline-block";
+        $truncated.style.fontSize = "15px";
+        $truncated.addEventListener(CLICK_EVENT, function (e) {
+          e.stopPropagation();
+        });
+        let $full = spn(prompt);
+        $full.style.display = "none";
+        $full.addEventListener(CLICK_EVENT, function (e) {
+          e.stopPropagation();
+        });
+        let $toggle = spn(" [detay]");
+        $toggle.style.cursor = "pointer";
+        $toggle.style.color = "#0066cc";
+        $toggle.addEventListener(CLICK_EVENT, function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleText(this);
+        });
+        $tdPrompt.append($truncated, $full, $toggle);
+      } else {
+        $tdPrompt.textContent = prompt;
+      }
+
+      let $tdAnswer = td(null, "Cevap");
+      if (answer.length > 100) {
+        let truncated = answer.substring(0, 100) + "...";
+        let $truncated = spn(truncated);
+        $truncated.style.display = "inline-block";
+        $truncated.style.fontSize = "15px";
+        $truncated.addEventListener(CLICK_EVENT, function (e) {
+          e.stopPropagation();
+        });
+        let $full = spn(answer);
+        $full.style.display = "none";
+        $full.addEventListener(CLICK_EVENT, function (e) {
+          e.stopPropagation();
+        });
+        let $toggle = spn(" [detay]");
+        $toggle.style.cursor = "pointer";
+        $toggle.style.color = "#0066cc";
+        $toggle.addEventListener(CLICK_EVENT, function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleText(this);
+        });
+        $tdAnswer.append($truncated, $full, $toggle);
+      } else {
+        $tdAnswer.textContent = answer;
+      }
+
+      let $tdDate = td(formatTimeLong(createdAt), "Tarih");
+
+      let $tdActions = td(null, "");
+      let $btnApprove = btn("btn-act", "Onayla");
+      let $msg = p();
+
+      $btnApprove.addEventListener(CLICK_EVENT, async function () {
+        let $mbody = div();
+        let $confirmLabel = p("Bu AI değerlendirmesini onaylamak istediğinize emin misiniz?");
+        let $msgDiv = div(CSS_CLASSES.modalMessage);
+        let $modal;
+
+        let handleApprove = async function () {
+          setButtonLoading(buttons.submitBtn, true);
+          setMessageText($msg, LOADING_MESSAGE_WAIT);
+
+          let approveResult = await api("AI/Approve", {
+            memberId: candidateId,
+            AIId: aiId
+          });
+
+          if (approveResult && approveResult.isSuccess) {
+            setMessageText($msg, "");
+
+            if ($aiApprovedSpan) { $aiApprovedSpan.textContent = "Evet"; }
+            if ($btnAIApprove) {
+              $btnAIApprove.disabled = false;
+              $btnAIApprove.classList.remove("btn-gray");
+              $btnAIApprove.classList.add("btn-act");
+            }
+
+            showSuccessAndClose($msgDiv, $modal, "AI değerlendirmesi onaylandı.");
+
+            await loadAIHistory();
+          } else {
+            setMessageText($msg, ERROR_MESSAGE_DEFAULT);
+            showModalMessage($msgDiv, "error", approveResult?.message || ERROR_MESSAGE_DEFAULT);
+            setButtonLoading(buttons.submitBtn, false);
+          }
+        };
+
+        let buttons = createModalButtons("İptal", "Onayla", () => closeModal($modal), handleApprove);
+        $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+        $modal = createModal("AI Değerlendirmesini Onayla", $mbody);
+      });
+
+      $tdActions.append($btnApprove, $msg);
+      $tr.append($tdAI, $tdPrompt, $tdAnswer, $tdDate, $tdActions);
+      $tbody.append($tr);
     });
   }
 
@@ -222,7 +367,7 @@ onAuthReady(async () => {
         setButtonLoading(buttons.submitBtn, true);
         setMessageText($msgAIReview, LOADING_MESSAGE_WAIT);
 
-        let result = await api("AI/Evaluate", { memberId: candidateId, aiName: selectedAI, prompt: promptValue });
+        let result = await api("AI/Evaluate", { memberId: candidateId, aiName: selectedAI, prompt: promptValue }, 0, 60000);
         if (result && result.isSuccess) {
           if (result.data) {
             if ($spnAiScore && result.data.aiScore !== undefined) { $spnAiScore.textContent = result.data.aiScore; }
@@ -231,6 +376,9 @@ onAuthReady(async () => {
 
           setMessageText($msgAIReview, "");
           showSuccessAndClose($msgDiv, $modal, "AI değerlendirmesi tamamlandı.");
+
+          // AI geçmişini yeniden yükle
+          await loadAIHistory();
         } else {
           setMessageText($msgAIReview, ERROR_MESSAGE_DEFAULT);
           showModalMessage($msgDiv, "error", result?.message || ERROR_MESSAGE_DEFAULT);

@@ -84,7 +84,7 @@ async function api(callName, data = {}, retries = 0, timeout = 10000) {
   }
 }
 
-async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement) {
+async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement, timeout = 10000) {
   btn.disabled = true;
   let $msg = $msgElement;
   if (!$msg) {
@@ -97,7 +97,7 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
 
   $msg.textContent = LOADING_MESSAGE_WAIT;
 
-  let result = await api(endpoint, data);
+  let result = await api(endpoint, data, 0, timeout);
 
   if (!result || result.error || !result.isSuccess) {
     let errText = errorMsg || ERROR_MESSAGE_DEFAULT;

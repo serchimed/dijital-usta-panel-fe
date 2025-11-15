@@ -319,15 +319,12 @@ function createInterviewReportButton(candidateId, companyId, displayName, isCurr
       });
 
       if (result && result.isSuccess) {
-        // Mülakat düğmesini disable et
         setBtnState($btn, false, "Mülakat sonucu bildirildi ve değiştirilemez");
 
-        // Kısa listeye ekle düğmesini disable et (eğer referans varsa)
         if ($btn.$shortlistBtn) {
           setBtnState($btn.$shortlistBtn, false, "Mülakat sonucu bildirildiği için kısa liste değiştirilemez");
         }
 
-        // İşe al düğmesini sonuca göre güncelle
         if (selectedResult === "Mülakat yapıldı, sonucu olumlu") {
           setBtnState($hireBtn, true);
         } else {
