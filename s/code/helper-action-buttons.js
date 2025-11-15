@@ -146,13 +146,13 @@ function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblo
   return $wrapper;
 }
 
-function createShortlistButton(memberId, companyId, displayName, isShortlisted, $msgElement, $interviewBtn, isInterviewResulted, isHired, isHireInformed) {
+function createShortlistButton(memberId, companyId, displayName, isCurrentlyShortlisted, $msgElement, $interviewBtn, isInterviewResulted, isHired, isHireInformed) {
   let isDisabled = isHired || isHireInformed || isInterviewResulted;
   let btnClass = isDisabled ? "btn-gray" : "btn-act";
-  let $btn = btn(btnClass, isShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
+  let $btn = btn(btnClass, isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
   $btn.dataset.memberId = memberId;
   $btn.dataset.companyId = companyId;
-  $btn.dataset.isShortlisted = isShortlisted;
+  $btn.dataset.isCurrentlyShortlisted = isCurrentlyShortlisted;
 
   if (isHired) {
     $btn.disabled = true;
@@ -167,7 +167,7 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
 
   $btn.addEventListener(CLICK_EVENT, async function () {
     let btn = this;
-    let isCurrentlyShortlisted = btn.dataset.isShortlisted === "true";
+    let isCurrentlyShortlisted = btn.dataset.isCurrentlyShortlisted === "true";
     let endpoint = isCurrentlyShortlisted ? "Remove" : "Add";
     let confirmMessage = isCurrentlyShortlisted
       ? `${displayName}'i kısa listeden çıkarmak istediğinize emin misiniz?`
@@ -193,7 +193,7 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
 
       if (result && result.isSuccess) {
         isCurrentlyShortlisted = !isCurrentlyShortlisted;
-        btn.dataset.isShortlisted = isCurrentlyShortlisted;
+        btn.dataset.isCurrentlyShortlisted = isCurrentlyShortlisted;
         btn.innerText = isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle";
 
         setBtnState($interviewBtn, isCurrentlyShortlisted, "Kısa listeye eklenmeden mülakat sonucu bildirilemez");
@@ -225,8 +225,8 @@ function createShortlistButton(memberId, companyId, displayName, isShortlisted, 
   return $btn;
 }
 
-function createInterviewReportButton(candidateId, companyId, displayName, isShortlisted, $hireBtn, isInterviewResulted, isHired, isHireInformed) {
-  let isDisabled = isHired || isHireInformed || !isShortlisted || isInterviewResulted;
+function createInterviewReportButton(candidateId, companyId, displayName, isCurrentlyShortlisted, $hireBtn, isInterviewResulted, isHired, isHireInformed) {
+  let isDisabled = isHired || isHireInformed || !isCurrentlyShortlisted || isInterviewResulted;
   let btnClass = isDisabled ? "btn-gray" : "btn-act";
   let $btn = btn(btnClass, "Mülakat Sonucu Bildir");
 
@@ -236,7 +236,7 @@ function createInterviewReportButton(candidateId, companyId, displayName, isShor
   } else if (isHireInformed) {
     $btn.disabled = true;
     $btn.title = "Adayın işe alındığı bildirildiği için mülakat sonucu değiştirilemez";
-  } else if (!isShortlisted) {
+  } else if (!isCurrentlyShortlisted) {
     $btn.disabled = true;
     $btn.title = "Kısa listeye eklenmeden mülakat sonucu bildirilemez";
   } else if (isInterviewResulted) {

@@ -52,22 +52,28 @@ function setupShortlistTable() {
     rows.forEach((tr, index) => {
       let item = data[index];
       if (item && item.companyId && candidateId) {
-        let $msg = p();
-        let $hireBtn = createHireApproveButton(candidateId, item.companyId, candidateName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired);
-        let $interviewBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, true, $hireBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
-        let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, true, $msg, $interviewBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
-        $interviewBtn.$shortlistBtn = $shortlistBtn;
+        if (item.isShortlistRemovedDueToOtherHire) {
+          let $warnP = p(`Aday başka bir firma tarafından işe alındı`);
+          $warnP.className = "lbl-warn";
+          tr.lastElementChild.append($warnP);
+        } else {
+          let $msg = p();
+          let $hireBtn = createHireApproveButton(candidateId, item.companyId, candidateName, item.isInterviewResulted, item.isInterviewSuccess, item.isHired);
+          let $interviewBtn = createInterviewReportButton(candidateId, item.companyId, candidateName, item.isCurrentlyShortlisted, $hireBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
+          let $shortlistBtn = createShortlistButton(candidateId, item.companyId, candidateName, item.isCurrentlyShortlisted, $msg, $interviewBtn, item.isInterviewResulted, item.isHired, item.isHireInformed);
+          $interviewBtn.$shortlistBtn = $shortlistBtn;
 
-        let $hireCancelTrBtn = createCancelHireButton(candidateId, item.companyId, async function ($btn) {
-          $btn.style.display = "none";
-          $hireBtn.style.display = "";
-          await loadTables("#" + $shortlistTbody.id);
-        });
-        $hireCancelTrBtn.style.display = item.isHired ? "" : "none";
+          let $hireCancelTrBtn = createCancelHireButton(candidateId, item.companyId, async function ($btn) {
+            $btn.style.display = "none";
+            $hireBtn.style.display = "";
+            await loadTables("#" + $shortlistTbody.id);
+          });
+          $hireCancelTrBtn.style.display = item.isHired ? "" : "none";
 
-        $hireBtn.addEventListener("hireSuccess", function () { $hireCancelTrBtn.style.display = ""; });
+          $hireBtn.addEventListener("hireSuccess", function () { $hireCancelTrBtn.style.display = ""; });
 
-        tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $hireCancelTrBtn, $msg);
+          tr.lastElementChild.append($shortlistBtn, $interviewBtn, $hireBtn, $hireCancelTrBtn, $msg);
+        }
       }
     });
   });
