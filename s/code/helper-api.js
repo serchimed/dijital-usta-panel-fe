@@ -4,26 +4,54 @@ let SUCCESS_UPDATE_MESSAGE = "Güncelleme başarılı.";
 let LOADING_MESSAGE = "İşlem yapılıyor...";
 let LOADING_MESSAGE_WAIT = "İşlem yapılıyor, lütfen bekleyiniz.";
 
-async function api(callName, data = {}, retries = 0) {
+
+function isRetryableStatus(status) {
+  return status >= 500 || status === 408 || status === 429;
+}
+
+function isRetryableError(error) {
+  return error.name === 'AbortError'
+    || error.name === 'TypeError'
+    || error.message.includes('fetch')
+    || error.message.includes('network');
+}
+
+function getRetryDelay(retries, baseDelay = 1000) {
+  return baseDelay * Math.pow(2, retries);
+}
+
+async function performRetry(callName, data, retries, timeout, maxRetries, userMessage) {
+  let delay = getRetryDelay(retries);
+  showHeaderMsg(`${userMessage} (${retries + 1}/${maxRetries})`);
+  await new Promise(resolve => setTimeout(resolve, delay));
+  return api(callName, data, retries + 1, timeout);
+}
+
+async function api(callName, data = {}, retries = 0, timeout = 10000) {
   let url = `${API}${callName}`;
-  let maxRetries = 2;
-  let retryDelay = 1000;
+  let maxRetries = 3;
 
   try {
+    let controller = new AbortController();
+    let timeoutId = setTimeout(() => controller.abort(), timeout);
+
     let response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(data),
+      signal: controller.signal
     });
 
-    if (response.status >= 500) {
-      console.error("API call failed:", callName, response.text());
+    clearTimeout(timeoutId);
+
+    if (isRetryableStatus(response.status)) {
+      console.error("API call failed:", callName, "Status:", response.status);
+
       if (retries < maxRetries) {
-        console.log(`Retrying ${callName} (${retries + 1}/${maxRetries})...`);
-        await new Promise(resolve => setTimeout(resolve, retryDelay * (retries + 1)));
-        return api(callName, data, retries + 1);
+        return performRetry(callName, data, retries, timeout, maxRetries, "Bağlantı sorunları yaşanıyor, tekrar deneniyor...");
       }
+
       return { error: true, status: response.status, message: "Server error" };
     }
 
@@ -36,14 +64,23 @@ async function api(callName, data = {}, retries = 0) {
     let result = await response.json();
     console.debug("API response:", callName, result);
     return result;
+
   } catch (error) {
     console.error("API call failed:", callName, error);
-    if (retries < maxRetries) {
-      console.log(`Retrying ${callName} after network error (${retries + 1}/${maxRetries})...`);
-      await new Promise(resolve => setTimeout(resolve, retryDelay * (retries + 1)));
-      return api(callName, data, retries + 1);
+
+    if (retries < maxRetries && isRetryableError(error)) {
+      if (error.name === 'AbortError') {
+        console.error("Request timeout for:", callName);
+      }
+
+      return performRetry(callName, data, retries, timeout, maxRetries, "Ağ bağlantısı kurulamadı, tekrar deneniyor...");
     }
-    return { error: true, message: error.message };
+
+    return {
+      error: true,
+      message: error.message,
+      isNetworkError: true
+    };
   }
 }
 
@@ -78,18 +115,24 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
   return result;
 }
 
-async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null) {
+async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null, timeout = 60000) {
   if ($msgElement && $msgElement.tagName === "P") {
     $msgElement.textContent = "CSV hazırlanıyor...";
   }
 
   try {
+    let controller = new AbortController();
+    let timeoutId = setTimeout(() => controller.abort(), timeout);
+
     let response = await fetch(`${API}${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       if ($msgElement) {

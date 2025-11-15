@@ -260,7 +260,6 @@ h3.sh3 {
 h4 {
   font-size: 19px;
   line-height: 23px;
-  margin: 13px 0 8px;
   font-weight: 600;
 }
 
@@ -789,7 +788,6 @@ details>div>p {
 details>div>h4 {
   grid-column: span 3;
   width: 100%;
-  margin-top: 15px;
 }
 
 details>div>div {
@@ -817,6 +815,7 @@ details details {
 details>div>p.description {
   color: gray;
   font-size: 14px;
+  margin-top: 21px;
 }
 
 #letter,
@@ -868,6 +867,22 @@ details>div>p.description {
   margin-left: 8px;
   padding: 1px;
   font-size: 15px;
+}
+
+#isDryRun {
+  margin-top: 0;
+  margin-right: 8px;
+  float: left;
+}
+
+.datap {
+  margin-top: -13px;
+  margin-bottom: 0px;
+}
+
+#imagePreview img {
+  width: 222px;
+  margin-bottom: 8px;
 }
 
 .lbl-warn,

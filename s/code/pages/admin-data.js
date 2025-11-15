@@ -5,7 +5,8 @@ onAuthReady(async () => {
       confirmMessage: "Wordpress güncel CSV'sini indirmeyi başlatmak istediğinize emin misiniz?",
       apiEndpoint: "Data/GetWordpressData",
       confirmButtonText: "Başlat",
-      sourceButton: this
+      sourceButton: this,
+      timeout: 60000
     });
   });
 
@@ -15,13 +16,14 @@ onAuthReady(async () => {
       confirmMessage: "Wordpress verilerini eşlemek istediğinize emin misiniz?",
       apiEndpoint: "Data/SyncWordpressData",
       confirmButtonText: "Eşle",
-      sourceButton: this
+      sourceButton: this,
+      timeout: 60000
     });
   });
 
   async function loadFileTable(tableId, apiEndpoint, downloadEndpoint) {
     let $tbody = document.getElementById(tableId);
-    let result = await api(apiEndpoint, {});
+    let result = await api(apiEndpoint, {}, 0, 60000);
 
     if (!result || result.error || !result.isSuccess) {
       $tbody.textContent = "";
@@ -76,7 +78,7 @@ onAuthReady(async () => {
       setButtonLoading(buttons.submitBtn, true);
       btnTriggerBackup.disabled = true;
 
-      let result = await api("Data/TriggerBackup", {});
+      let result = await api("Data/TriggerBackup", {}, 0, 60000);
 
       if (result && result.isSuccess) {
         showModalMessage($msgDiv, "success", "Yedek başarıyla oluşturuldu!");

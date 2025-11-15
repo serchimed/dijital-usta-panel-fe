@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data İşlemleri | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
-  <link rel="stylesheet" href="./s/site.css?v=3" />
+  <link rel="stylesheet" href="./s/site.css?v=13" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
@@ -42,7 +42,8 @@
 
         <button id="btnWP">Wordpress Son Verilerinin CSV'sini İndirmeyi Başlat</button>
         <p></p>
-        <button id="btnSync" title="yeni kullanıcıları ekler ve anket bilgilerini kaydeder">Wordpress Verilerini Eşle</button>
+        <button id="btnSync" title="yeni kullanıcıları ekler ve anket bilgilerini kaydeder">Wordpress Verilerini
+          Eşle</button>
         <p></p>
       </div>
     </details>
@@ -85,7 +86,7 @@
         <button id="btnBackupCheck" class="btn-act" title="Dry Run">Önce Yedeği Analiz Et</button>
         <p></p>
 
-        <div id="backupAnalysisResults" class="none mt30">
+        <div id="backupAnalysisResults" class="none">
           <h3>Yedek Analiz Sonuçları</h3>
 
           <details open>
@@ -144,8 +145,11 @@
         </div>
 
         <h4 class="mt30">Adım 3: Geri Yüklemeyi Onaylayın</h4>
-        <p class="lbl-warn">⚠️ DİKKAT: Bu işlem kolayca geri alınamaz ve sistemi şuan kullanan herkesi etkiler! Mevcut veriler yedeklenip, sistem tamamen seçili yedek dosyasına geri yüklenecektir.</p>
-        <button id="btnBackupApprove" class="btn-gray" disabled title="Analiz sonuçlarını onayladıktan sonra geri yükleme işlemini başlatır">Geri Yüklemeyi Onayla ve Başlat</button>
+        <p class="lbl-warn">⚠️ DİKKAT: Bu işlem kolayca geri alınamaz ve sistemi şuan kullanan herkesi etkiler! Mevcut
+          veriler yedeklenip, sistem tamamen seçili yedek dosyasına geri yüklenecektir.</p>
+        <button id="btnBackupApprove" class="btn-gray" disabled
+          title="Analiz sonuçlarını onayladıktan sonra geri yükleme işlemini başlatır">Geri Yüklemeyi Onayla ve
+          Başlat</button>
         <p></p>
       </div>
     </details>
@@ -159,7 +163,8 @@
         <input type="file" id="csvFile" accept=".csv" autocomplete="off" />
 
         <h4>Adım 2: İçe Aktarma Ayarları</h4>
-        <p>
+
+        <p class="datap">
           <label for="conflictOption">Çakışma Durumunda:</label>
           <select id="conflictOption">
             <option value="error">Hata Ver</option>
@@ -168,7 +173,7 @@
           </select>
         </p>
 
-        <p>
+        <p class="datap">
           <label>
             <input type="checkbox" id="isDryRun" />
             Test Modu (Sadece Analiz Et, Veri Ekleme)
@@ -223,8 +228,8 @@
     </div>
   </footer>
 
-  <script src="./s/site.js?v=3" defer></script>
-  <script src="./s/code/pages/admin-data.js?v=3" defer></script>
+  <script src="./s/site.js?v=13" defer></script>
+  <script src="./s/code/pages/admin-data.js?v=13" defer></script>
 </body>
 
 </html>
