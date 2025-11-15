@@ -25,7 +25,7 @@ function getRetryDelay(retries, baseDelay = 1000) {
 async function api(callName, data = {}, retries = 0) {
   let url = `${API}${callName}`;
   let maxRetries = 3;
-  let requestTimeout = 30000; // 30 saniye
+  let requestTimeout = 300000; // 5 dakika (backup download/upload için)
 
   try {
     // Timeout kontrolü için AbortController
