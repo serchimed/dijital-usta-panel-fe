@@ -2,8 +2,22 @@
 
 OUTPUT_FILE="../site.js"
 TEMP_FILE="${OUTPUT_FILE}.tmp"
+VERSION_FILE=".site-version"
+PROJECT_ROOT="../.."
 
 echo "Generating bundled site.js..."
+
+# Read current version or initialize to 0
+if [ -f "${VERSION_FILE}" ]; then
+  CURRENT_VERSION=$(cat "${VERSION_FILE}")
+else
+  CURRENT_VERSION=0
+fi
+
+# Increment version
+NEW_VERSION=$((CURRENT_VERSION + 1))
+echo "  Version: ${CURRENT_VERSION} → ${NEW_VERSION}"
+echo ""
 
 HELPERS=(
   "helper-event.js"
@@ -68,5 +82,34 @@ echo ""
 echo "✓ Successfully generated ${OUTPUT_FILE}"
 echo "  File size: $(wc -c < "${OUTPUT_FILE}") bytes"
 echo ""
+
+# Update HTML files with new version
+echo "Updating script tags in HTML files..."
+HTML_COUNT=0
+
+# Find all HTML files in project root
+for html_file in "${PROJECT_ROOT}"/*.html; do
+  if [ -f "${html_file}" ]; then
+    # Update ./s/site.js references
+    if grep -q 'src="./s/site\.js' "${html_file}"; then
+      # Remove old version parameter if exists, then add new one
+      sed -i -E 's#src="./s/site\.js(\?v=[0-9]+)?"#src="./s/site.js?v='"${NEW_VERSION}"'"#g' "${html_file}"
+      ((HTML_COUNT++))
+    fi
+
+    # Update ./s/code/pages/*.js references
+    if grep -q 'src="./s/code/pages/' "${html_file}"; then
+      sed -i -E 's#src="(./s/code/pages/[^"]+\.js)(\?v=[0-9]+)?"#src="\1?v='"${NEW_VERSION}"'"#g' "${html_file}"
+    fi
+  fi
+done
+
+echo "  ✓ Updated ${HTML_COUNT} HTML files"
+
+# Save new version
+echo "${NEW_VERSION}" > "${VERSION_FILE}"
+echo "  ✓ Version saved: ${NEW_VERSION}"
+
+echo ""
 echo "All helpers are now bundled in correct order!"
-echo "HTML files can now use: <script src=\"site.js\"></script>"
+echo "HTML files now use: <script src=\"./s/site.js?v=${NEW_VERSION}\"></script>"
