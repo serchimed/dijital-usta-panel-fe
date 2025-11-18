@@ -17,7 +17,7 @@ onReady(() => {
   }
 
   let handleSubmit = async function () {
-    let email = $email.value.trim();
+    let email = $email.value.replace(/\s+/g, '');
 
     let errors = [];
     if (!checkEmail(email)) {

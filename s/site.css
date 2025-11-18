@@ -356,6 +356,11 @@ input[type="checkbox"] {
   text-align: left;
 }
 
+input[type="file"] {
+  width: auto;
+  max-width: none;
+}
+
 #lines {
   height: 333px;
 }
@@ -1057,8 +1062,10 @@ label:not(details *) a {
   display: inline-block;
 }
 
-
-
+details div p a {
+  display: inline-block;
+  width: auto;
+}
 
 table {
   width: 100%;

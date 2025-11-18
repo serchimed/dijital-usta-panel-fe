@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Eğitim Ekleme | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
-  <link rel="stylesheet" href="./s/site.css?v=26" />
+  <link rel="stylesheet" href="./s/site.css?v=52" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
@@ -25,7 +25,25 @@
       <input type="text" id="name" />
     </label>
 
-    <!-- Diğer alanlar eklenecek -->
+    <label for="description">Açıklama
+      <textarea id="description" rows="4"></textarea>
+    </label>
+
+    <label for="fileInput">Eğitim Görseli (Opsiyonel)
+      <input type="file" id="fileInput" accept="image/jpeg,image/png" />
+    </label>
+
+    <div class="lbl-warn">
+      <strong>Görsel Gereksinimleri:</strong>
+      <ul>
+        <li>Dosya türü: JPG veya PNG</li>
+        <li>Maksimum dosya boyutu: 500KB</li>
+        <li>Minimum boyut: 150x150 piksel</li>
+        <li>Maksimum boyut: 1500x1500 piksel</li>
+      </ul>
+    </div>
+
+    <div id="imagePreview"></div>
 
     <button>Kaydet</button>
     <p></p>
@@ -43,8 +61,8 @@
       <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
     </div>
   </footer>
-  <script src="./s/site.js?v=26" defer></script>
-  <script src="./s/code/pages/admin-add-training.js?v=26" defer></script>
+  <script src="./s/site.js?v=52" defer></script>
+  <script src="./s/code/pages/admin-add-training.js?v=52" defer></script>
 </body>
 
 </html>

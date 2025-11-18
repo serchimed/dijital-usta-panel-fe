@@ -5,7 +5,7 @@ let DELAY_2 = 2345;
 
 function getId(key = "memberId") {
   let qs = new URLSearchParams(window.location.search);
-  let id = qs.get("id");
+  let id = qs.get(key) || qs.get("id");
 
   if (!id) {
     id = USER.id;
@@ -188,9 +188,33 @@ function spn(text, className) {
   return $s;
 }
 
+function cleanUrlForDisplay(url) {
+  if (!url || typeof url !== "string") return url;
+
+  try {
+    let cleanUrl = url.split('?')[0];
+    let urlObj = new URL(cleanUrl);
+    let hostname = urlObj.hostname.replace(/^www\./, '');
+    let path = urlObj.pathname.replace(/^\/|\/$/g, '');
+    if (!path || path.length <= 2) {
+      return hostname;
+    }
+
+    return hostname + '/' + path;
+  } catch {
+    return url;
+  }
+}
+
 function tda(text, href, label) {
   let $td = td(null, label);
-  let $a = a(text, href);
+
+  let displayText = text;
+  if (text && (text.startsWith('http://') || text.startsWith('https://'))) {
+    displayText = cleanUrlForDisplay(text);
+  }
+
+  let $a = a(displayText, href);
   $a.target = "_blank";
   $td.append($a);
   return $td;

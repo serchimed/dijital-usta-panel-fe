@@ -26,6 +26,7 @@ HELPERS=(
   "helper-menu.js"
   "helper-api.js"
   "helper-data.js"
+  "helper-image.js"
   "helper-action-buttons.js"
   "helper-auth.js"
 )

@@ -4,6 +4,31 @@ function setMessageText($element, text) {
   }
 }
 
+function createDeleteButton(id, name, endpoint, idKey = "id") {
+  let $btn = btn("btn-del", "Sil");
+
+  $btn.addEventListener(CLICK_EVENT, function () {
+    let params = {};
+    params[idKey] = id;
+
+    createConfirmationModal({
+      confirmMessage: `"${name}" silmek istediğinizden emin misiniz?`,
+      apiEndpoint: endpoint,
+      apiParams: params,
+      confirmButtonText: "Sil",
+      sourceButton: $btn,
+      onSuccess: () => {
+        let $row = $btn.closest("tr");
+        if ($row) {
+          $row.remove();
+        }
+      }
+    });
+  });
+
+  return $btn;
+}
+
 function createInviteInfoCell(entity, config) {
   let inviteText = "-";
   let $tdInvite = td(null);

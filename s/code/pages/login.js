@@ -17,7 +17,7 @@ onReady(() => {
   }
 
   let handleLogin = async function () {
-    let email = $email.value.trim();
+    let email = $email.value.replace(/\s+/g, '');
     let pass = $pass.value.trim();
 
     let errors = [];

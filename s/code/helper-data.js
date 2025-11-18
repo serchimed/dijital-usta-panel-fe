@@ -168,7 +168,8 @@ async function fillSpans(url, key = "memberId") {
           $s.value = v;
         } else if (prop.endsWith("Url") && v && v !== "-") {
           $s.textContent = "";
-          let $a = a(v, v);
+          let displayText = v.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+          let $a = a(displayText, v);
           $a.target = "_blank";
           $s.append($a);
         } else {
