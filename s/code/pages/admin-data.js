@@ -120,6 +120,7 @@ onAuthReady(async () => {
     this.disabled = true;
     this.classList.remove("btn-act");
     this.classList.add("btn-gray");
+    this.textContent = "Analiz ediliyor...";
 
     $btnApprove.disabled = true;
 
@@ -127,7 +128,17 @@ onAuthReady(async () => {
       let formData = new FormData();
       formData.append('File', $file.files[0]);
 
-      let response = await fetch(`${API}Data/CheckBackup`, { method: "POST", credentials: "include", body: formData });
+      let controller = new AbortController();
+      let timeoutId = setTimeout(() => controller.abort(), 120000);
+
+      let response = await fetch(`${API}Data/CheckBackup`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
       if (!response.ok) {
         let $mbody = div();
         let $msgDiv = div(CSS_CLASSES.modalMessage);
@@ -159,7 +170,10 @@ onAuthReady(async () => {
     } catch (error) {
       let $mbody = div();
       let $msgDiv = div(CSS_CLASSES.modalMessage);
-      showModalMessage($msgDiv, "error", "Yedek analizi sırasında hata oluştu: " + error.message);
+      let errorMsg = error.name === 'AbortError'
+        ? "Yedek analizi zaman aşımına uğradı (120 saniye). Lütfen daha küçük bir yedek dosyası deneyin veya backend timeout ayarlarını kontrol edin."
+        : "Yedek analizi sırasında hata oluştu: " + error.message;
+      showModalMessage($msgDiv, "error", errorMsg);
       $mbody.append($msgDiv);
       let $modal = createModal("Hata", $mbody);
       setTimeout(() => closeModal($modal), DELAY_2);
@@ -168,6 +182,7 @@ onAuthReady(async () => {
       this.disabled = false;
       this.classList.remove("btn-gray");
       this.classList.add("btn-act");
+      this.textContent = "Önce Yedeği Analiz Et";
     }
   });
 
@@ -201,7 +216,17 @@ onAuthReady(async () => {
         let formData = new FormData();
         formData.append('File', $file.files[0]);
 
-        let response = await fetch(`${API}Data/Restore`, { method: "POST", credentials: "include", body: formData });
+        let controller = new AbortController();
+        let timeoutId = setTimeout(() => controller.abort(), 120000);
+
+        let response = await fetch(`${API}Data/Restore`, {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
         if (!response.ok) {
           showModalMessage($msgDiv, "error", "Geri yükleme işlemi başarısız");
           setButtonLoading(buttons.submitBtn, false);
@@ -240,7 +265,10 @@ onAuthReady(async () => {
         }
 
       } catch (error) {
-        showModalMessage($msgDiv, "error", "Geri yükleme sırasında hata oluştu: " + error.message);
+        let errorMsg = error.name === 'AbortError'
+          ? "Geri yükleme işlemi zaman aşımına uğradı (120 saniye). Lütfen daha küçük bir yedek dosyası deneyin veya backend timeout ayarlarını kontrol edin."
+          : "Geri yükleme sırasında hata oluştu: " + error.message;
+        showModalMessage($msgDiv, "error", errorMsg);
         setButtonLoading(buttons.submitBtn, false);
         $btnApprove.disabled = false;
         $btnApprove.classList.remove("btn-gray");
