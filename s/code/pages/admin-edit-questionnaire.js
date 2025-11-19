@@ -2,13 +2,13 @@ onAuthReady(async () => {
   let $btn = document.querySelector("main button");
   let $msg = document.querySelector("main p");
 
-  let id = getId("id");
-  if (!id) {
+  let questionnaireId = getId("questionnaireId");
+  if (!questionnaireId) {
     setMessageText($msg, "Geçersiz ID");
     return;
   }
 
-  let result = await api("Questionnaire/Get", { id: id });
+  let result = await api("Questionnaire/Get", { questionnaireId: questionnaireId });
 
   if (!result || !result.isSuccess || !result.data) {
     setMessageText($msg, "Anket yüklenemedi");
@@ -43,7 +43,7 @@ onAuthReady(async () => {
       setMessageText($msg, "Güncelleniyor...");
 
       let updateResult = await api("Questionnaire/Update", {
-        id: id,
+        questionnaireId: questionnaireId,
         name: name.trim(),
         description: description ? description.trim() : ""
       });

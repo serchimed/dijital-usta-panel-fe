@@ -19,12 +19,25 @@ onAuthReady(async () => {
   let questionnaireId = question.questionnaireId;
 
   set("questionText", question.questionText);
+  set("questionType", question.questionType || "");
   document.getElementById("isRequired").checked = question.isRequired || false;
   set("maxSelections", question.maxSelections || 0);
 
-  if (question.answers && question.answers.length > 0) {
-    let answersText = question.answers.map(a => a.answerText).join('\n');
-    set("answers", answersText);
+  if (question.answers) {
+    if (typeof question.answers === 'string') {
+      set("answers", question.answers);
+    } else if (Array.isArray(question.answers) && question.answers.length > 0) {
+      let answersText = question.answers.map(a => a.answerText).join('\n');
+      set("answers", answersText);
+    }
+  }
+
+  // Hide maxSelections and answers if question type is text
+  if (question.questionType && question.questionType.toLowerCase() === 'text') {
+    let maxSelectionsLabel = document.getElementById("maxSelectionsLabel");
+    let answersLabel = document.getElementById("answersLabel");
+    if (maxSelectionsLabel) maxSelectionsLabel.style.display = 'none';
+    if (answersLabel) answersLabel.style.display = 'none';
   }
 
   if ($btn) {

@@ -8,6 +8,24 @@ onAuthReady(async () => {
     return;
   }
 
+  // Handle question type change to hide/show fields
+  let questionTypeSelect = document.getElementById("questionType");
+  let maxSelectionsLabel = document.getElementById("maxSelectionsLabel");
+  let answersLabel = document.getElementById("answersLabel");
+
+  if (questionTypeSelect) {
+    questionTypeSelect.addEventListener("change", function () {
+      let selectedType = questionTypeSelect.value;
+      if (selectedType && selectedType.toLowerCase() === 'text') {
+        if (maxSelectionsLabel) maxSelectionsLabel.style.display = 'none';
+        if (answersLabel) answersLabel.style.display = 'none';
+      } else {
+        if (maxSelectionsLabel) maxSelectionsLabel.style.display = '';
+        if (answersLabel) answersLabel.style.display = '';
+      }
+    });
+  }
+
   if ($btn) {
     $btn.addEventListener(CLICK_EVENT, async function () {
       let questionText = val("questionText");

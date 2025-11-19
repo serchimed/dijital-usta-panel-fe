@@ -5,13 +5,13 @@ onAuthReady(async () => {
   let selectedTrainingId = null;
   let trainings = [];
 
-  let id = getId("id");
-  if (!id) {
+  let examId = getId("examId");
+  if (!examId) {
     setMessageText($msg, "Geçersiz ID");
     return;
   }
 
-  let result = await api("Exam/Get", { id: id });
+  let result = await api("Exam/Get", { examId: examId });
 
   if (!result || !result.isSuccess || !result.data) {
     setMessageText($msg, "Sınav yüklenemedi");
@@ -35,18 +35,8 @@ onAuthReady(async () => {
     let currentTraining = trainings.find(t => t.id === exam.trainingId);
     if (currentTraining) {
       $trainingInput.value = currentTraining.name;
+      $trainingInput.disabled = true;
     }
-
-    autocomplete(
-      $trainingInput,
-      trainings,
-      (training, searchText) => training.name.toLowerCase().includes(searchText.toLowerCase()),
-      (training) => training.name,
-      (training, $input) => {
-        $input.value = training.name;
-        selectedTrainingId = training.id;
-      }
-    );
   }
 
   if ($btn) {
@@ -108,8 +98,7 @@ onAuthReady(async () => {
       setMessageText($msg, "Güncelleniyor...");
 
       let updateResult = await api("Exam/Update", {
-        id: id,
-        trainingId: selectedTrainingId,
+        examId: examId,
         name: name.trim(),
         description: description ? description.trim() : "",
         warning: warning ? warning.trim() : "",

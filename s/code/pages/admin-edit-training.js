@@ -2,13 +2,13 @@ onAuthReady(async () => {
   let $btn = document.querySelector("main button");
   let $msg = document.querySelector("main p");
 
-  let id = getId("id");
-  if (!id) {
+  let trainingId = getId("trainingId");
+  if (!trainingId) {
     setMessageText($msg, "Geçersiz ID");
     return;
   }
 
-  let result = await api("Training/Get", { id: id });
+  let result = await api("Training/Get", { trainingId: trainingId });
 
   if (!result || !result.isSuccess || !result.data) {
     setMessageText($msg, "Eğitim yüklenemedi");
@@ -53,7 +53,7 @@ onAuthReady(async () => {
       setMessageText($msg, "Güncelleniyor...");
 
       let updateResult = await api("Training/Update", {
-        id: id,
+        trainingId: trainingId,
         name: name.trim(),
         description: description ? description.trim() : "",
         image: imageUploader ? imageUploader.getBase64() || "" : training.image || ""

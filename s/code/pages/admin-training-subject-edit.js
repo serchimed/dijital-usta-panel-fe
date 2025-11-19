@@ -33,15 +33,6 @@ onAuthReady(async () => {
     $trainingInput.value = selectedTraining.name;
   }
 
-  autocomplete($trainingInput, trainings,
-    (training, searchText) => training.name.toLowerCase().includes(searchText.toLowerCase()),
-    (training) => training.name,
-    (training, $input) => {
-      $input.value = training.name;
-      selectedTrainingId = training.id;
-    }
-  );
-
   set("name", subject.name);
   set("description", subject.description);
   set("vimeoUrl", subject.vimeoUrl || "");

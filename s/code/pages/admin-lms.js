@@ -71,7 +71,7 @@ onAuthReady(async () => {
           $tr.append($tdDescription);
 
           let $actionsCell = td();
-          let $editLink = a("Düzenle", `admin-edit-questionnaire.html?id=${questionnaire.id}`);
+          let $editLink = a("Düzenle", `admin-edit-questionnaire.html?questionnaireId=${questionnaire.id}`);
           $editLink.target = "_blank";
           let $deleteBtn = createDeleteButton(questionnaire.id, questionnaire.name, "Questionnaire/Delete", "id");
           $actionsCell.append($editLink, document.createElement("br"), $deleteBtn, p());
