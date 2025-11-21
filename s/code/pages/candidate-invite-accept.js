@@ -8,15 +8,16 @@ onReady(async () => {
   $list.textContent = "";
   $list.append($loadingMsg);
 
+  let $container = document.getElementById("companiesContainer");
   let result = await api("Company/GetForCandidateCity", { email: val("email") });
   if (!result || result.error || !result.isSuccess || !Array.isArray(result.data)) {
-    let $errorMsg = p("Firmalar yüklenemedi. Sayfayı yenileyin.");
+    let $errorMsg = p(getApiError(result, "Firmalar yüklenemedi. Sayfayı yenileyin."));
     $errorMsg.className = "lbl-err";
-    $list.textContent = "";
-    $list.append($errorMsg);
+    $container.textContent = "";
+    $container.append($errorMsg);
   } else if (result.data.length === 0) {
-    $list.textContent = "";
-    $list.append(p("Şehrinizde henüz firma bulunmamaktadır."));
+    $container.textContent = "";
+    $container.append(p("Şehrinizde henüz firma bulunmamaktadır."));
   } else {
     $list.textContent = "";
     result.data.forEach(company => { $list.append(chkComp(company)); });
