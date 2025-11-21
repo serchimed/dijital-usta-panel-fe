@@ -18,6 +18,11 @@ onAuthReady(async () => {
         return;
       }
 
+      if (!imageUploader || !imageUploader.getBase64()) {
+        setMessageText($msg, "Eğitim görseli zorunludur");
+        return;
+      }
+
       $btn.disabled = true;
       setMessageText($msg, "Kaydediliyor...");
 
@@ -33,7 +38,7 @@ onAuthReady(async () => {
           window.location.href = "admin-lms.html";
         }, 1000);
       } else {
-        setMessageText($msg, "Kayıt başarısız oldu");
+        setMessageText($msg, getApiError(result, "Kayıt başarısız oldu"));
         logErr(result);
         $btn.disabled = false;
       }

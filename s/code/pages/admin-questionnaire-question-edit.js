@@ -32,12 +32,30 @@ onAuthReady(async () => {
     }
   }
 
-  // Hide maxSelections and answers if question type is text
-  if (question.questionType && question.questionType.toLowerCase() === 'text') {
-    let maxSelectionsLabel = document.getElementById("maxSelectionsLabel");
-    let answersLabel = document.getElementById("answersLabel");
-    if (maxSelectionsLabel) maxSelectionsLabel.style.display = 'none';
-    if (answersLabel) answersLabel.style.display = 'none';
+  let $maxSelectionsLabel = document.getElementById("maxSelectionsLabel");
+  let $answersLabel = document.getElementById("answersLabel");
+  let $answers = document.getElementById("answers");
+
+  if (question.questionType) {
+    let qType = question.questionType.toLowerCase();
+    if (qType === 'text') {
+      if ($maxSelectionsLabel) $maxSelectionsLabel.style.display = 'none';
+      if ($answersLabel) $answersLabel.style.display = 'none';
+    } else if (qType === 'truefalse') {
+      if ($maxSelectionsLabel) $maxSelectionsLabel.style.display = 'none';
+      if ($answers) {
+        $answers.value = "Evet\nHayır";
+        $answers.disabled = true;
+      }
+    } else if (qType === 'singlechoice') {
+      if ($maxSelectionsLabel) $maxSelectionsLabel.style.display = 'none';
+    } else if (qType === 'rating') {
+      if ($maxSelectionsLabel) $maxSelectionsLabel.style.display = 'none';
+      if ($answers) {
+        $answers.value = "1\n2\n3\n4\n5";
+        $answers.disabled = true;
+      }
+    }
   }
 
   if ($btn) {
@@ -80,7 +98,7 @@ onAuthReady(async () => {
           window.location.href = `admin-questionnaire-detail.html?questionnaireId=${questionnaireId}`;
         }, 1000);
       } else {
-        setMessageText($msg, "Güncelleme başarısız oldu");
+        setMessageText($msg, getApiError(updateResult, "Güncelleme başarısız oldu"));
         logErr(updateResult);
         $btn.disabled = false;
       }

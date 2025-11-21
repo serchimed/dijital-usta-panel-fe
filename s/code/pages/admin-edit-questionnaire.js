@@ -54,7 +54,7 @@ onAuthReady(async () => {
           window.location.href = "admin-lms.html";
         }, 1000);
       } else {
-        setMessageText($msg, "Güncelleme başarısız oldu");
+        setMessageText($msg, getApiError(updateResult, "Güncelleme başarısız oldu"));
         logErr(updateResult);
         $btn.disabled = false;
       }

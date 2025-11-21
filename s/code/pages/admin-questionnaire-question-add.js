@@ -13,15 +13,38 @@ onAuthReady(async () => {
   let maxSelectionsLabel = document.getElementById("maxSelectionsLabel");
   let answersLabel = document.getElementById("answersLabel");
 
+  let $answers = document.getElementById("answers");
+
   if (questionTypeSelect) {
     questionTypeSelect.addEventListener("change", function () {
-      let selectedType = questionTypeSelect.value;
-      if (selectedType && selectedType.toLowerCase() === 'text') {
+      let selectedType = (questionTypeSelect.value || "").toLowerCase();
+      let $maxSelections = document.getElementById("maxSelections");
+      if (selectedType === 'text') {
         if (maxSelectionsLabel) maxSelectionsLabel.style.display = 'none';
+        if ($maxSelections) $maxSelections.value = 0;
         if (answersLabel) answersLabel.style.display = 'none';
+        if ($answers) $answers.disabled = false;
+      } else if (selectedType === 'truefalse' || selectedType === 'singlechoice' || selectedType === 'rating') {
+        if (maxSelectionsLabel) maxSelectionsLabel.style.display = 'none';
+        if ($maxSelections) $maxSelections.value = 0;
+        if (answersLabel) answersLabel.style.display = '';
+        if (selectedType === 'truefalse') {
+          if ($answers) {
+            $answers.value = "Evet\nHayır";
+            $answers.disabled = true;
+          }
+        } else if (selectedType === 'rating') {
+          if ($answers) {
+            $answers.value = "1\n2\n3\n4\n5";
+            $answers.disabled = true;
+          }
+        } else {
+          if ($answers) $answers.disabled = false;
+        }
       } else {
         if (maxSelectionsLabel) maxSelectionsLabel.style.display = '';
         if (answersLabel) answersLabel.style.display = '';
+        if ($answers) $answers.disabled = false;
       }
     });
   }
@@ -71,7 +94,7 @@ onAuthReady(async () => {
           window.location.href = `admin-questionnaire-detail.html?questionnaireId=${questionnaireId}`;
         }, 1000);
       } else {
-        setMessageText($msg, "Kayıt başarısız oldu");
+        setMessageText($msg, getApiError(result, "Kayıt başarısız oldu"));
         logErr(result);
         $btn.disabled = false;
       }

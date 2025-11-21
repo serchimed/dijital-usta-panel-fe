@@ -69,6 +69,8 @@ let PAGE_ROLES = {
   "admin-add-exam": ["admin"],
   "admin-edit-exam": ["admin"],
   "admin-exam-detail": ["admin"],
+  "admin-exam-question-add": ["admin"],
+  "admin-exam-question-edit": ["admin"],
   "admin-training-subject-add": ["admin"],
   "admin-training-subject-edit": ["admin"],
   "admin-data": ["admin"],

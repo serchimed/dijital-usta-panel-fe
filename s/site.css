@@ -363,8 +363,8 @@ input[type="checkbox"] {
 }
 
 input[type="file"] {
-  width: auto;
-  max-width: none;
+  width: fit-content;
+  max-width: 100%;
 }
 
 #lines {

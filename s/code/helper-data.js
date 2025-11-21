@@ -2,6 +2,8 @@ let CITIES = ["Balıkesir", "Denizli", "Gaziantep", "Nevşehir", "Ordu"];
 let INTERVIEW_RESULTS = ["Mülakat yapıldı, sonucu olumlu", "Mülakat yapıldı sonucu başarısız, aday beğenilmedi", "Mülakat yapıldı sonucu başarısız, aday mülakata katılmadı", "Mülakat yapıldı sonucu başarısız, aday teklifi reddetti", "Mülakat iptal edildi"];
 
 function formatFieldValue(value, fieldName) {
+  if (value === true) return "Evet";
+  if (value === false) return "Hayır";
   if (!value || value === "-") return value;
 
   let isDateField = fieldName === "start" ||
@@ -184,7 +186,7 @@ async function fillSpans(url, key = "memberId") {
   req[key] = id;
 
   let $a = document.querySelectorAll(".qs");
-  if ($a) { $a.forEach(a => a.href = a.href + `?id=${id}`); }
+  if ($a) { $a.forEach(a => a.href = a.href + `?${key}=${id}`); }
 
   let result = await api(url, req);
   if (!result || result.error) {

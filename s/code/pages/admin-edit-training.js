@@ -49,6 +49,12 @@ onAuthReady(async () => {
         return;
       }
 
+      let imageData = imageUploader ? imageUploader.getBase64() : null;
+      if (!imageData && !training.image) {
+        setMessageText($msg, "Eğitim görseli zorunludur");
+        return;
+      }
+
       $btn.disabled = true;
       setMessageText($msg, "Güncelleniyor...");
 
@@ -65,7 +71,7 @@ onAuthReady(async () => {
           window.location.href = "admin-lms.html";
         }, 1000);
       } else {
-        setMessageText($msg, "Güncelleme başarısız oldu");
+        setMessageText($msg, getApiError(updateResult, "Güncelleme başarısız oldu"));
         logErr(updateResult);
         $btn.disabled = false;
       }

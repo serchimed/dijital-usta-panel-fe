@@ -4,6 +4,12 @@ let SUCCESS_UPDATE_MESSAGE = "Güncelleme başarılı.";
 let LOADING_MESSAGE = "İşlem yapılıyor...";
 let LOADING_MESSAGE_WAIT = "İşlem yapılıyor, lütfen bekleyiniz.";
 
+function getApiError(result, fallback = ERROR_MESSAGE_DEFAULT) {
+  if (result?.errors?.length) return result.errors.join(", ");
+  if (result?.message) return result.message;
+  return fallback;
+}
+
 
 function isRetryableStatus(status) {
   return status >= 500 || status === 408 || status === 429;

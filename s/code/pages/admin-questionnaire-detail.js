@@ -27,8 +27,9 @@ onAuthReady(async () => {
       $editLink.href = `admin-questionnaire-question-edit.html?questionnaireQuestionId=${question.id}`;
       $editLink.target = "_blank";
       $editLink.textContent = "Düzenle";
+      let $deleteBtn = createDeleteButton(question.id, question.questionText, "QuestionnaireQuestion/Delete", "questionnaireQuestionId");
       let $editLabel = document.createElement("label");
-      $editLabel.append($editLink);
+      $editLabel.append($editLink, " ", $deleteBtn);
       $div.append($editLabel);
 
       let $questionType = document.createElement("label");

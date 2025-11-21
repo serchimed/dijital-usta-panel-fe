@@ -16,19 +16,19 @@ onAuthReady(async () => {
 
   if (trainingId) {
     let selectedTraining = trainings.find(t => t.id === trainingId);
-    if (selectedTraining) {
-      $trainingInput.value = selectedTraining.name;
-    }
+    if (selectedTraining) { $trainingInput.value = selectedTraining.name; }
+    $trainingInput.disabled = true;
   }
-
-  autocomplete($trainingInput, trainings,
-    (training, searchText) => training.name.toLowerCase().includes(searchText.toLowerCase()),
-    (training) => training.name,
-    (training, $input) => {
-      $input.value = training.name;
-      selectedTrainingId = training.id;
-    }
-  );
+  else {
+    autocomplete($trainingInput, trainings,
+      (training, searchText) => training.name.toLowerCase().includes(searchText.toLowerCase()),
+      (training) => training.name,
+      (training, $input) => {
+        $input.value = training.name;
+        selectedTrainingId = training.id;
+      }
+    );
+  }
 
   if ($btn) {
     $btn.addEventListener(CLICK_EVENT, async function () {
@@ -89,7 +89,7 @@ onAuthReady(async () => {
           window.location.href = `admin-training-detail.html?trainingId=${selectedTrainingId}`;
         }, 1000);
       } else {
-        setMessageText($msg, "Ekleme başarısız oldu");
+        setMessageText($msg, getApiError(result, "Ekleme başarısız oldu"));
         logErr(result);
         $btn.disabled = false;
       }

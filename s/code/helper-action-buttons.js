@@ -18,7 +18,7 @@ function createDeleteButton(id, name, endpoint, idKey = "id") {
       confirmButtonText: "Sil",
       sourceButton: $btn,
       onSuccess: () => {
-        let $row = $btn.closest("tr");
+        let $row = $btn.closest("tr") || $btn.closest("details");
         if ($row) {
           $row.remove();
         }

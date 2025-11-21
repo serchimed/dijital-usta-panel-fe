@@ -27,9 +27,9 @@ onAuthReady(async () => {
           $tr.append($tdDescription);
 
           let $actionsCell = td();
-          let $editLink = a("Düzenle", `admin-edit-training.html?id=${training.id}`);
+          let $editLink = a("Düzenle", `admin-edit-training.html?trainingId=${training.id}`);
           $editLink.target = "_blank";
-          let $deleteBtn = createDeleteButton(training.id, training.name, "Training/Delete", "id");
+          let $deleteBtn = createDeleteButton(training.id, training.name, "Training/Delete", "trainingId");
           $actionsCell.append($editLink, document.createElement("br"), $deleteBtn, p());
           $tr.append($actionsCell);
 
@@ -73,7 +73,7 @@ onAuthReady(async () => {
           let $actionsCell = td();
           let $editLink = a("Düzenle", `admin-edit-questionnaire.html?questionnaireId=${questionnaire.id}`);
           $editLink.target = "_blank";
-          let $deleteBtn = createDeleteButton(questionnaire.id, questionnaire.name, "Questionnaire/Delete", "id");
+          let $deleteBtn = createDeleteButton(questionnaire.id, questionnaire.name, "Questionnaire/Delete", "questionnaireId");
           $actionsCell.append($editLink, document.createElement("br"), $deleteBtn, p());
           $tr.append($actionsCell);
 
@@ -115,9 +115,9 @@ onAuthReady(async () => {
           $tr.append($tdDescription);
 
           let $actionsCell = td();
-          let $editLink = a("Düzenle", `admin-edit-exam.html?id=${exam.id}`);
+          let $editLink = a("Düzenle", `admin-edit-exam.html?examId=${exam.id}`);
           $editLink.target = "_blank";
-          let $deleteBtn = createDeleteButton(exam.id, exam.name, "Exam/Delete", "id");
+          let $deleteBtn = createDeleteButton(exam.id, exam.name, "Exam/Delete", "examId");
           $actionsCell.append($editLink, document.createElement("br"), $deleteBtn, p());
           $tr.append($actionsCell);
 

@@ -20,6 +20,11 @@ onAuthReady(async () => {
     $image.style.display = "none";
   }
 
+  let $addSubjectLink = document.getElementById("addSubjectLink");
+  if ($addSubjectLink) {
+    $addSubjectLink.href = `admin-training-subject-add.html?trainingId=${trainingId}`;
+  }
+
   if (training.subjects && training.subjects.length > 0) {
     let $main = document.querySelector("main");
 
@@ -36,8 +41,9 @@ onAuthReady(async () => {
       $editLink.href = `admin-training-subject-edit.html?trainingSubjectId=${subject.id}`;
       $editLink.target = "_blank";
       $editLink.textContent = "Düzenle";
+      let $deleteBtn = createDeleteButton(subject.id, subject.name, "TrainingSubject/Delete", "trainingSubjectId");
       let $editLabel = document.createElement("label");
-      $editLabel.append($editLink);
+      $editLabel.append($editLink, " ", $deleteBtn);
       $div.append($editLabel);
 
       let $description = document.createElement("label");
