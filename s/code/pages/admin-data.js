@@ -6,7 +6,7 @@ onAuthReady(async () => {
       apiEndpoint: "Data/GetWordpressData",
       confirmButtonText: "Başlat",
       sourceButton: this,
-      timeout: 60000
+      timeout: DELAY_6
     });
   });
 
@@ -17,13 +17,13 @@ onAuthReady(async () => {
       apiEndpoint: "Data/SyncWordpressData",
       confirmButtonText: "Eşle",
       sourceButton: this,
-      timeout: 60000
+      timeout: DELAY_6
     });
   });
 
   async function loadFileTable(tableId, apiEndpoint, downloadEndpoint) {
     let $tbody = document.getElementById(tableId);
-    let result = await api(apiEndpoint, {}, 0, 60000);
+    let result = await api(apiEndpoint, {}, 0, DELAY_6);
 
     if (!result || result.error || !result.isSuccess) {
       $tbody.textContent = "";
@@ -78,7 +78,7 @@ onAuthReady(async () => {
       setButtonLoading(buttons.submitBtn, true);
       btnTriggerBackup.disabled = true;
 
-      let result = await api("Data/TriggerBackup", {}, 0, 60000);
+      let result = await api("Data/TriggerBackup", {}, 0, DELAY_6);
 
       if (result && result.isSuccess) {
         showModalMessage($msgDiv, "success", "Yedek başarıyla oluşturuldu!");
@@ -129,7 +129,7 @@ onAuthReady(async () => {
       formData.append('File', $file.files[0]);
 
       let controller = new AbortController();
-      let timeoutId = setTimeout(() => controller.abort(), 120000);
+      let timeoutId = setTimeout(() => controller.abort(), DELAY_12);
 
       let response = await fetch(`${API}Data/CheckBackup`, {
         method: "POST",
@@ -217,7 +217,7 @@ onAuthReady(async () => {
         formData.append('File', $file.files[0]);
 
         let controller = new AbortController();
-        let timeoutId = setTimeout(() => controller.abort(), 120000);
+        let timeoutId = setTimeout(() => controller.abort(), DELAY_12);
 
         let response = await fetch(`${API}Data/Restore`, {
           method: "POST",
@@ -386,11 +386,11 @@ onAuthReady(async () => {
       let $details = details();
       $details.style.marginBottom = "15px";
 
-      let $summary = summary();
+      let $smry = smry();
       let $strong = strong(group.typeName);
-      $summary.append($strong);
-      $summary.append(` (${group.count} kayıt)`);
-      $details.append($summary);
+      $smry.append($strong);
+      $smry.append(` (${group.count} kayıt)`);
+      $details.append($smry);
 
       let $div = div();
       let $table = table();

@@ -90,9 +90,7 @@ onAuthReady(async () => {
 
       if (result && result.isSuccess) {
         setMessageText($msg, "Soru başarıyla eklendi");
-        setTimeout(() => {
-          window.location.href = `admin-questionnaire-detail.html?questionnaireId=${questionnaireId}`;
-        }, 1000);
+        setTimeout(() => { window.location.href = `admin-questionnaire-detail.html?questionnaireId=${questionnaireId}`; }, DELAY_1);
       } else {
         setMessageText($msg, getApiError(result, "Kayıt başarısız oldu"));
         logErr(result);

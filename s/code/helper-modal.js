@@ -117,9 +117,7 @@ function createConfirmationModal(options) {
         setButtonLoading(buttons.submitBtn, false);
         setTimeout(() => {
           closeModal($modal);
-          if (onSuccess) {
-            onSuccess();
-          }
+          if (onSuccess) { onSuccess(); }
         }, DELAY_2);
       }
     } else {

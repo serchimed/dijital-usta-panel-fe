@@ -8,5 +8,5 @@ onAuthReady(async () => {
         this.classList.toggle('expanded');
       });
     });
-  }, 100);
+  }, DELAY_0);
 });

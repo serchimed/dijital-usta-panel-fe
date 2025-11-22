@@ -339,6 +339,9 @@ label iframe {
   display: block;
   margin-top: 5px;
   max-width: 100%;
+  width: 640px;
+  height: 360px;
+  border: 0;
 }
 
 input,

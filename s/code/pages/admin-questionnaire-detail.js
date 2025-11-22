@@ -15,11 +15,10 @@ onAuthReady(async () => {
     }
 
     for (let question of questionsResult.data) {
-      let $details = document.createElement("details");
+      let $details = details();
 
-      let $summary = document.createElement("summary");
-      $summary.textContent = `${question.order}. ${question.questionText}`;
-      $details.append($summary);
+      let $smry = smry(`${question.order}. ${question.questionText}`);
+      $details.append($smry);
 
       let $div = document.createElement("div");
 

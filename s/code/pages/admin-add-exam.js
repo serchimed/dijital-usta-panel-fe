@@ -92,9 +92,7 @@ onAuthReady(async () => {
 
       if (result && result.isSuccess) {
         setMessageText($msg, "Sınav başarıyla eklendi");
-        setTimeout(() => {
-          window.location.href = "admin-lms.html";
-        }, 1000);
+        setTimeout(() => { window.location.href = "admin-lms.html"; }, DELAY_1);
       } else {
         setMessageText($msg, getApiError(result, "Kayıt başarısız oldu"));
         logErr(result);

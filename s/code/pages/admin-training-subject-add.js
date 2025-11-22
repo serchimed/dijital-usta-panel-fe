@@ -85,9 +85,7 @@ onAuthReady(async () => {
 
       if (result && result.isSuccess) {
         setMessageText($msg, "Eğitim konusu başarıyla eklendi");
-        setTimeout(() => {
-          window.location.href = `admin-training-detail.html?trainingId=${selectedTrainingId}`;
-        }, 1000);
+        setTimeout(() => { window.location.href = `admin-training-detail.html?trainingId=${selectedTrainingId}`; }, DELAY_1);
       } else {
         setMessageText($msg, getApiError(result, "Ekleme başarısız oldu"));
         logErr(result);

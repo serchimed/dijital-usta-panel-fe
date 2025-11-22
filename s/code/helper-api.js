@@ -10,21 +10,9 @@ function getApiError(result, fallback = ERROR_MESSAGE_DEFAULT) {
   return fallback;
 }
 
-
-function isRetryableStatus(status) {
-  return status >= 500 || status === 408 || status === 429;
-}
-
-function isRetryableError(error) {
-  return error.name === 'AbortError'
-    || error.name === 'TypeError'
-    || error.message.includes('fetch')
-    || error.message.includes('network');
-}
-
-function getRetryDelay(retries, baseDelay = 1000) {
-  return baseDelay * Math.pow(2, retries);
-}
+function isRetryableStatus(status) { return status >= 500 || status === 408 || status === 429; }
+function isRetryableError(error) { return error.name === 'AbortError' || error.name === 'TypeError' || error.message.includes('fetch') || error.message.includes('network'); }
+function getRetryDelay(retries, baseDelay = 1000) { return baseDelay * Math.pow(2, retries); }
 
 async function performRetry(callName, data, retries, timeout, maxRetries, userMessage) {
   let delay = getRetryDelay(retries);
@@ -54,9 +42,7 @@ async function api(callName, data = {}, retries = 0, timeout = 10000) {
     if (isRetryableStatus(response.status)) {
       console.error("API call failed:", callName, "Status:", response.status);
 
-      if (retries < maxRetries) {
-        return performRetry(callName, data, retries, timeout, maxRetries, "Bağlantı sorunları yaşanıyor, tekrar deneniyor...");
-      }
+      if (retries < maxRetries) { return performRetry(callName, data, retries, timeout, maxRetries, "Bağlantı sorunları yaşanıyor, tekrar deneniyor..."); }
 
       return { error: true, status: response.status, message: "Server error" };
     }
@@ -121,10 +107,8 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
   return result;
 }
 
-async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null, timeout = 60000) {
-  if ($msgElement && $msgElement.tagName === "P") {
-    $msgElement.textContent = "CSV hazırlanıyor...";
-  }
+async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null, timeout = DELAY_6) {
+  if ($msgElement && $msgElement.tagName === "P") { $msgElement.textContent = "CSV hazırlanıyor..."; }
 
   try {
     let controller = new AbortController();
@@ -141,9 +125,7 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      if ($msgElement) {
-        $msgElement.textContent = "CSV oluşturulamadı.";
-      }
+      if ($msgElement) { $msgElement.textContent = "CSV oluşturulamadı."; }
       return false;
     }
 
@@ -151,11 +133,8 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     if (contentType && contentType.includes("application/json")) {
       let result = await response.json();
       if ($msgElement) {
-        if (result.isSuccess) {
-          $msgElement.textContent = result.data || "İşlem başarılı.";
-        } else {
-          $msgElement.textContent = result.data || "CSV oluşturulamadı.";
-        }
+        if (result.isSuccess) { $msgElement.textContent = result.data || "İşlem başarılı."; }
+        else { $msgElement.textContent = result.data || "CSV oluşturulamadı."; }
       }
       return result.isSuccess;
     }
@@ -169,9 +148,7 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     let contentDisposition = response.headers.get("Content-Disposition");
     if (contentDisposition) {
       let match = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
-      if (match && match[1]) {
-        filename = match[1].replace(/['"]/g, '');
-      }
+      if (match && match[1]) { filename = match[1].replace(/['"]/g, ''); }
     }
     link.download = filename;
 
@@ -182,21 +159,16 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
 
     if ($msgElement) {
       $msgElement.textContent = "CSV indirildi.";
-      setTimeout(() => {
-        $msgElement.textContent = "";
-      }, DELAY_2);
+      setTimeout(() => { $msgElement.textContent = ""; }, DELAY_2);
     }
 
     return true;
   } catch (error) {
     console.error("CSV download error:", error);
-    if ($msgElement) {
-      $msgElement.textContent = "Bir hata oluştu.";
-    }
+    if ($msgElement) { $msgElement.textContent = "Bir hata oluştu."; }
     return false;
   }
 }
-
 
 function logErr(result) {
   let errText = "Bir hata oluştu.";

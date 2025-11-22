@@ -37,9 +37,7 @@ onReady(() => {
     let prmRef = prms.get("ref");
     let result = await apiBtn($btn, "Member/NewPasscode", { email: email, token: prmRef || "", isCompanyAccepted: true }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
     if (result && result.isSuccess) {
-      setTimeout(() => {
-        window.location.href = `login.html?email=${encodeURIComponent(email)}`;
-      }, DELAY_2);
+      setTimeout(() => { window.location.href = `login.html?email=${encodeURIComponent(email)}`; }, DELAY_2);
     }
   };
 

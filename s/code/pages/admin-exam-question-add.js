@@ -68,9 +68,7 @@ onAuthReady(async () => {
 
       if (result && result.isSuccess) {
         setMessageText($msg, "Soru başarıyla eklendi");
-        setTimeout(() => {
-          window.location.href = `admin-exam-detail.html?examId=${examId}`;
-        }, 1000);
+        setTimeout(() => { window.location.href = `admin-exam-detail.html?examId=${examId}`; }, DELAY_1);
       } else {
         setMessageText($msg, getApiError(result, "Kayıt başarısız oldu"));
         logErr(result);

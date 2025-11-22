@@ -12,16 +12,15 @@ onAuthReady(async () => {
     $addQuestionLink.href = `admin-exam-question-add.html?examId=${examId}`;
   }
 
-  let questionsResult = await api("Exam/GetQuestions", { examId: examId });
+  let questionsResult = await api("Exam/GetQuestionsForExam", { examId: examId });
 
   if (questionsResult && questionsResult.isSuccess && questionsResult.data && questionsResult.data.length > 0) {
     let $main = document.querySelector("main");
 
     for (let question of questionsResult.data) {
-      let $details = document.createElement("details");
+      let $details = details();
 
-      let $summary = document.createElement("summary");
-      $summary.textContent = `${question.order || ""}. ${question.question}`;
+      let $summary = smry(`${question.order || ""}. ${question.question}`);
       $details.append($summary);
 
       let $div = document.createElement("div");

@@ -1,7 +1,9 @@
 let DELAY_00 = 12;
 let DELAY_0 = 123;
-let DELAY_1 = 1234;
-let DELAY_2 = 2345;
+let DELAY_1 = 1111;
+let DELAY_2 = 1987;
+let DELAY_6 = 60000;
+let DELAY_12 = 120000;
 
 function getId(key = "memberId") {
   let qs = new URLSearchParams(window.location.search);
@@ -169,7 +171,7 @@ function details() {
   return document.createElement("details");
 }
 
-function summary(text) {
+function smry(text) {
   let $s = document.createElement("summary");
   if (text) { $s.textContent = text; }
   return $s;

@@ -3,10 +3,7 @@ onAuthReady(async () => {
   if (!trainingId) { return; }
 
   let result = await api("Training/Get", { trainingId: trainingId });
-
-  if (!result || !result.isSuccess || !result.data) {
-    return;
-  }
+  if (!result || !result.isSuccess || !result.data) { return; }
 
   let training = result.data;
 
@@ -14,26 +11,20 @@ onAuthReady(async () => {
   document.getElementById("description").textContent = training.description || "";
 
   let $image = document.getElementById("image");
-  if (training.image) {
-    $image.src = training.image;
-  } else {
-    $image.style.display = "none";
-  }
+  if (training.image) { $image.src = training.image; }
+  else { $image.style.display = "none"; }
 
   let $addSubjectLink = document.getElementById("addSubjectLink");
-  if ($addSubjectLink) {
-    $addSubjectLink.href = `admin-training-subject-add.html?trainingId=${trainingId}`;
-  }
+  if ($addSubjectLink) { $addSubjectLink.href = `admin-training-subject-add.html?trainingId=${trainingId}`; }
 
   if (training.subjects && training.subjects.length > 0) {
     let $main = document.querySelector("main");
 
     for (let subject of training.subjects) {
-      let $details = document.createElement("details");
+      let $details = details();
 
-      let $summary = document.createElement("summary");
-      $summary.textContent = `${subject.order}. ${subject.name}`;
-      $details.append($summary);
+      let $smry = smry(`${subject.order}. ${subject.name}`);
+      $details.append($smry);
 
       let $div = document.createElement("div");
 
@@ -55,9 +46,6 @@ onAuthReady(async () => {
         $vimeoLabel.textContent = "Video";
         let $iframe = document.createElement("iframe");
         $iframe.src = subject.vimeoUrl;
-        $iframe.width = "640";
-        $iframe.height = "360";
-        $iframe.frameBorder = "0";
         $iframe.allow = "autoplay; fullscreen; picture-in-picture";
         $iframe.allowFullscreen = true;
         $vimeoLabel.append($iframe);

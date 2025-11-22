@@ -14,19 +14,16 @@ onAuthReady(() => {
     if (showErrors($msg, errors)) { return; }
     clearErrors($msg);
 
-    // Özel yükleme mesajı göster
     $btn.disabled = true;
     $msg.textContent = "Yapay zeka mektubunuzu değerlendiriyor lütfen bekleyiniz.";
 
-    let result = await api("CandidateLetter/Add", req, 0, 60000);
+    let result = await api("CandidateLetter/Add", req, 0, DELAY_6);
     if (!result || result.error || !result.isSuccess) {
       $msg.textContent = "Motivasyon mektubu ekleme başarısız oldu, lütfen tekrar deneyiniz.";
       $btn.disabled = false;
     } else {
       $msg.textContent = "Motivasyon mektubu eklendi.";
-      setTimeout(() => {
-        location.href = "candidate-profile.html";
-      }, DELAY_1);
+      setTimeout(() => { location.href = "candidate-profile.html"; }, DELAY_1);
     }
   });
 });

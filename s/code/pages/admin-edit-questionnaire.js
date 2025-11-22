@@ -50,9 +50,7 @@ onAuthReady(async () => {
 
       if (updateResult && updateResult.isSuccess) {
         setMessageText($msg, "Anket başarıyla güncellendi");
-        setTimeout(() => {
-          window.location.href = "admin-lms.html";
-        }, 1000);
+        setTimeout(() => { window.location.href = "admin-lms.html"; }, DELAY_1);
       } else {
         setMessageText($msg, getApiError(updateResult, "Güncelleme başarısız oldu"));
         logErr(updateResult);

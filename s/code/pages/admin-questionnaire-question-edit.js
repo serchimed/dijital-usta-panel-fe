@@ -94,9 +94,7 @@ onAuthReady(async () => {
 
       if (updateResult && updateResult.isSuccess) {
         setMessageText($msg, "Soru başarıyla güncellendi");
-        setTimeout(() => {
-          window.location.href = `admin-questionnaire-detail.html?questionnaireId=${questionnaireId}`;
-        }, 1000);
+        setTimeout(() => { window.location.href = `admin-questionnaire-detail.html?questionnaireId=${questionnaireId}`; }, DELAY_1);
       } else {
         setMessageText($msg, getApiError(updateResult, "Güncelleme başarısız oldu"));
         logErr(updateResult);

@@ -10,6 +10,7 @@ async function initAuth() {
   }
 
   USER = await api("Member/Check");
+  window.USER = USER;
 
   if (page === "access-denied") {
     if (USER && !USER.error && USER.isAuthenticated) {
