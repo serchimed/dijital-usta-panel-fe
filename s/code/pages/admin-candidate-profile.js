@@ -201,58 +201,10 @@ onAuthReady(async () => {
       let $tdAI = td(aiName, "AI");
 
       let $tdPrompt = td(null, "Prompt");
-      if (prompt.length > 100) {
-        let truncated = prompt.substring(0, 100) + "...";
-        let $truncated = spn(truncated);
-        $truncated.style.display = "inline-block";
-        $truncated.style.fontSize = "15px";
-        $truncated.addEventListener(CLICK_EVENT, function (e) {
-          e.stopPropagation();
-        });
-        let $full = spn(prompt);
-        $full.style.display = "none";
-        $full.addEventListener(CLICK_EVENT, function (e) {
-          e.stopPropagation();
-        });
-        let $toggle = spn(" [detay]");
-        $toggle.style.cursor = "pointer";
-        $toggle.style.color = "#0066cc";
-        $toggle.addEventListener(CLICK_EVENT, function (e) {
-          e.stopPropagation();
-          e.preventDefault();
-          toggleText(this);
-        });
-        $tdPrompt.append($truncated, $full, $toggle);
-      } else {
-        $tdPrompt.textContent = prompt;
-      }
+      $tdPrompt.append(createExpandableText(prompt));
 
       let $tdAnswer = td(null, "Cevap");
-      if (answer.length > 100) {
-        let truncated = answer.substring(0, 100) + "...";
-        let $truncated = spn(truncated);
-        $truncated.style.display = "inline-block";
-        $truncated.style.fontSize = "15px";
-        $truncated.addEventListener(CLICK_EVENT, function (e) {
-          e.stopPropagation();
-        });
-        let $full = spn(answer);
-        $full.style.display = "none";
-        $full.addEventListener(CLICK_EVENT, function (e) {
-          e.stopPropagation();
-        });
-        let $toggle = spn(" [detay]");
-        $toggle.style.cursor = "pointer";
-        $toggle.style.color = "#0066cc";
-        $toggle.addEventListener(CLICK_EVENT, function (e) {
-          e.stopPropagation();
-          e.preventDefault();
-          toggleText(this);
-        });
-        $tdAnswer.append($truncated, $full, $toggle);
-      } else {
-        $tdAnswer.textContent = answer;
-      }
+      $tdAnswer.append(createExpandableText(answer));
 
       let $tdDate = td(formatTimeLong(createdAt), "Tarih");
 
@@ -260,7 +212,8 @@ onAuthReady(async () => {
       let $btnApprove = btn("btn-act", "Onayla");
       let $msg = p();
 
-      $btnApprove.addEventListener(CLICK_EVENT, async function () {
+      $btnApprove.addEventListener(CLICK_EVENT, async function (e) {
+        if (e.target !== this) return;
         let $mbody = div();
         let $confirmLabel = p("Bu AI değerlendirmesini onaylamak istediğinize emin misiniz?");
         let $msgDiv = div(CSS_CLASSES.modalMessage);

@@ -1133,30 +1133,6 @@ table td a {
   margin-top: 5px;
 }
 
-td[data-label="Giden Prompt"],
-td[data-label="Gelen Cevap"] {
-  display: -webkit-box;
-  line-clamp: 4;
-  box-orient: vertical;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-wrap: break-word;
-  max-width: 300px;
-  cursor: pointer;
-}
-
-td[data-label="Giden Prompt"]:hover,
-td[data-label="Gelen Cevap"]:hover,
-td[data-label="Giden Prompt"].expanded,
-td[data-label="Gelen Cevap"].expanded {
-  display: block;
-  line-clamp: unset;
-  -webkit-line-clamp: unset;
-  overflow: visible;
-  max-height: none;
-}
-
 @media (max-width: 768px) {
   details>div {
     grid-template-columns: 1fr;
@@ -1312,11 +1288,6 @@ td[data-label="Gelen Cevap"].expanded {
   table {
     width: 100%;
     overflow-x: auto;
-  }
-
-  td[data-label="Giden Prompt"],
-  td[data-label="Gelen Cevap"] {
-    max-width: none;
   }
 
   .contact {

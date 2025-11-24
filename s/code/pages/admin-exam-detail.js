@@ -20,7 +20,7 @@ onAuthReady(async () => {
     for (let question of questionsResult.data) {
       let $details = details();
 
-      let $summary = smry(`${question.order || ""}. ${question.question}`);
+      let $summary = smry(`${question.order || ""}. ${question.questionText}`);
       $details.append($summary);
 
       let $div = document.createElement("div");
@@ -29,18 +29,29 @@ onAuthReady(async () => {
       $editLink.href = `admin-exam-question-edit.html?examQuestionId=${question.id}`;
       $editLink.target = "_blank";
       $editLink.textContent = "Düzenle";
-      let $deleteBtn = createDeleteButton(question.id, question.question, "Exam/DeleteQuestion", "examQuestionId");
+      let $deleteBtn = createDeleteButton(question.id, question.questionText, "Exam/DeleteQuestion", "examQuestionId");
       let $editLabel = document.createElement("label");
       $editLabel.append($editLink, " ", $deleteBtn);
       $div.append($editLabel);
 
       let $answersLabel = document.createElement("label");
-      $answersLabel.innerHTML = `Cevaplar: <span>${question.answers || "-"}</span>`;
-      $div.append($answersLabel);
+      $answersLabel.textContent = "Cevaplar:";
 
-      let $correctAnswerLabel = document.createElement("label");
-      $correctAnswerLabel.innerHTML = `Doğru Cevap: <span>${question.correctAnswer || "-"}</span>`;
-      $div.append($correctAnswerLabel);
+      if (question.answers && question.answers.length > 0) {
+        let $ul = document.createElement("ul");
+        for (let answer of question.answers) {
+          let $li = document.createElement("li");
+          $li.textContent = answer.answerText;
+          $ul.append($li);
+        }
+        $answersLabel.append($ul);
+      } else {
+        let $span = document.createElement("span");
+        $span.textContent = "-";
+        $answersLabel.append($span);
+      }
+
+      $div.append($answersLabel);
 
       $details.append($div);
       $main.append($details);

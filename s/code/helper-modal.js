@@ -40,6 +40,14 @@ function createModal(title, bodyContent) {
     }
   });
 
+  let handleEscKey = (e) => {
+    if (e.key === "Escape") {
+      closeModal($overlay);
+      document.removeEventListener("keydown", handleEscKey);
+    }
+  };
+  document.addEventListener("keydown", handleEscKey);
+
   document.body.append($overlay);
   return $overlay;
 }

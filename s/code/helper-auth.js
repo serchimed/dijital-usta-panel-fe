@@ -42,6 +42,23 @@ async function initAuth() {
   buildAuthenticatedMenu();
   showContent();
   dispatchAuthReady();
+
+  // Check deferred loading status after auth is ready
+  setTimeout(() => checkDeferredLoadingStatus(), DELAY_0);
+}
+
+async function checkDeferredLoadingStatus() {
+  try {
+    let result = await api("Stats/DeferredLoadingStatus", {}, 0, DELAY_6);
+
+    if (result && result.isSuccess && result.data) {
+      if (result.data.isCompleted === false) {
+        showHeaderMsg("Sistem verileri arka planda yükleniyor. Bazı raporlar henüz hazır olmayabilir.");
+      }
+    }
+  } catch (error) {
+    console.error("Deferred loading status check failed:", error);
+  }
 }
 
 onReady(async () => { await initAuth(); });

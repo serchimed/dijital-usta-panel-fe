@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yapay Zeka Ayarları | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
-  <link rel="stylesheet" href="./s/site.css?v=82" />
+  <link rel="stylesheet" href="./s/site.css?v=93" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
@@ -21,19 +21,21 @@
   <main>
     <h2>Yapay Zeka Prompt Kullanım Geçmişi</h2>
 
-    <input type="text" class="tblfilter" placeholder="filtrele" />
-    <table>
-      <thead>
-        <tr>
-          <th id="aiName">AI</th>
-          <th id="prompt">Giden Prompt</th>
-          <th id="answer">Gelen Cevap</th>
-          <th id="candidateName" data-url="admin-candidate-profile.html?id={candidateId}">Aday</th>
-          <th id="createdAt">Zaman</th>
-        </tr>
-      </thead>
-      <tbody id="AIHistory"></tbody>
-    </table>
+    <label>
+      <input type="text" class="tblfilter" placeholder="filtrele" />
+      <table>
+        <thead>
+          <tr>
+            <th id="aiName">AI</th>
+            <th id="prompt">Giden Prompt</th>
+            <th id="answer">Gelen Cevap</th>
+            <th id="candidateName" data-url="admin-candidate-profile.html?id={candidateId}">Aday</th>
+            <th id="createdAt">Zaman</th>
+          </tr>
+        </thead>
+        <tbody id="AIHistory"></tbody>
+      </table>
+    </label>
   </main>
   <footer>
     <div>
@@ -49,8 +51,8 @@
     </div>
   </footer>
 
-  <script src="./s/site.js?v=82" defer></script>
-  <script src="./s/code/pages/admin-ai-history.js?v=82" defer></script>
+  <script src="./s/site.js?v=93" defer></script>
+  <script src="./s/code/pages/admin-ai-history.js?v=93" defer></script>
 </body>
 
 </html>

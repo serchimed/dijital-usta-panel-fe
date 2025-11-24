@@ -335,6 +335,33 @@ function toggleText(element) {
   }
 }
 
+function createExpandableText(text, maxLength = 100) {
+  if (!text || text.length <= maxLength) {
+    return spn(text || "-");
+  }
+
+  let truncated = text.substring(0, maxLength) + "...";
+
+  let $truncated = spn(truncated);
+  $truncated.style.display = "inline-block";
+  $truncated.style.fontSize = "15px";
+
+  let $full = spn(text);
+  $full.style.display = "none";
+
+  let $toggle = spn(" [detay]");
+  $toggle.style.cursor = "pointer";
+  $toggle.style.color = "#0066cc";
+  $toggle.addEventListener(CLICK_EVENT, function (e) {
+    e.preventDefault();
+    toggleText(this);
+  });
+
+  let $container = spn();
+  $container.append($truncated, $full, $toggle);
+  return $container;
+}
+
 function hasChanges(initReq, req) {
   for (let key in req) {
     if (req[key] !== initReq[key]) {
