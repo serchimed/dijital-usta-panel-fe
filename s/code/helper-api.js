@@ -21,9 +21,9 @@ async function performRetry(callName, data, retries, timeout, maxRetries, userMe
   return api(callName, data, retries + 1, timeout);
 }
 
-async function api(callName, data = {}, retries = 0, timeout = 10000) {
+async function api(callName, data = {}, retries = 0, timeout = 10000, allowRetries = true) {
   let url = `${API}${callName}`;
-  let maxRetries = 3;
+  let maxRetries = allowRetries ? 3 : 0;
 
   try {
     let controller = new AbortController();
@@ -76,7 +76,9 @@ async function api(callName, data = {}, retries = 0, timeout = 10000) {
   }
 }
 
-async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement, timeout = 10000) {
+async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement, timeout = 10000, allowRetries = true) {
+  if (btn.dataset.processing === 'true') { return; }
+  btn.dataset.processing = 'true';
   btn.disabled = true;
   let $msg = $msgElement;
   if (!$msg) {
@@ -89,7 +91,7 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
 
   $msg.textContent = LOADING_MESSAGE_WAIT;
 
-  let result = await api(endpoint, data, 0, timeout);
+  let result = await api(endpoint, data, 0, timeout, allowRetries);
 
   if (!result || result.error || !result.isSuccess) {
     let errText = errorMsg || ERROR_MESSAGE_DEFAULT;
@@ -104,6 +106,7 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
   }
 
   btn.disabled = false;
+  btn.dataset.processing = 'false';
   return result;
 }
 

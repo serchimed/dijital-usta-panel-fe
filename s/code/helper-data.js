@@ -41,18 +41,26 @@ function debounce(func, wait) {
 function setFilters() {
   let $fis = document.querySelectorAll('.tblfilter');
   $fis.forEach($i => {
+    if ($i.dataset.filterInitialized) return;
+    $i.dataset.filterInitialized = 'true';
+
     let filterTable = debounce(function () {
       let tbl = $i.nextElementSibling;
       if (!tbl || !tbl.getElementsByTagName('tbody')[0]) return;
 
-      let txt = ($i.value || '').toLowerCase();
+      let txt = ($i.value || '').toLowerCase().trim();
       let rows = tbl.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
       for (let i = 0; i < rows.length; i++) {
         let $r = rows[i];
         let cells = $r.getElementsByTagName('td');
-        let rowText = '';
 
+        if (!txt) {
+          $r.style.display = '';
+          continue;
+        }
+
+        let rowText = '';
         for (let j = 0; j < cells.length; j++) { rowText += cells[j].textContent.toLowerCase() + ' '; }
 
         if (rowText.includes(txt)) { $r.style.display = ''; }
