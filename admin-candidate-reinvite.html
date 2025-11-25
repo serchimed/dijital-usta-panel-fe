@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yapay Zeka Ayarları | Dijital Usta</title>
+  <title>Adayların Puanlarını Güncelle | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
   <link rel="stylesheet" href="./s/site.css?v=96" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
@@ -19,23 +19,15 @@
     <ul></ul>
   </nav>
   <main>
-    <h2>Yapay Zeka Prompt Kullanım Geçmişi</h2>
+    <h2>Daveti Henüz Kabul Etmeyen Adayları Tekrar Davet Et</h2>
 
-    <label>
-      <input type="text" class="tblfilter" placeholder="filtrele" />
-      <table>
-        <thead>
-          <tr>
-            <th id="aiName">AI</th>
-            <th id="prompt">Giden Prompt</th>
-            <th id="answer">Gelen Cevap</th>
-            <th id="candidateName" data-url="admin-candidate-profile.html?id={candidateId}">Aday</th>
-            <th id="createdAt">Zaman</th>
-          </tr>
-        </thead>
-        <tbody id="AIHistory"></tbody>
-      </table>
+    <label for="city" class="sel">İl
+      <input type="text" id="city" placeholder="İl ara..." autocomplete="off" />
     </label>
+
+    <button>Gönder</button>
+    <p></p>
+
   </main>
   <footer>
     <div>
@@ -50,9 +42,8 @@
       <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
     </div>
   </footer>
-
   <script src="./s/site.js?v=96" defer></script>
-  <script src="./s/code/pages/admin-ai-history.js?v=96" defer></script>
+  <script src="./s/code/pages/admin-candidate-reinvite.js?v=96" defer></script>
 </body>
 
 </html>

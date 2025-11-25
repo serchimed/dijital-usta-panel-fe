@@ -52,6 +52,7 @@ let PAGE_ROLES = {
   "admin-company-add": ["admin", "editor"],
   "admin-editor-invite": ["admin"],
   "admin-candidate-invite": ["admin"],
+  "admin-candidate-reinvite": ["admin"],
   "admin-candidate-survey": ["admin"],
   "admin-point-update": ["admin"],
   "admin-ai-history": ["admin"],

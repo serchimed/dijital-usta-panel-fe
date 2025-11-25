@@ -43,6 +43,6 @@ onAuthReady(() => {
     req.lines = normalized.join("\n");
     clearErrors($msg);
 
-    await apiBtn(this, "Candidate/InviteAfterTobb", req, "Puanlar eklendi.", ERROR_MESSAGE_DEFAULT, "admin-candidate-list.html", null, 60000, false);
+    await apiBtn(this, "Candidate/InviteAfterTobb", req, "Puanlar eklendi.", ERROR_MESSAGE_DEFAULT, "admin-candidate-list.html", null, DELAY_12, false);
   });
 });
