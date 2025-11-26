@@ -44,20 +44,6 @@ function setFilters() {
     if ($i.dataset.filterInitialized) return;
     $i.dataset.filterInitialized = 'true';
 
-    let timeout;
-    let filterTable = function () {
-      let txt = ($i.value || '').toLowerCase().trim();
-
-      clearTimeout(timeout);
-
-      if (!txt) {
-        applyFilter();
-        return;
-      }
-
-      timeout = setTimeout(applyFilter, DELAY_0);
-    };
-
     let applyFilter = function () {
       let tbl = $i.nextElementSibling;
       if (!tbl || !tbl.getElementsByTagName('tbody')[0]) return;
@@ -81,10 +67,10 @@ function setFilters() {
         else { $r.style.display = 'none'; }
       }
 
-      setTimeout(() => updateFilterCount($i, tbl, txt), DELAY_1);
+      updateFilterCount($i, tbl, txt);
     };
 
-    $i.addEventListener('input', filterTable);
+    $i.addEventListener('input', applyFilter);
   });
 }
 
