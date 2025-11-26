@@ -26,85 +26,90 @@ function formatFieldValue(value, fieldName) {
   return value;
 }
 
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    let later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
 function setFilters() {
-  let $fis = document.querySelectorAll('.tblfilter');
-  $fis.forEach($i => {
-    if ($i.dataset.filterInitialized) return;
-    $i.dataset.filterInitialized = 'true';
+  let filterInputs = document.querySelectorAll('.tblfilter');
 
-    let applyFilter = function () {
-      let tbl = $i.nextElementSibling;
-      if (!tbl || !tbl.getElementsByTagName('tbody')[0]) return;
+  filterInputs.forEach(filterInput => {
+    if (filterInput.dataset.filterInitialized === 'true') {
+      return;
+    }
 
-      let txt = ($i.value || '').toLowerCase().trim();
-      let rows = tbl.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    filterInput.dataset.filterInitialized = 'true';
 
-      for (let i = 0; i < rows.length; i++) {
-        let $r = rows[i];
-        let cells = $r.getElementsByTagName('td');
-
-        if (!txt) {
-          $r.style.display = '';
-          continue;
-        }
-
-        let rowText = '';
-        for (let j = 0; j < cells.length; j++) { rowText += cells[j].textContent.toLowerCase() + ' '; }
-
-        if (rowText.includes(txt)) { $r.style.display = ''; }
-        else { $r.style.display = 'none'; }
-      }
-
-      updateFilterCount($i, tbl, txt);
-    };
-
-    $i.addEventListener('input', applyFilter);
+    filterInput.addEventListener('input', function() {
+      filterTable(this);
+    });
   });
 }
 
-function updateFilterCount($input, tbl, txt) {
-  if (!txt) {
-    let existingCounter = $input.parentNode.querySelector('.tblfilter-counter');
-    if (existingCounter) existingCounter.remove();
+function filterTable(filterInput) {
+  let searchText = (filterInput.value || '').toLowerCase().trim();
+
+  let table = filterInput.nextElementSibling;
+  while (table && table.tagName !== 'TABLE') {
+    table = table.nextElementSibling;
+  }
+
+  if (!table) {
+    console.warn('Table not found for filter input');
     return;
   }
 
-  if (!tbl || !tbl.getElementsByTagName('tbody')[0]) return;
+  let tbody = table.querySelector('tbody');
+  if (!tbody) {
+    console.warn('Table body not found');
+    return;
+  }
 
-  let rows = tbl.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+  let rows = tbody.querySelectorAll('tr');
   let visibleCount = 0;
   let totalCount = 0;
 
-  for (let i = 0; i < rows.length; i++) {
-    let cells = rows[i].getElementsByTagName('td');
-    if (cells.length > 0 && cells[0].colSpan !== 99) {
-      totalCount++;
-      if (rows[i].style.display !== 'none') {
-        visibleCount++;
-      }
+  rows.forEach(row => {
+    let cells = row.querySelectorAll('td');
+
+    if (cells.length === 0 || (cells.length === 1 && cells[0].colSpan > 1)) {
+      return;
     }
+
+    totalCount++;
+
+    if (!searchText) {
+      row.style.display = '';
+      visibleCount++;
+      return;
+    }
+
+    let rowText = '';
+    cells.forEach(cell => {
+      rowText += cell.textContent.toLowerCase() + ' ';
+    });
+
+    if (rowText.includes(searchText)) {
+      row.style.display = '';
+      visibleCount++;
+    } else {
+      row.style.display = 'none';
+    }
+  });
+
+  updateFilterCounter(filterInput, visibleCount, totalCount, searchText);
+}
+
+function updateFilterCounter(filterInput, visibleCount, totalCount, searchText) {
+  let existingCounter = filterInput.parentElement.querySelector('.tblfilter-counter');
+
+  if (!searchText) {
+    if (existingCounter) {
+      existingCounter.remove();
+    }
+    return;
   }
 
-  let existingCounter = $input.parentNode.querySelector('.tblfilter-counter');
   if (!existingCounter) {
     existingCounter = document.createElement('span');
     existingCounter.className = 'tblfilter-counter';
-    existingCounter.style.display = 'inline-block';
-    existingCounter.style.fontSize = '14px';
-    existingCounter.style.color = '#666';
-    $input.insertAdjacentElement('afterend', existingCounter);
+    filterInput.insertAdjacentElement('afterend', existingCounter);
   }
 
   existingCounter.textContent = `( ${visibleCount} / ${totalCount} )`;
