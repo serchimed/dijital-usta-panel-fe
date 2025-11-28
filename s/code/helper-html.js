@@ -413,17 +413,15 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
       let $item = div();
       $item.textContent = displayFn(item);
 
-      $item.addEventListener(CLICK_EVENT, function (e) {
+      $item.addEventListener("mousedown", function (e) {
         e.stopPropagation();
         e.preventDefault();
 
         $list.classList.remove("show");
         ignoreNextInput = true;
 
-        setTimeout(() => {
-          onSelect(item, $input, $customInput);
-          setTimeout(() => { ignoreNextInput = false; }, DELAY_0);
-        }, DELAY_00);
+        onSelect(item, $input, $customInput);
+        setTimeout(() => { ignoreNextInput = false; }, DELAY_0);
       });
 
       $list.append($item);
@@ -435,8 +433,9 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
       $custom.style.fontStyle = "italic";
       $custom.style.color = "#666";
 
-      $custom.addEventListener(CLICK_EVENT, function (e) {
+      $custom.addEventListener("mousedown", function (e) {
         e.stopPropagation();
+        e.preventDefault();
 
         if ($customInput) {
           $input.style.display = "none";

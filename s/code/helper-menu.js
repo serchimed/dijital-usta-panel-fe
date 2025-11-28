@@ -57,6 +57,8 @@ let PAGE_ROLES = {
   "admin-point-update": ["admin"],
   "admin-ai-history": ["admin"],
   "admin-settings": ["admin"],
+  "admin-city-add": ["admin"],
+  "admin-city-edit": ["admin"],
   "admin-email-edit": ["admin"],
   "admin-lms": ["admin"],
   "admin-add-training": ["admin"],

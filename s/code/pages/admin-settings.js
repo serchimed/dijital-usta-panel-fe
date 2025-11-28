@@ -33,6 +33,30 @@ onAuthReady(async () => {
     await apiBtn(this, "AI/UpdatePrompt", { promptText: promptText }, "Prompt güncellendi.", "Prompt güncellenemedi.");
   });
 
+  let cityResult = await api("City/GetAll", {});
+  if (cityResult && cityResult.isSuccess) {
+    let cityTbody = document.getElementById("City");
+    cityTbody.textContent = "";
+
+    for (let city of cityResult.data) {
+      let $tr = tr();
+      $tr.append(td(city.name, "İl"));
+      $tr.append(td(formatDateLong(city.listFinalization), "Liste Teslim"));
+      $tr.append(td(formatDateLong(city.informingEvent), "Bilgilendirme Buluşması"));
+      $tr.append(td(formatDateLong(city.tobbTrainingStart), "TOBB ETÜ Eğitimi Başlangıç"));
+      $tr.append(td(formatDateLong(city.tobbTrainingEnd), "TOBB ETÜ Eğitimi Bitiş"));
+      $tr.append(td(formatDateLong(city.graduationEvent), "Mezuniyet Buluşması"));
+      $tr.append(td(formatDateLong(city.candidateProfileCompletionStart), "Aday Profil Tamamlama Başlangıç"));
+      $tr.append(td(formatDateLong(city.candidateLetterEnd), "Motivasyon Mektubu Yazma Bitiş"));
+      $tr.append(td(formatDateLong(city.companyCandidateSelectionStart), "Firma Aday Eşleşme Başlangıç"));
+      $tr.append(td(formatDateLong(city.companyCandidateSelectionEnd), "Firma Aday Eşleşme Bitiş"));
+      $tr.append(td(formatDateLong(city.workStart), "İşe Başlama"));
+      $tr.append(tda("Güncelle", "admin-city-edit.html?id=" + city.id, ""));
+
+      cityTbody.append($tr);
+    }
+  } else { logErr(cityResult); }
+
   let result = await api("EmailTemplate/GetAll", {});
   if (result && result.isSuccess) {
     let tbody = document.getElementById("EmailTemplates");

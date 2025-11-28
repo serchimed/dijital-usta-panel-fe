@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ayarlar | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
-  <link rel="stylesheet" href="./s/site.css?v=98" />
+  <link rel="stylesheet" href="./s/site.css?v=105" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
@@ -20,13 +20,58 @@
   </nav>
   <main>
     <h2>Ayarlar</h2>
+    <details>
+      <summary>Aktif İller ve Son Tarihler</summary>
+      <div>
+        <p><a href="admin-city-add.html">aktif il ekle</a></p>
+
+        <input type="text" class="tblfilter" placeholder="filtrele" />
+        <table>
+          <thead>
+            <tr>
+              <th id="city">İl</th>
+              <th id="listFinalization">Liste Teslim</th>
+              <th id="informingEvent">Bilgilendirme Buluşması</th>
+              <th id="tobbTrainingStart">TOBB ETÜ Eğitimi Başlangıç</th>
+              <th id="tobbTrainingEnd">TOBB ETÜ Eğitimi Bitiş</th>
+              <th id="graduationEvent">Mezuniyet Buluşması</th>
+              <th id="candidateProfileCompletionStart">Aday Profil Tamamlama Başlangıç</th>
+              <th id="candidateLetterEnd">Motivasyon Mektubu Yazma Bitiş</th>
+              <th id="companyCandidateSelectionStart">Firma Aday Eşleşme Başlangıç</th>
+              <th id="companyCandidateSelectionEnd">Firma Aday Eşleşme Bitiş</th>
+              <th id="workStart">İşe Başlama</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="City"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>Eposta Şablonları</summary>
+      <div>
+        <input type="text" class="tblfilter" placeholder="filtrele" />
+        <table>
+          <thead>
+            <tr>
+              <th id="subject">Konu</th>
+              <th id="textContent">Metin İçerik</th>
+              <th id="htmlContent">HTML İçerik</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="EmailTemplates"></tbody>
+        </table>
+      </div>
+    </details>
 
     <details>
       <summary>Yapay Zeka</summary>
       <div>
 
         <details>
-          <summary>API Ayarları</summary>
+          <summary>API</summary>
           <div>
             <label for="apiKeyGoogle">Google API Key
               <input type="password" id="apiKeyGoogle" autocomplete="off" />
@@ -53,23 +98,6 @@
       </div>
     </details>
 
-    <details open>
-      <summary>Eposta Şablonları</summary>
-      <div>
-        <input type="text" class="tblfilter" placeholder="filtrele" />
-        <table>
-          <thead>
-            <tr>
-              <th id="subject">Konu</th>
-              <th id="textContent">Metin İçerik</th>
-              <th id="htmlContent">HTML İçerik</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="EmailTemplates"></tbody>
-        </table>
-      </div>
-    </details>
   </main>
   <footer>
     <div>
@@ -85,8 +113,8 @@
     </div>
   </footer>
 
-  <script src="./s/site.js?v=98" defer></script>
-  <script src="./s/code/pages/admin-settings.js?v=98" defer></script>
+  <script src="./s/site.js?v=105" defer></script>
+  <script src="./s/code/pages/admin-settings.js?v=105" defer></script>
 </body>
 
 </html>
