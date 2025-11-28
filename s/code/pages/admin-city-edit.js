@@ -9,16 +9,16 @@ onAuthReady(async () => {
   let result = await api("City/Get", { cityId: cityId });
   if (result && result.isSuccess) {
     set("city", result.data.name);
-    set("listFinalization", result.data.listFinalization);
-    set("informingEvent", result.data.informingEvent);
-    set("tobbTrainingStart", result.data.tobbTrainingStart);
-    set("tobbTrainingEnd", result.data.tobbTrainingEnd);
-    set("graduationEvent", result.data.graduationEvent);
-    set("candidateProfileCompletionStart", result.data.candidateProfileCompletionStart);
-    set("candidateLetterEnd", result.data.candidateLetterEnd);
-    set("companyCandidateSelectionStart", result.data.companyCandidateSelectionStart);
-    set("companyCandidateSelectionEnd", result.data.companyCandidateSelectionEnd);
-    set("workStart", result.data.workStart);
+    set("listFinalization", formatDateInput(result.data.listFinalization));
+    set("informingEvent", formatDateInput(result.data.informingEvent));
+    set("tobbTrainingStart", formatDateInput(result.data.tobbTrainingStart));
+    set("tobbTrainingEnd", formatDateInput(result.data.tobbTrainingEnd));
+    set("graduationEvent", formatDateInput(result.data.graduationEvent));
+    set("candidateProfileCompletionStart", formatDateInput(result.data.candidateProfileCompletionStart));
+    set("candidateLetterEnd", formatDateInput(result.data.candidateLetterEnd));
+    set("companyCandidateSelectionStart", formatDateInput(result.data.companyCandidateSelectionStart));
+    set("companyCandidateSelectionEnd", formatDateInput(result.data.companyCandidateSelectionEnd));
+    set("workStart", formatDateInput(result.data.workStart));
   } else {
     logErr(result);
     window.location.href = "admin-settings.html";
