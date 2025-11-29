@@ -8,6 +8,7 @@ onAuthReady(async () => {
       let $tr = tr();
       $tr.append(tda(admin.displayName, "admin-profile.html?id=" + admin.id, "Ad Soyad"));
       $tr.append(td(admin.role, "Rol"));
+      $tr.append(td(admin.city, "İl"));
       $tr.append(td(admin.companyName, "Organizasyon"));
       $tr.append(tda(admin.email, "mailto:" + admin.email, "E-posta"));
       $tr.append(tda(admin.phone, "tel:" + admin.phone, "Telefon"));
