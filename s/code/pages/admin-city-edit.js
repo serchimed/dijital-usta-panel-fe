@@ -55,8 +55,6 @@ onAuthReady(async () => {
     if (!req.workStart) { errors.push("İşe Başlama tarihini giriniz."); }
     if (showErrors($msg, errors)) { return; }
 
-    console.log(req);
-    return;
     clearErrors($msg);
     await apiBtn(this, "City/Edit", req, "İl bilgileri güncellendi.", ERROR_MESSAGE_DEFAULT, "admin-settings.html");
   });
