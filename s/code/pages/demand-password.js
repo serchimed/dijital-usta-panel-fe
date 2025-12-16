@@ -37,7 +37,7 @@ onReady(() => {
       apiParams.isCompanyAccepted = true;
     }
 
-    let result = await apiBtn($btn, "Member/NewPasscode", apiParams, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
+    let result = await apiBtn($btn, "Member/NewPasscode", apiParams, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.", null, null, 10000, false);
     if (result && result.isSuccess) {
       setTimeout(() => { window.location.href = `login.html?email=${encodeURIComponent(email)}`; }, DELAY_2);
     }

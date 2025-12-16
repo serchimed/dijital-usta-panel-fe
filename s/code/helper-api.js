@@ -16,8 +16,8 @@ function getRetryDelay(retries, baseDelay = 1000) { return baseDelay * Math.pow(
 
 async function performRetry(callName, data, retries, timeout, maxRetries, userMessage) {
   let delay = getRetryDelay(retries);
-  showHeaderMsg(`${userMessage} (${retries + 1}/${maxRetries})`);
   await new Promise(resolve => setTimeout(resolve, delay));
+  showHeaderMsg(`${userMessage} (${retries + 1}/${maxRetries})`);
   return api(callName, data, retries + 1, timeout);
 }
 

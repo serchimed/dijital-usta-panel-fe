@@ -56,6 +56,6 @@ onAuthReady(async () => {
     if (showErrors($msg, errors)) { return; }
 
     clearErrors($msg);
-    await apiBtn(this, "City/Update", req, "İl bilgileri güncellendi.", ERROR_MESSAGE_DEFAULT, "admin-settings.html");
+    await apiBtn(this, "City/Edit", req, "İl bilgileri güncellendi.", ERROR_MESSAGE_DEFAULT, "admin-settings.html");
   });
 });
