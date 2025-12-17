@@ -215,17 +215,33 @@ onAuthReady(async () => {
       $btnApprove.addEventListener(CLICK_EVENT, async function (e) {
         if (e.target !== this) return;
         let $mbody = div();
-        let $confirmLabel = p("Bu AI değerlendirmesini onaylamak istediğinize emin misiniz?");
+
+        let textareaValue = answer;
+
+        if (answer && answer.includes("---EVALUATION_START---")) {
+          let parts = answer.split("---EVALUATION_START---");
+          textareaValue = parts[0].trim();
+        }
+
+        let $reviewLabel = lbl("Değerlendirme:");
+        let $reviewTextarea = txt();        
+        $reviewTextarea.rows = 8;
+        $reviewTextarea.value = textareaValue;
+        $reviewLabel.append($reviewTextarea);
+
         let $msgDiv = div(CSS_CLASSES.modalMessage);
         let $modal;
 
         let handleApprove = async function () {
+          let reviewedResult = $reviewTextarea.value.trim();
+
           setButtonLoading(buttons.submitBtn, true);
           setMessageText($msg, LOADING_MESSAGE_WAIT);
 
           let approveResult = await api("AI/Approve", {
             memberId: candidateId,
-            AIId: aiId
+            AIId: aiId,
+            reviewedResult: reviewedResult
           });
 
           if (approveResult && approveResult.isSuccess) {
@@ -249,7 +265,7 @@ onAuthReady(async () => {
         };
 
         let buttons = createModalButtons("İptal", "Onayla", () => closeModal($modal), handleApprove);
-        $mbody.append($confirmLabel, buttons.buttonsDiv, $msgDiv);
+        $mbody.append($reviewLabel, buttons.buttonsDiv, $msgDiv);
         $modal = createModal("AI Değerlendirmesini Onayla", $mbody);
       });
 

@@ -19,7 +19,11 @@ onAuthReady(() => {
 
     let result = await api("CandidateLetter/Add", req, 0, DELAY_6);
     if (!result || result.error || !result.isSuccess) {
-      $msg.textContent = "Motivasyon mektubu ekleme başarısız oldu, lütfen tekrar deneyiniz.";
+      if (result && result.errors && result.errors.length > 0) {
+        $msg.textContent = result.errors[0];
+      } else {
+        $msg.textContent = "Motivasyon mektubu ekleme başarısız oldu, lütfen tekrar deneyiniz.";
+      }
       $btn.disabled = false;
     } else {
       $msg.textContent = "Motivasyon mektubu eklendi.";

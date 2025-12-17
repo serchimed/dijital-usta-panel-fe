@@ -16,14 +16,17 @@ onAuthReady(async () => {
     this.disabled = false;
   });
 
-  let result = await api("Candidate/GetAll", {});
-  if (result && result.isSuccess) {
+  let candidates = [];
+  let sortState = { column: null, ascending: true };
+
+  function renderTable() {
     let tbody = document.querySelector("table tbody");
     tbody.textContent = "";
 
-    for (let candidate of result.data) {
+    for (let candidate of candidates) {
       let $tr = tr();
       $tr.append(tda(candidate.displayName, "admin-candidate-profile.html?id=" + candidate.id, "Aday"));
+      $tr.append(td(candidate.email, "E-posta"));
       $tr.append(td(candidate.gender, "Cinsiyet"));
       $tr.append(td(formatDateLong(candidate.birthDate), "Doğum Tarihi"));
       $tr.append(td(candidate.city, "İl"));
@@ -36,7 +39,58 @@ onAuthReady(async () => {
 
       tbody.append($tr);
     }
-  } else { logErr(result); }
 
-  setFilters();
+    setFilters();
+  }
+
+  function sortTable(column) {
+    if (sortState.column === column) {
+      sortState.ascending = !sortState.ascending;
+    } else {
+      sortState.column = column;
+      sortState.ascending = true;
+    }
+
+    candidates.sort((a, b) => {
+      let valA = a[column] || "";
+      let valB = b[column] || "";
+
+      if (typeof valA === "string") valA = valA.toLowerCase();
+      if (typeof valB === "string") valB = valB.toLowerCase();
+
+      if (valA < valB) return sortState.ascending ? -1 : 1;
+      if (valA > valB) return sortState.ascending ? 1 : -1;
+      return 0;
+    });
+
+    renderTable();
+  }
+
+  let result = await api("Candidate/GetAll", {});
+  if (result && result.isSuccess) {
+    candidates = result.data;
+    renderTable();
+
+    setTimeout(() => {
+      let headers = document.querySelectorAll("table thead th");
+      let columnMapping = [
+        "displayName",
+        "email",
+        "gender",
+        "birthDate",
+        "city",
+        "university",
+        "major",
+        "status",
+        null
+      ];
+
+      headers.forEach((th, index) => {
+        if (columnMapping[index]) {
+          th.style.cursor = "pointer";
+          th.addEventListener(CLICK_EVENT, () => sortTable(columnMapping[index]));
+        }
+      });
+    }, 5000);
+  } else { logErr(result); }
 });

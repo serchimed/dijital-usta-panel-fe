@@ -7,33 +7,22 @@ onAuthReady(async () => {
     this.disabled = false;
   });
 
-  let result = await api("Company/GetAll", {});
-  if (result && result.isSuccess) {
+  let companies = [];
+  let sortState = { column: null, ascending: true };
+
+  function renderTable() {
     let tbody = document.querySelector("table tbody");
     tbody.textContent = "";
 
-    for (let company of result.data) {
+    for (let company of companies) {
       let $tr = tr();
 
-      let $tdCompanyName = tda(company.companyName, "admin-company-profile.html?id=" + company.id);
-      $tdCompanyName.setAttribute("data-label", "Firma");
-      $tr.append($tdCompanyName);
-
-      let $tdCity = td(company.city);
-      $tdCity.setAttribute("data-label", "İl");
-      $tr.append($tdCity);
-
-      let $tdResponsible = td(company.responsibleMemberName);
-      $tdResponsible.setAttribute("data-label", "Yetkili");
-      $tr.append($tdResponsible);
-
-      let $tdTrendyol = tda(company.trendyolUrl, company.trendyolUrl);
-      $tdTrendyol.setAttribute("data-label", "Trendyol Satıcı Profili");
-      $tr.append($tdTrendyol);
-
-      let $tdWeb = tda(company.webUrl, company.webUrl);
-      $tdWeb.setAttribute("data-label", "Web Sitesi");
-      $tr.append($tdWeb);
+      $tr.append(tda(company.companyName, "admin-company-profile.html?id=" + company.id, "Firma"));
+      $tr.append(td(company.email, "E-posta"));
+      $tr.append(td(company.city, "İl"));
+      $tr.append(td(company.responsibleMemberName, "Yetkili"));
+      $tr.append(tda(company.trendyolUrl, company.trendyolUrl, "Trendyol Satıcı Profili"));
+      $tr.append(tda(company.webUrl, company.webUrl, "Web Sitesi"));
 
       let $tdInvite = createInviteInfoCell(company, {
         isAcceptedKey: "isAccepted",
@@ -48,7 +37,57 @@ onAuthReady(async () => {
 
       tbody.append($tr);
     }
-  } else { logErr(result); }
 
-  setFilters();
+    setFilters();
+  }
+
+  function sortTable(column) {
+    if (sortState.column === column) {
+      sortState.ascending = !sortState.ascending;
+    } else {
+      sortState.column = column;
+      sortState.ascending = true;
+    }
+
+    companies.sort((a, b) => {
+      let valA = a[column] || "";
+      let valB = b[column] || "";
+
+      if (typeof valA === "string") valA = valA.toLowerCase();
+      if (typeof valB === "string") valB = valB.toLowerCase();
+
+      if (valA < valB) return sortState.ascending ? -1 : 1;
+      if (valA > valB) return sortState.ascending ? 1 : -1;
+      return 0;
+    });
+
+    renderTable();
+  }
+
+  let result = await api("Company/GetAll", {});
+  if (result && result.isSuccess) {
+    companies = result.data;
+    renderTable();
+
+    setTimeout(() => {
+      let headers = document.querySelectorAll("table thead th");
+      let columnMapping = [
+        "companyName",
+        "email",
+        "city",
+        "responsibleMemberName",
+        "trendyolUrl",
+        "webUrl",
+        null,
+        null
+      ];
+
+      headers.forEach((th, index) => {
+        if (columnMapping[index]) {
+          th.style.cursor = "pointer";
+          th.addEventListener(CLICK_EVENT, () => sortTable(columnMapping[index]));
+        }
+      });
+    }, 5000);
+  } else { logErr(result); }
 });
