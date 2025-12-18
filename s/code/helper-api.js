@@ -110,8 +110,13 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
   return result;
 }
 
-async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null, timeout = DELAY_6) {
-  if ($msgElement && $msgElement.tagName === "P") { $msgElement.textContent = "CSV hazırlanıyor..."; }
+async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null, timeout = DELAY_6, messages = {}) {
+  let msg = {
+    loading: messages.loading || "CSV hazırlanıyor...",
+    failed: messages.failed || "CSV oluşturulamadı.",
+    success: messages.success || "CSV indirildi."
+  };
+  if ($msgElement && $msgElement.tagName === "P") { $msgElement.textContent = msg.loading; }
 
   try {
     let controller = new AbortController();
@@ -128,7 +133,7 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      if ($msgElement) { $msgElement.textContent = "CSV oluşturulamadı."; }
+      if ($msgElement) { $msgElement.textContent = msg.failed; }
       return false;
     }
 
@@ -137,7 +142,7 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
       let result = await response.json();
       if ($msgElement) {
         if (result.isSuccess) { $msgElement.textContent = result.data || "İşlem başarılı."; }
-        else { $msgElement.textContent = result.data || "CSV oluşturulamadı."; }
+        else { $msgElement.textContent = result.data || msg.failed; }
       }
       return result.isSuccess;
     }
@@ -161,7 +166,7 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
     URL.revokeObjectURL(url);
 
     if ($msgElement) {
-      $msgElement.textContent = "CSV indirildi.";
+      $msgElement.textContent = msg.success;
       setTimeout(() => { $msgElement.textContent = ""; }, DELAY_2);
     }
 

@@ -53,7 +53,13 @@ onAuthReady(async () => {
       let $downloadBtn = btn("btn-act", "İndir");
       $downloadBtn.addEventListener(CLICK_EVENT, async function () {
         this.disabled = true;
-        await downloadCsv(downloadEndpoint, { fileName: file.fileName }, file.fileName, this.nextElementSibling);
+        let isBackup = downloadEndpoint === "Data/GetBackupFile";
+        let messages = isBackup ? {
+          loading: "Yedek indiriliyor",
+          failed: "Yedek indirilemedi.",
+          success: "Yedek indirildi."
+        } : {};
+        await downloadCsv(downloadEndpoint, { fileName: file.fileName }, file.fileName, this.nextElementSibling, DELAY_6, messages);
         this.disabled = false;
       });
 
