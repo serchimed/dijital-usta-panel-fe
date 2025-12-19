@@ -172,7 +172,8 @@ function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblo
 }
 
 function createShortlistButton(memberId, companyId, displayName, isCurrentlyShortlisted, $msgElement, $interviewBtn, isInterviewResulted, isHired, isHireInformed) {
-  let isDisabled = isHired || isHireInformed || isInterviewResulted;
+  let isCompanyRoleRemovingFromShortlist = USER.role === "company" && isCurrentlyShortlisted;
+  let isDisabled = isHired || isHireInformed || isInterviewResulted || isCompanyRoleRemovingFromShortlist;
   let btnClass = isDisabled ? "btn-gray" : "btn-act";
   let $btn = btn(btnClass, isCurrentlyShortlisted ? "Kısa Listeden Çıkar" : "Kısa Listeye Ekle");
   $btn.dataset.memberId = memberId;
@@ -188,11 +189,19 @@ function createShortlistButton(memberId, companyId, displayName, isCurrentlyShor
   } else if (isInterviewResulted) {
     $btn.disabled = true;
     $btn.title = "Mülakat sonucu bildirildiği için kısa liste değiştirilemez";
+  } else if (isCompanyRoleRemovingFromShortlist) {
+    $btn.disabled = true;
+    $btn.title = "Firma rolünde kısa listeden çıkarma yetkisi yoktur";
   }
 
   $btn.addEventListener(CLICK_EVENT, async function () {
     let btn = this;
     let isCurrentlyShortlisted = btn.dataset.isCurrentlyShortlisted === "true";
+
+    if (USER.role === "company" && isCurrentlyShortlisted) {
+      return;
+    }
+
     let endpoint = isCurrentlyShortlisted ? "Remove" : "Add";
     let confirmMessage = isCurrentlyShortlisted
       ? `${displayName}'i kısa listeden çıkarmak istediğinize emin misiniz?`

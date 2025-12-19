@@ -52,6 +52,8 @@ function setupShortlistTable() {
     rows.forEach((tr, index) => {
       let item = data[index];
       if (item && item.companyId && candidateId) {
+        item.isCurrentlyShortlisted = true;
+
         if (item.isShortlistRemovedDueToOtherHire) {
           let $warnP = p(`Aday başka bir firma tarafından işe alındı`);
           $warnP.className = "lbl-warn";

@@ -67,7 +67,38 @@ onAuthReady(async () => {
       $tr.append(td(template.subject, "Konu"));
       $tr.append(td(template.textContent, "Metin İçerik"));
       $tr.append(td(template.htmlContent, "HTML İçerik"));
-      $tr.append(tda("Güncelle", "admin-email-edit.html?id=" + template.id, ""));
+
+      let $previewBtn = btn("btn-act", "Önizle");
+      $previewBtn.addEventListener(CLICK_EVENT, function () {
+        let $mbody = div();
+
+        let $iframe = document.createElement("iframe");
+        $iframe.style.width = "100%";
+        $iframe.style.minHeight = "500px";
+        $iframe.style.border = "1px solid #ddd";
+        $iframe.style.borderRadius = "4px";
+        $iframe.style.backgroundColor = "#fff";
+
+        $mbody.append($iframe);
+
+        let $modal = createModal("Eposta Önizleme: " + template.subject, $mbody);
+
+        setTimeout(() => {
+          let iframeDoc = $iframe.contentDocument || $iframe.contentWindow.document;
+          iframeDoc.open();
+          iframeDoc.write(template.htmlContent || "<p>HTML içerik bulunamadı.</p>");
+          iframeDoc.close();
+        }, 100);
+      });
+
+      let $tdActions = td(null, "");
+      $tdActions.append($previewBtn);
+      $tdActions.append(document.createElement("br"));
+      let $updateLink = a("Güncelle", "admin-email-edit.html?id=" + template.id);
+      $updateLink.target = "_blank";
+      $tdActions.append($updateLink);
+
+      $tr.append($tdActions);
 
       tbody.append($tr);
     }
