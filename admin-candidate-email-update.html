@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Profili | Dijital Usta</title>
+  <title>Aday Email Güncelle | Dijital Usta</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
   <link rel="stylesheet" href="./s/site.css?v=119" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
@@ -19,37 +19,20 @@
     <ul></ul>
   </nav>
   <main>
-    <h2>Admin Profili</h2>
+    <h2>Aday Email Güncelle</h2>
 
-    <label>Adı Soyadı
-      <span id="displayName"></span>
+    <p id="candidateInfo" class="info-text"></p>
+
+    <label>Mevcut Email
+      <input type="email" id="currentEmail" readonly />
     </label>
 
-    <label>Organizasyon
-      <span id="companyName"></span>
+    <label>Yeni Email
+      <input type="email" id="newEmail" required />
     </label>
 
-    <label>Email
-      <span id="email"></span>
-    </label>
-
-    <label>Telefon
-      <span id="phone"></span>
-    </label>
-
-    <label>İl
-      <span id="city"></span>
-    </label>
-
-    <label>Davet Kabul Edildi
-      <span id="isInviteAccepted"></span>
-    </label>
-
-    <label>Davet Tarihi
-      <span id="invitedAt"></span>
-    </label>
-
-    <a href="admin-profile-edit.html" class="qs">Güncelle</a>
+    <button id="updateEmailBtn">Email Güncelle</button>
+    <p id="message"></p>
   </main>
   <footer>
     <div>
@@ -65,7 +48,7 @@
     </div>
   </footer>
   <script src="./s/site.js?v=119" defer></script>
-  <script src="./s/code/pages/admin-profile.js?v=119" defer></script>
+  <script src="./s/code/pages/admin-candidate-email-update.js?v=119" defer></script>
 </body>
 
 </html>
