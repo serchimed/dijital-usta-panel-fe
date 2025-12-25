@@ -14,8 +14,31 @@ let { $customInput: $customUniversity } = autocomplete(
   }
 );
 
+function toggleUniversityFields() {
+  let educationLevel = document.getElementById("educationLevel").value;
+  let isHighSchool = educationLevel === "Lise Mezunu";
+
+  let universityLabel = document.getElementById("universityLabel");
+  let majorLabel = document.getElementById("majorLabel");
+  let classYearLabel = document.getElementById("classYearLabel");
+
+  if (isHighSchool) {
+    universityLabel.style.display = "none";
+    majorLabel.style.display = "none";
+    classYearLabel.style.display = "none";
+  } else {
+    universityLabel.style.display = "";
+    majorLabel.style.display = "";
+    classYearLabel.style.display = "";
+  }
+}
+
 onAuthReady(async () => {
   let id = await fillInputs("Candidate/Get");
+
+  let $educationLevel = document.getElementById("educationLevel");
+  $educationLevel.addEventListener("change", toggleUniversityFields);
+  toggleUniversityFields();
 
   let initialRequest = {
     memberId: id,
@@ -23,41 +46,68 @@ onAuthReady(async () => {
     birthDate: val("birthDate"),
     gender: val("gender"),
     educationLevel: val("educationLevel"),
-    university: val("university"),
-    major: val("major"),
-    classYear: val("classYear") || "",
     phone: val("phone"),
     county: val("county")
   };
 
+  if (val("educationLevel") !== "Lise Mezunu") {
+    initialRequest.university = val("university");
+    initialRequest.major = val("major");
+    initialRequest.classYear = val("classYear") || "";
+  }
+
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;
   $btn.addEventListener(CLICK_EVENT, async function () {
-    let universityValue = $customUniversity.style.display === "block" && $customUniversity.value.trim()
-      ? $customUniversity.value.trim()
-      : val("university");
+    let educationLevel = val("educationLevel");
+    let isHighSchool = educationLevel === "Lise Mezunu";
 
     let req = {
       memberId: id,
       displayName: val("displayName"),
       birthDate: val("birthDate"),
       gender: val("gender"),
-      educationLevel: val("educationLevel"),
-      university: universityValue,
-      major: val("major"),
-      classYear: val("classYear") || "",
+      educationLevel: educationLevel,
       phone: val("phone"),
       county: val("county"),
       languages : val("languages") || ""
     };
 
+    if (!isHighSchool) {
+      let universityValue = $customUniversity.style.display === "block" && $customUniversity.value.trim()
+        ? $customUniversity.value.trim()
+        : val("university");
+
+      req.university = universityValue;
+      req.major = val("major");
+      req.classYear = val("classYear") || "";
+    }
+
     let errors = [];
     if (!req.displayName) { errors.push("Adınızı ve soyadınızı giriniz."); }
-    if (!req.birthDate) { errors.push("Doğum tarihinizi giriniz."); }
+    if (!req.birthDate) {
+      errors.push("Doğum tarihinizi giriniz.");
+    } else {
+      let birthDate = new Date(req.birthDate);
+      let today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      let monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      if (age < 18) {
+        errors.push("18 yaşından küçükler başvuru yapamaz.");
+      } else if (age > 100) {
+        errors.push("Geçerli bir doğum tarihi giriniz.");
+      }
+    }
     if (!req.gender) { errors.push("Cinsiyetinizi giriniz."); }
     if (!req.educationLevel) { errors.push("Eğitim durumunuzu giriniz."); }
-    if (!req.university) { errors.push("Üniversite adını giriniz."); }
-    if (!req.major) { errors.push("Bölüm bilgisini giriniz."); }
+    if (!isHighSchool) {
+      if (!req.university) { errors.push("Üniversite adını giriniz."); }
+      if (!req.major) { errors.push("Bölüm bilgisini giriniz."); }
+    }
     if (!req.phone) { errors.push("Telefon numarası giriniz."); }
     else if (!checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
     if (!req.county) { errors.push("İlçe bilgisini giriniz."); }
