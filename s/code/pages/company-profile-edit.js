@@ -40,7 +40,6 @@ onAuthReady(async () => {
     //document.getElementById("driveUrl").parentElement.style.display = "block";
   }
 
-  // URL normalization visual feedback
   let $webUrl = document.getElementById("webUrl");
   let $trendyolUrl = document.getElementById("trendyolUrl");
 

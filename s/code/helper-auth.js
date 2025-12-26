@@ -43,7 +43,6 @@ async function initAuth() {
   showContent();
   dispatchAuthReady();
 
-  // Check deferred loading status after auth is ready
   setTimeout(() => checkDeferredLoadingStatus(), DELAY_0);
 }
 

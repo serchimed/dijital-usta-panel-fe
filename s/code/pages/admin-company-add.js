@@ -20,7 +20,6 @@ onAuthReady(() => {
 
   autocomplete($city, CITIES, (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()), (city) => city, (city, $input) => { $input.value = city; });
 
-  // URL normalization visual feedback
   let $webUrl = document.getElementById("webUrl");
   let $trendyolUrl = document.getElementById("trendyolUrl");
 

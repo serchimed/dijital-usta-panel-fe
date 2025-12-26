@@ -6,5 +6,8 @@ onAuthReady(async () => {
     showContent();
     if (document.querySelector(".head-msg")) { document.querySelector(".head-msg").remove(); }
 
+    buildGuestMenu();
+    initHamburgerMenu();
+
   } else { console.error("Logout failed", result); }
 });

@@ -164,10 +164,8 @@ onAuthReady(async () => {
     });
   }
 
-  // AI Geçmişini yükle
   await loadAIHistory();
 
-  // AI Geçmişini Yükle
   async function loadAIHistory() {
     let $tbody = document.getElementById("CandidateAIHistory");
     if (!$tbody) return;
@@ -226,7 +224,7 @@ onAuthReady(async () => {
         }
 
         let $reviewLabel = lbl("Değerlendirme:");
-        let $reviewTextarea = txt();        
+        let $reviewTextarea = txt();
         $reviewTextarea.rows = 8;
         $reviewTextarea.value = textareaValue;
         $reviewLabel.append($reviewTextarea);
@@ -348,7 +346,6 @@ onAuthReady(async () => {
           setMessageText($msgAIReview, "");
           showSuccessAndClose($msgDiv, $modal, "AI değerlendirmesi tamamlandı.");
 
-          // AI geçmişini yeniden yükle
           await loadAIHistory();
         } else {
           setMessageText($msgAIReview, ERROR_MESSAGE_DEFAULT);

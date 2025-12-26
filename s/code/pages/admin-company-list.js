@@ -4,11 +4,9 @@ onAuthReady(async () => {
   $exportBtn.addEventListener(CLICK_EVENT, async function () {
     this.disabled = true;
 
-    // Seçili şehri al
     let $cityFilter = document.getElementById('cityFilter');
     let selectedCity = $cityFilter ? $cityFilter.value : '';
 
-    // Export parametresi
     let exportParams = {};
     if (selectedCity) {
       exportParams.city = selectedCity;
@@ -57,7 +55,6 @@ onAuthReady(async () => {
     let $cityFilter = document.getElementById("cityFilter");
     if (!$cityFilter) return;
 
-    // Unique cities'i topla
     let cities = new Set();
     companies.forEach(company => {
       if (company.city && company.city.trim()) {
@@ -65,12 +62,10 @@ onAuthReady(async () => {
       }
     });
 
-    // Türkçe sıralama ile sort et
     let sortedCities = Array.from(cities).sort((a, b) =>
       a.localeCompare(b, 'tr-TR')
     );
 
-    // Dropdown'ı doldur (ilk option "Tüm İller" korunur)
     while ($cityFilter.options.length > 1) {
       $cityFilter.remove(1);
     }
@@ -103,19 +98,16 @@ onAuthReady(async () => {
     rows.forEach(row => {
       let cells = row.querySelectorAll('td');
 
-      // Skip empty/message rows
       if (cells.length === 0 || (cells.length === 1 && cells[0].colSpan > 1)) {
         return;
       }
 
       totalCount++;
 
-      // City filter (3. kolon = index 2)
       let cityCell = cells[2];
       let cityValue = cityCell ? cityCell.textContent.trim() : '';
       let cityMatch = !selectedCity || cityValue === selectedCity;
 
-      // Text filter (tüm kolonlarda ara)
       let textMatch = true;
       if (searchText) {
         let rowText = '';
@@ -125,7 +117,6 @@ onAuthReady(async () => {
         textMatch = rowText.includes(searchText);
       }
 
-      // AND mantığı: her ikisi de eşleşmeli
       if (cityMatch && textMatch) {
         row.style.display = '';
         visibleCount++;
@@ -166,20 +157,16 @@ onAuthReady(async () => {
     companies = result.data;
     renderTable();
 
-    // Filter Event Listeners
     let $cityFilter = document.getElementById('cityFilter');
     if ($cityFilter) {
       $cityFilter.addEventListener('change', filterCompanyTable);
     }
 
-    // Text filter: default listener'ı kaldır, custom listener ekle
     let $textFilter = document.querySelector('.tblfilter');
     if ($textFilter) {
-      // Clone ile eski listener'ı temizle
       let newTextFilter = $textFilter.cloneNode(true);
       $textFilter.parentNode.replaceChild(newTextFilter, $textFilter);
 
-      // Custom filter listener
       newTextFilter.addEventListener('input', filterCompanyTable);
     }
 
