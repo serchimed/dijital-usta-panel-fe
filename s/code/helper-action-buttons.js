@@ -501,7 +501,7 @@ function createHireApproveButton(memberId, companyId, displayName, isInterviewRe
     };
 
     let buttons = createModalButtons("İptal", "İşe Alımı Doğrula", () => closeModal($modal), handleHire);
-    $mbody.append($candidateLabel, $urlLabel, buttons.buttonsDiv, $msgDiv);
+    $mbody.append($candidateLabel, buttons.buttonsDiv, $msgDiv);
 
     $modal = createModal("İşe Alımı Doğrula", $mbody);
   });
