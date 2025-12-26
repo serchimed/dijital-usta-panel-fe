@@ -39,6 +39,9 @@ onReady(async () => {
     if (req.email && !checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }
     if (selectedIds.length === 0) { errors.push("En az bir firma seçmelisiniz."); }
 
+    let $acceptTerms = document.getElementById("acceptTerms");
+    if (!$acceptTerms.checked) { errors.push("Panel kullanım koşullarını kabul etmelisiniz."); }
+
     if (showErrors($msg, errors)) { return; }
 
     clearErrors($msg);
