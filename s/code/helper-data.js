@@ -117,7 +117,13 @@ function updateFilterCounter(filterInput, visibleCount, totalCount, searchText) 
   if (!existingCounter) {
     existingCounter = document.createElement('span');
     existingCounter.className = 'tblfilter-counter';
-    filterInput.insertAdjacentElement('afterend', existingCounter);
+
+    let cityFilter = filterInput.nextElementSibling;
+    if (cityFilter && cityFilter.classList && cityFilter.classList.contains('city-filter')) {
+      cityFilter.insertAdjacentElement('afterend', existingCounter);
+    } else {
+      filterInput.insertAdjacentElement('afterend', existingCounter);
+    }
   }
 
   existingCounter.textContent = `( ${visibleCount} / ${totalCount} )`;
