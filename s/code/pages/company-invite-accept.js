@@ -1,4 +1,4 @@
-onReady(() => {
+onReady(async () => {
   showContent();
 
   let $email = document.getElementById("email");
@@ -15,6 +15,8 @@ onReady(() => {
     }
     $email.value = prmEmail;
   }
+
+  await api("Member/Check");
 
   let handleSubmit = async function () {
     let email = $email.value.trim();
