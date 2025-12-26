@@ -151,7 +151,7 @@ function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblo
       if (result && result.isSuccess) {
         isCurrentlyBlocked = !isCurrentlyBlocked;
         btn.dataset.isBlocked = isCurrentlyBlocked;
-        btn.innerText = isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle";
+        btn.innerText = isCurrentlyBlocked ? btnUnblockText : btnBlockText;
         setMessageText(btn.nextElementSibling, "");
         closeModal($modal);
       } else {
