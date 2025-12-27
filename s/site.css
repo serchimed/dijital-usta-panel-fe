@@ -1338,3 +1338,26 @@ table td a {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+.tblfilter {
+  display: inline-block;
+  width: auto;
+  max-width: 500px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.city-filter {
+  display: inline-block;
+  width: max-content;
+  margin: 8px 0 13px;
+  vertical-align: middle;
+}
+
+.tblfilter-counter {
+  display: inline-block;
+  margin-left: 8px;
+  color: #666;
+  font-size: 15px;
+  vertical-align: middle;
+}

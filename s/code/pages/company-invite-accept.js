@@ -1,4 +1,4 @@
-onReady(() => {
+onReady(async () => {
   showContent();
 
   let $email = document.getElementById("email");
@@ -16,6 +16,8 @@ onReady(() => {
     $email.value = prmEmail;
   }
 
+  await api("Member/Check");
+
   let handleSubmit = async function () {
     let email = $email.value.trim();
 
@@ -26,7 +28,7 @@ onReady(() => {
 
     let $isCompanyAccepted = document.getElementById("isCompanyAccepted");
     if (!$isCompanyAccepted.checked) {
-      errors.push("Firma Sözleşmesi ve Gizlilik Politikasını kabul etmelisiniz.");
+      errors.push("Panel kullanım koşullarını kabul etmelisiniz.");
     }
 
     if (showErrors($msg, errors)) {
@@ -35,9 +37,9 @@ onReady(() => {
     clearErrors($msg);
 
     let prmRef = prms.get("ref");
-    let result = await apiBtn($btn, "Member/NewPasscode", { email: email, token: prmRef || "", isCompanyAccepted: true }, "E-posta adresinize tek kullanımlık giriş şifreniz gönderildi.", "Bir hata oluştu.");
+    let result = await apiBtn($btn, "Member/NewPasscode", { email: email, token: prmRef || "", isCompanyAccepted: true }, "Sisteme giriş sağlandı.", "Bir hata oluştu.");
     if (result && result.isSuccess) {
-      setTimeout(() => { window.location.href = `login.html?email=${encodeURIComponent(email)}`; }, DELAY_2);
+      setTimeout(() => { window.location.href = "company-candidate-list.html"; }, DELAY_2);
     }
   };
 

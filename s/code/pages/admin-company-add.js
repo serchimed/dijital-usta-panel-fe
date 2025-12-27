@@ -1,7 +1,47 @@
+function normalizeUrl(url) {
+  if (!url || typeof url !== "string") return url;
+
+  let trimmed = url.trim();
+  if (!trimmed) return trimmed;
+
+  if (trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith("http://")) {
+    return trimmed.replace("http://", "https://");
+  }
+
+  return "https://" + trimmed;
+}
+
 onAuthReady(() => {
   let $city = document.getElementById("city");
 
   autocomplete($city, CITIES, (city, searchText) => city.toLowerCase().includes(searchText.toLowerCase()), (city) => city, (city, $input) => { $input.value = city; });
+
+  let $webUrl = document.getElementById("webUrl");
+  let $trendyolUrl = document.getElementById("trendyolUrl");
+
+  function showNormalizationHint($input) {
+    if (!$input) return;
+    $input.addEventListener("blur", function() {
+      let original = this.value.trim();
+      if (!original) return;
+
+      let normalized = normalizeUrl(original);
+      if (normalized !== original) {
+        this.value = normalized;
+        this.style.borderColor = "#4CAF50";
+        setTimeout(() => {
+          this.style.borderColor = "";
+        }, 1500);
+      }
+    });
+  }
+
+  showNormalizationHint($webUrl);
+  showNormalizationHint($trendyolUrl);
 
   let $btn = document.querySelector("main button");
   let $msg = $btn.nextElementSibling;
@@ -26,8 +66,21 @@ onAuthReady(() => {
     if (!req.email) { errors.push("Firma yetkilisi eposta adresini giriniz."); }
     if (req.email && !checkEmail(req.email)) { errors.push("Geçerli bir e-posta adresi giriniz."); }
     if (req.phone && !checkPhone(req.phone)) { errors.push("Geçerli bir telefon numarası giriniz (0 ile başlayan 11 haneli, örn: 05556667788)."); }
-    if (req.webUrl && !checkUrl(req.webUrl)) { errors.push("Geçerli bir web sitesi URL'si giriniz."); }
-    if (req.trendyolUrl && !checkUrl(req.trendyolUrl)) { errors.push("Geçerli bir Trendyol profil URL'si giriniz."); }
+
+    if (req.webUrl) {
+      req.webUrl = normalizeUrl(req.webUrl);
+      if (!checkUrl(req.webUrl)) {
+        errors.push("Geçerli bir web sitesi URL'si giriniz (https:// ile başlamalı).");
+      }
+    }
+
+    if (req.trendyolUrl) {
+      req.trendyolUrl = normalizeUrl(req.trendyolUrl);
+      if (!checkUrl(req.trendyolUrl)) {
+        errors.push("Geçerli bir Trendyol profil URL'si giriniz (https:// ile başlamalı).");
+      }
+    }
+
     // if (req.driveUrl && !checkUrl(req.driveUrl)) { errors.push("Geçerli bir Drive klasör URL'si giriniz."); }
     if (showErrors($msg, errors)) { return; }
 

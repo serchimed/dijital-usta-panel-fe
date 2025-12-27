@@ -151,7 +151,7 @@ function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblo
       if (result && result.isSuccess) {
         isCurrentlyBlocked = !isCurrentlyBlocked;
         btn.dataset.isBlocked = isCurrentlyBlocked;
-        btn.innerText = isCurrentlyBlocked ? "Engeli Kaldır" : "Engelle";
+        btn.innerText = isCurrentlyBlocked ? btnUnblockText : btnBlockText;
         setMessageText(btn.nextElementSibling, "");
         closeModal($modal);
       } else {
@@ -463,10 +463,10 @@ function createHireApproveButton(memberId, companyId, displayName, isInterviewRe
     let $candidateLabel = lbl(`Aday: ${displayName}`);
     $candidateLabel.className = "modal-subdued";
 
-    let $urlLabel = lbl("İşe Alım Evrak Linki (Google Drive URL)");
-    let $urlInput = url("https://drive.google.com/...");
-    $urlInput.required = true;
-    $urlLabel.append($urlInput);
+    // let $urlLabel = lbl("İşe Alım Evrak Linki (Google Drive URL)");
+    // let $urlInput = url("https://drive.google.com/...");
+    // $urlInput.required = true;
+    // $urlLabel.append($urlInput);
 
     let $msgDiv = div(CSS_CLASSES.modalMessage);
     let $modal;
@@ -482,8 +482,7 @@ function createHireApproveButton(memberId, companyId, displayName, isInterviewRe
 
       let result = await api("Candidate/Hire", {
         candidateId: memberId,
-        companyId: companyId,
-        hirePaperDriveUrl: "https://drive.google.com/drive/u/0/folders"
+        companyId: companyId
       });
 
       if (result && result.isSuccess) {
@@ -502,7 +501,7 @@ function createHireApproveButton(memberId, companyId, displayName, isInterviewRe
     };
 
     let buttons = createModalButtons("İptal", "İşe Alımı Doğrula", () => closeModal($modal), handleHire);
-    $mbody.append($candidateLabel, $urlLabel, buttons.buttonsDiv, $msgDiv);
+    $mbody.append($candidateLabel, buttons.buttonsDiv, $msgDiv);
 
     $modal = createModal("İşe Alımı Doğrula", $mbody);
   });

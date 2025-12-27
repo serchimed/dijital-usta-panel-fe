@@ -1,4 +1,29 @@
 onAuthReady(() => {
+  let MAX_CHARS = 5000;
+  let $textarea = document.getElementById("letter");
+  let $charCounter = document.createElement("span");
+  $charCounter.style.fontSize = "14px";
+  $charCounter.style.color = "#666";
+  $textarea.after($charCounter);
+
+  function updateCharCounter() {
+    let currentLength = $textarea.value.length;
+    $charCounter.textContent = `${currentLength} / ${MAX_CHARS} karakter`;
+
+    if (currentLength > MAX_CHARS) {
+      $charCounter.style.color = "#d32f2f";
+      $charCounter.style.fontWeight = "bold";
+    } else if (currentLength > MAX_CHARS * 0.9) {
+      $charCounter.style.color = "#f57c00";
+    } else {
+      $charCounter.style.color = "#666";
+      $charCounter.style.fontWeight = "normal";
+    }
+  }
+
+  $textarea.addEventListener("input", updateCharCounter);
+  updateCharCounter();
+
   let $btn = document.querySelector("main button");
   $btn.addEventListener(CLICK_EVENT, async function () {
     let req = {
@@ -8,7 +33,7 @@ onAuthReady(() => {
 
     let errors = [];
     if (!req.letter) { errors.push("Motivasyon mektubunu giriniz."); }
-    if (req.letter && req.letter.length > 5000) { errors.push("Motivasyon mektubu 5000 karakterden fazla olamaz."); }
+    if (req.letter && req.letter.length > MAX_CHARS) { errors.push(`Motivasyon mektubu ${MAX_CHARS} karakterden fazla olamaz.`); }
 
     let $msg = $btn.nextElementSibling;
     if (showErrors($msg, errors)) { return; }
