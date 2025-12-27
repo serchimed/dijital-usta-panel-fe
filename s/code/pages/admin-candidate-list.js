@@ -6,6 +6,8 @@ onAuthReady(async () => {
     if ($link) { $link.style.visibility = "hidden"; }
     $link = document.querySelector('a[href="admin-candidate-invite.html"]');
     if ($link) { $link.style.visibility = "hidden"; }
+    $link = document.querySelector('a[href="admin-candidate-reinvite.html"]');
+    if ($link) { $link.style.visibility = "hidden"; }
   }
 
   let $exportMsg = document.getElementById("exportMsg");
