@@ -23,7 +23,7 @@ async function initAuth() {
   if (!USER || USER.error || !USER.isAuthenticated) {
     showHeaderMsg("Sisteme giriş yapmanız gerekiyor...");
     hideOverlay();
-    setTimeout(() => window.location.replace("demand-password.html"), DELAY_2);
+    setTimeout(() => window.location.replace("demand-password.html"), DELAY_CONFIG._2);
     return;
   }
 
@@ -35,7 +35,7 @@ async function initAuth() {
     }
     showHeaderMsg("Erişim izniniz yok, yönlendiriliyorsunuz...");
     hideOverlay();
-    setTimeout(() => window.location.replace("access-denied.html"), DELAY_2);
+    setTimeout(() => window.location.replace("access-denied.html"), DELAY_CONFIG._2);
     return;
   }
 
@@ -43,12 +43,12 @@ async function initAuth() {
   showContent();
   dispatchAuthReady();
 
-  setTimeout(() => checkDeferredLoadingStatus(), DELAY_0);
+  setTimeout(() => checkDeferredLoadingStatus(), DELAY_CONFIG._0);
 }
 
 async function checkDeferredLoadingStatus() {
   try {
-    let result = await api("Stats/DeferredLoadingStatus", {}, 0, DELAY_6);
+    let result = await api("Stats/DeferredLoadingStatus", {}, 0, DELAY_CONFIG._6);
 
     if (result && result.isSuccess && result.data) {
       if (result.data.isCompleted === false) {

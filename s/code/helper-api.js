@@ -12,7 +12,14 @@ function getApiError(result, fallback = ERROR_MESSAGE_DEFAULT) {
 
 function isRetryableStatus(status) { return status >= 500 || status === 408 || status === 429; }
 function isRetryableError(error) { return error.name === 'AbortError' || error.name === 'TypeError' || error.message.includes('fetch') || error.message.includes('network'); }
-function getRetryDelay(retries, baseDelay = 1000) { return baseDelay * Math.pow(2, retries); }
+function getRetryDelay(retries, baseDelay = API_CONFIG.RETRY_BASE_DELAY) { return baseDelay * Math.pow(2, retries); }
+
+function isValidRedirectUrl(url) {
+  if (!url || typeof url !== "string") { return false; }
+  if (url.startsWith("/") || url.startsWith("./") || url.endsWith(".html")) { return true; }
+  if (url.includes("://")) { return false; }
+  return true;
+}
 
 async function performRetry(callName, data, retries, timeout, maxRetries, userMessage) {
   let delay = getRetryDelay(retries);
@@ -21,9 +28,9 @@ async function performRetry(callName, data, retries, timeout, maxRetries, userMe
   return api(callName, data, retries + 1, timeout);
 }
 
-async function api(callName, data = {}, retries = 0, timeout = 10000, allowRetries = true) {
+async function api(callName, data = {}, retries = 0, timeout = API_CONFIG.TIMEOUT, allowRetries = true) {
   let url = `${API}${callName}`;
-  let maxRetries = allowRetries ? 3 : 0;
+  let maxRetries = allowRetries ? API_CONFIG.MAX_RETRIES : 0;
 
   try {
     let controller = new AbortController();
@@ -48,6 +55,14 @@ async function api(callName, data = {}, retries = 0, timeout = 10000, allowRetri
     }
 
     if (!response.ok) {
+      if (response.status === 401) {
+        let result = await response.json();
+        if (result.sessionExpired) {
+          console.warn("Session expired, reloading page...");
+          location.reload();
+          return { error: true, sessionExpired: true };
+        }
+      }
       let text = await response.text();
       console.error(`HTTP ${response.status} from ${url}: ${text}`);
       return { error: true, status: response.status, message: text };
@@ -55,6 +70,13 @@ async function api(callName, data = {}, retries = 0, timeout = 10000, allowRetri
 
     let result = await response.json();
     console.debug("API response:", callName, result);
+
+    if (result.sessionExpired) {
+      console.warn("Session expired, reloading page...");
+      location.reload();
+      return { error: true, sessionExpired: true };
+    }
+
     return result;
 
   } catch (error) {
@@ -76,7 +98,7 @@ async function api(callName, data = {}, retries = 0, timeout = 10000, allowRetri
   }
 }
 
-async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement, timeout = 10000, allowRetries = true) {
+async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $msgElement, timeout = API_CONFIG.TIMEOUT, allowRetries = true) {
   if (btn.dataset.processing === 'true') { return; }
   btn.dataset.processing = 'true';
   btn.disabled = true;
@@ -101,8 +123,12 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
     $msg.textContent = errText;
   } else {
     $msg.textContent = successMsg;
-    if (result.data && result.data.redirectUrl) { redirectUrl = result.data.redirectUrl; }
-    if (redirectUrl) { setTimeout(() => { location.href = redirectUrl; }, DELAY_1); }
+    if (result.data && result.data.redirectUrl && isValidRedirectUrl(result.data.redirectUrl)) {
+      redirectUrl = result.data.redirectUrl;
+    }
+    if (redirectUrl && isValidRedirectUrl(redirectUrl)) {
+      setTimeout(() => { location.href = redirectUrl; }, DELAY_CONFIG._1);
+    }
   }
 
   btn.disabled = false;
@@ -110,7 +136,7 @@ async function apiBtn(btn, endpoint, data, successMsg, errorMsg, redirectUrl, $m
   return result;
 }
 
-async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null, timeout = DELAY_6, messages = {}) {
+async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", $msgElement = null, timeout = DELAY_CONFIG._6, messages = {}) {
   let msg = {
     loading: messages.loading || "CSV hazırlanıyor...",
     failed: messages.failed || "CSV oluşturulamadı.",
@@ -167,7 +193,7 @@ async function downloadCsv(endpoint, data = {}, defaultFilename = "export.csv", 
 
     if ($msgElement) {
       $msgElement.textContent = msg.success;
-      setTimeout(() => { $msgElement.textContent = ""; }, DELAY_2);
+      setTimeout(() => { $msgElement.textContent = ""; }, DELAY_CONFIG._2);
     }
 
     return true;

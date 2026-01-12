@@ -46,7 +46,7 @@ onAuthReady(async () => {
             this.classList.toggle('expanded');
           });
         });
-      }, DELAY_0);
+      }, DELAY_CONFIG._0);
     }
   });
 });

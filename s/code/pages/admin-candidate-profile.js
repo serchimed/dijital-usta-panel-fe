@@ -336,7 +336,7 @@ onAuthReady(async () => {
         setButtonLoading(buttons.submitBtn, true);
         setMessageText($msgAIReview, LOADING_MESSAGE_WAIT);
 
-        let result = await api("AI/Evaluate", { memberId: candidateId, aiName: selectedAI, prompt: promptValue }, 0, DELAY_6);
+        let result = await api("AI/Evaluate", { memberId: candidateId, aiName: selectedAI, prompt: promptValue }, 0, DELAY_CONFIG._6);
         if (result && result.isSuccess) {
           if (result.data) {
             if ($spnAiScore && result.data.aiScore !== undefined) { $spnAiScore.textContent = result.data.aiScore; }

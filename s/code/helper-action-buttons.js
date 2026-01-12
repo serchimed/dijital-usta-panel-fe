@@ -117,7 +117,7 @@ function setBtnState($btn, isEnabled, disabledMessage = "") {
 
 function showSuccessAndClose($msgDiv, $modal, message) {
   showModalMessage($msgDiv, "success", message);
-  setTimeout(() => closeModal($modal), DELAY_2);
+  setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
 }
 
 function createBlockButton(entityId, isBlocked, entityName, blockEndpoint, unblockEndpoint, idKey = "memberId", btnBlockText = "Engelle", btnUnblockText = "Engeli Kaldır"  ) {
@@ -235,7 +235,7 @@ function createShortlistButton(memberId, companyId, displayName, isCurrentlyShor
         setMessageText($externalMsg, successMessage);
 
         closeModal($modal);
-        setTimeout(() => { setMessageText($externalMsg, ""); }, DELAY_2);
+        setTimeout(() => { setMessageText($externalMsg, ""); }, DELAY_CONFIG._2);
 
         if (!isCurrentlyShortlisted && btn.closest("tr")) {
           btn.closest("tr").remove();

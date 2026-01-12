@@ -97,7 +97,7 @@ function createModalButtons(cancelText, submitText, onCancel, onSubmit) {
 }
 
 function createConfirmationModal(options) {
-  let { confirmMessage, apiEndpoint, apiParams = {}, confirmButtonText = "Onayla", sourceButton, onSuccess, timeout = 10000 } = options;
+  let { confirmMessage, apiEndpoint, apiParams = {}, confirmButtonText = "Onayla", sourceButton, onSuccess, timeout = API_CONFIG.TIMEOUT } = options;
 
   let $mbody = div();
   let $confirmLabel = p(confirmMessage);
@@ -126,7 +126,7 @@ function createConfirmationModal(options) {
         setTimeout(() => {
           closeModal($modal);
           if (onSuccess) { onSuccess(); }
-        }, DELAY_2);
+        }, DELAY_CONFIG._2);
       }
     } else {
       showModalMessage($msgDiv, "error", result?.data || ERROR_MESSAGE_DEFAULT);

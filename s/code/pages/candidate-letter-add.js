@@ -42,7 +42,7 @@ onAuthReady(() => {
     $btn.disabled = true;
     $msg.textContent = "Yapay zeka mektubunuzu değerlendiriyor lütfen bekleyiniz.";
 
-    let result = await api("CandidateLetter/Add", req, 0, DELAY_6);
+    let result = await api("CandidateLetter/Add", req, 0, DELAY_CONFIG._6);
     if (!result || result.error || !result.isSuccess) {
       if (result && result.errors && result.errors.length > 0) {
         $msg.textContent = result.errors[0];
@@ -52,7 +52,7 @@ onAuthReady(() => {
       $btn.disabled = false;
     } else {
       $msg.textContent = "Motivasyon mektubu eklendi.";
-      setTimeout(() => { location.href = "candidate-profile.html"; }, DELAY_1);
+      setTimeout(() => { location.href = "candidate-profile.html"; }, DELAY_CONFIG._1);
     }
   });
 });

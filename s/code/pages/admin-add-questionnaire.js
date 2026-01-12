@@ -22,7 +22,7 @@ onAuthReady(async () => {
 
       if (result && result.isSuccess) {
         setMessageText($msg, "Anket başarıyla eklendi");
-        setTimeout(() => { window.location.href = "admin-lms.html"; }, DELAY_1);
+        setTimeout(() => { window.location.href = "admin-lms.html"; }, DELAY_CONFIG._1);
       } else {
         setMessageText($msg, getApiError(result, "Kayıt başarısız oldu"));
         logErr(result);

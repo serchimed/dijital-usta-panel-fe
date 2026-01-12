@@ -94,7 +94,7 @@ onAuthReady(async () => {
 
       if (updateResult && updateResult.isSuccess) {
         setMessageText($msg, "Eğitim konusu başarıyla güncellendi");
-        setTimeout(() => { window.location.href = `admin-training-detail.html?trainingId=${selectedTrainingId}`; }, DELAY_1);
+        setTimeout(() => { window.location.href = `admin-training-detail.html?trainingId=${selectedTrainingId}`; }, DELAY_CONFIG._1);
       } else {
         setMessageText($msg, getApiError(updateResult, "Güncelleme başarısız oldu"));
         logErr(updateResult);

@@ -1,9 +1,17 @@
-let DELAY_00 = 12;
-let DELAY_0 = 123;
-let DELAY_1 = 1111;
-let DELAY_2 = 1987;
-let DELAY_6 = 60000;
-let DELAY_12 = 120000;
+let DELAY_CONFIG = Object.freeze({
+  _00: 12,
+  _0: 123,
+  _1: 1111,
+  _2: 1987,
+  _6: 60000,
+  _12: 120000
+});
+
+let API_CONFIG = Object.freeze({
+  TIMEOUT: 10000,
+  MAX_RETRIES: 3,
+  RETRY_BASE_DELAY: 1000
+});
 
 function getId(key = "memberId") {
   let qs = new URLSearchParams(window.location.search);
@@ -310,7 +318,7 @@ function showContent() {
   let $m = document.querySelector("main");
   if ($m) {
     hideOverlay();
-    setTimeout(() => $m.classList.add("show"), DELAY_0);
+    setTimeout(() => $m.classList.add("show"), DELAY_CONFIG._0);
   }
 }
 
@@ -318,7 +326,7 @@ function hideOverlay() {
   let $o = document.querySelector(".overlay");
   if ($o) {
     $o.classList.add("fade-out");
-    setTimeout(() => $o.remove(), DELAY_0 * 2);
+    setTimeout(() => $o.remove(), DELAY_CONFIG._0 * 2);
   }
 }
 
@@ -421,7 +429,7 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
         ignoreNextInput = true;
 
         onSelect(item, $input, $customInput);
-        setTimeout(() => { ignoreNextInput = false; }, DELAY_0);
+        setTimeout(() => { ignoreNextInput = false; }, DELAY_CONFIG._0);
       });
 
       $list.append($item);
@@ -468,7 +476,7 @@ function autocomplete($input, data, filterFn, displayFn, onSelect, options = {})
   });
 
   $input.addEventListener("blur", function () {
-    setTimeout(() => { $list.classList.remove("show"); }, DELAY_0);
+    setTimeout(() => { $list.classList.remove("show"); }, DELAY_CONFIG._0);
   });
 
   if (!AUTOCOMPLETE_LISTENER_ADDED) {

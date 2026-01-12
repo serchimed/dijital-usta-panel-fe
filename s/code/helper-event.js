@@ -34,7 +34,7 @@ function onAuthReady(callback) {
         console.warn("onAuthReady: Event missed, executing callback via timeout");
         wrappedCallback();
       }
-    }, DELAY_2);
+    }, DELAY_CONFIG._2);
   }
 }
 function onReady(callback) {

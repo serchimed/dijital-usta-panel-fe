@@ -39,7 +39,7 @@ onReady(async () => {
     let prmRef = prms.get("ref");
     let result = await apiBtn($btn, "Member/NewPasscode", { email: email, token: prmRef || "", isCompanyAccepted: true }, "Sisteme giriş sağlandı.", "Bir hata oluştu.");
     if (result && result.isSuccess) {
-      setTimeout(() => { window.location.href = "company-candidate-list.html"; }, DELAY_2);
+      setTimeout(() => { window.location.href = "company-candidate-list.html"; }, DELAY_CONFIG._2);
     }
   };
 

@@ -6,7 +6,7 @@ onAuthReady(async () => {
       apiEndpoint: "Data/GetWordpressData",
       confirmButtonText: "Başlat",
       sourceButton: this,
-      timeout: DELAY_6
+      timeout: DELAY_CONFIG._6
     });
   });
 
@@ -17,13 +17,13 @@ onAuthReady(async () => {
       apiEndpoint: "Data/SyncWordpressData",
       confirmButtonText: "Eşle",
       sourceButton: this,
-      timeout: DELAY_6
+      timeout: DELAY_CONFIG._6
     });
   });
 
   async function loadFileTable(tableId, apiEndpoint, downloadEndpoint) {
     let $tbody = document.getElementById(tableId);
-    let result = await api(apiEndpoint, {}, 0, DELAY_6);
+    let result = await api(apiEndpoint, {}, 0, DELAY_CONFIG._6);
 
     if (!result || result.error || !result.isSuccess) {
       $tbody.textContent = "";
@@ -59,7 +59,7 @@ onAuthReady(async () => {
           failed: "Yedek indirilemedi.",
           success: "Yedek indirildi."
         } : {};
-        await downloadCsv(downloadEndpoint, { fileName: file.fileName }, file.fileName, this.nextElementSibling, DELAY_6, messages);
+        await downloadCsv(downloadEndpoint, { fileName: file.fileName }, file.fileName, this.nextElementSibling, DELAY_CONFIG._6, messages);
         this.disabled = false;
       });
 
@@ -84,7 +84,7 @@ onAuthReady(async () => {
       setButtonLoading(buttons.submitBtn, true);
       btnTriggerBackup.disabled = true;
 
-      let result = await api("Data/TriggerBackup", {}, 0, DELAY_6);
+      let result = await api("Data/TriggerBackup", {}, 0, DELAY_CONFIG._6);
 
       if (result && result.isSuccess) {
         showModalMessage($msgDiv, "success", "Yedek başarıyla oluşturuldu!");
@@ -93,7 +93,7 @@ onAuthReady(async () => {
           closeModal($modal);
           await loadFileTable("backupsTable", "Data/GetBackups", "Data/GetBackupFile");
           btnTriggerBackup.disabled = false;
-        }, DELAY_2);
+        }, DELAY_CONFIG._2);
       } else {
         showModalMessage($msgDiv, "error", result?.data || result?.message || ERROR_MESSAGE_DEFAULT);
         setButtonLoading(buttons.submitBtn, false);
@@ -119,7 +119,7 @@ onAuthReady(async () => {
       showModalMessage($msgDiv, "error", "Lütfen önce bir yedek dosyası seçin");
       $mbody.append($msgDiv);
       let $modal = createModal("Uyarı", $mbody);
-      setTimeout(() => closeModal($modal), DELAY_2);
+      setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
       return;
     }
 
@@ -135,7 +135,7 @@ onAuthReady(async () => {
       formData.append('File', $file.files[0]);
 
       let controller = new AbortController();
-      let timeoutId = setTimeout(() => controller.abort(), DELAY_12);
+      let timeoutId = setTimeout(() => controller.abort(), DELAY_CONFIG._12);
 
       let response = await fetch(`${API}Data/CheckBackup`, {
         method: "POST",
@@ -151,7 +151,7 @@ onAuthReady(async () => {
         showModalMessage($msgDiv, "error", "Yedek analizi başarısız");
         $mbody.append($msgDiv);
         let $modal = createModal("Hata", $mbody);
-        setTimeout(() => closeModal($modal), DELAY_2);
+        setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
         document.getElementById("backupAnalysisResults").style.display = "none";
         return;
       }
@@ -163,7 +163,7 @@ onAuthReady(async () => {
         showModalMessage($msgDiv, "error", result?.message || "Yedek analizi başarısız");
         $mbody.append($msgDiv);
         let $modal = createModal("Hata", $mbody);
-        setTimeout(() => closeModal($modal), DELAY_2);
+        setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
         document.getElementById("backupAnalysisResults").style.display = "none";
         return;
       }
@@ -182,7 +182,7 @@ onAuthReady(async () => {
       showModalMessage($msgDiv, "error", errorMsg);
       $mbody.append($msgDiv);
       let $modal = createModal("Hata", $mbody);
-      setTimeout(() => closeModal($modal), DELAY_2);
+      setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
       document.getElementById("backupAnalysisResults").style.display = "none";
     } finally {
       this.disabled = false;
@@ -199,7 +199,7 @@ onAuthReady(async () => {
       showModalMessage($msgDiv, "error", "Lütfen önce bir yedek dosyası seçin");
       $mbody.append($msgDiv);
       let $modal = createModal("Uyarı", $mbody);
-      setTimeout(() => closeModal($modal), DELAY_2);
+      setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
       return;
     }
 
@@ -223,7 +223,7 @@ onAuthReady(async () => {
         formData.append('File', $file.files[0]);
 
         let controller = new AbortController();
-        let timeoutId = setTimeout(() => controller.abort(), DELAY_12);
+        let timeoutId = setTimeout(() => controller.abort(), DELAY_CONFIG._12);
 
         let response = await fetch(`${API}Data/Restore`, {
           method: "POST",
@@ -261,7 +261,7 @@ onAuthReady(async () => {
 
           showModalMessage($msgDiv, "success", successMsg);
           setButtonLoading(buttons.submitBtn, false);
-          setTimeout(() => { closeModal($modal); location.reload(); }, DELAY_2);
+          setTimeout(() => { closeModal($modal); location.reload(); }, DELAY_CONFIG._2);
         } else {
           showModalMessage($msgDiv, "error", result?.data || result?.message || ERROR_MESSAGE_DEFAULT);
           setButtonLoading(buttons.submitBtn, false);
@@ -296,7 +296,7 @@ onAuthReady(async () => {
       showModalMessage($msgDiv, "error", "Yedek analiz verisi hatalı. Lütfen backend'i kontrol edin.");
       $mbody.append($msgDiv);
       let $modal = createModal("Hata", $mbody);
-      setTimeout(() => closeModal($modal), DELAY_2);
+      setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
       document.getElementById("backupAnalysisResults").style.display = "none";
       return;
     }
@@ -467,7 +467,7 @@ onAuthReady(async () => {
       showModalMessage($msgDiv, "error", "Lütfen önce bir CSV dosyası seçin");
       $mbody.append($msgDiv);
       let $modal = createModal("Uyarı", $mbody);
-      setTimeout(() => closeModal($modal), DELAY_2);
+      setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
       return;
     }
 
@@ -489,7 +489,7 @@ onAuthReady(async () => {
         showModalMessage($msgDiv, "error", "CSV import işlemi başarısız");
         $mbody.append($msgDiv);
         let $modal = createModal("Hata", $mbody);
-        setTimeout(() => closeModal($modal), DELAY_2);
+        setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
         document.getElementById("csvImportResults").classList.add("none");
         return;
       }
@@ -502,7 +502,7 @@ onAuthReady(async () => {
         showModalMessage($msgDiv, "error", result?.message || "CSV import işlemi başarısız");
         $mbody.append($msgDiv);
         let $modal = createModal("Hata", $mbody);
-        setTimeout(() => closeModal($modal), DELAY_2);
+        setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
         document.getElementById("csvImportResults").classList.add("none");
         return;
       }
@@ -515,7 +515,7 @@ onAuthReady(async () => {
       showModalMessage($msgDiv, "error", "CSV import sırasında hata oluştu: " + error.message);
       $mbody.append($msgDiv);
       let $modal = createModal("Hata", $mbody);
-      setTimeout(() => closeModal($modal), DELAY_2);
+      setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
       document.getElementById("csvImportResults").classList.add("none");
     } finally {
       this.disabled = false;
@@ -531,7 +531,7 @@ onAuthReady(async () => {
       showModalMessage($msgDiv, "error", "Import sonuç verisi hatalı");
       $mbody.append($msgDiv);
       let $modal = createModal("Hata", $mbody);
-      setTimeout(() => closeModal($modal), DELAY_2);
+      setTimeout(() => closeModal($modal), DELAY_CONFIG._2);
       document.getElementById("csvImportResults").classList.add("none");
       return;
     }

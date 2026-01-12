@@ -13,6 +13,6 @@ onAuthReady(() => {
 
     if (showErrors($msg, errors)) { return; }
 
-    await apiBtn(this, "Candidate/ReInvite", req, "Adaylar tekrar davet edildi.", ERROR_MESSAGE_DEFAULT, "admin-candidate-list.html", null, DELAY_12, false);
+    await apiBtn(this, "Candidate/ReInvite", req, "Adaylar tekrar davet edildi.", ERROR_MESSAGE_DEFAULT, "admin-candidate-list.html", null, DELAY_CONFIG._12, false);
   });
 });
