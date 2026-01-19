@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adminler ve Editörler | Dijital Usta</title>
+  <title>Bireyler | Yanınızdayız</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
   <link rel="stylesheet" href="./s/site.css?v=163" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
@@ -19,27 +19,32 @@
     <ul></ul>
   </nav>
   <main>
-    <h2>Adminler ve Editörler</h2>
+    <h2 class="yaninizdayiz-header">Yanınızdayız - Bireyler</h2>
     <p>
-      <a href="admin-editor-invite.html">Editör Davet Et</a>
-      <br />
+      <a href="yaninizdayiz-business-list.html" class="qs mt27e">İşletmeler</a>
     </p>
     <input type="text" class="tblfilter" placeholder="filtrele" />
-    <table>
+    <select id="cityFilter" class="city-filter">
+      <option value="">Tüm İller</option>
+    </select>
+    <table class="load">
       <thead>
         <tr>
-          <th>Ad Soyad</th>
-          <th>Rol</th>
-          <th>İl</th>
-          <th>Organizasyon</th>
-          <th>E-posta</th>
-          <th>Telefon</th>
-          <th>Davet Bilgisi</th>
-          <th></th>
+          <th id="fullName">Ad Soyad</th>
+          <th id="email">E-Posta</th>
+          <th id="phone">Telefon</th>
+          <th id="province">İl</th>
+          <th id="gender">Cinsiyet</th>
+          <th id="educationLevel">Eğitim</th>
+          <th id="isEmployed">Çalışıyor</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody id="Individual"></tbody>
     </table>
+
+    <button id="exportBtn">CSV Olarak Dışa Aktar</button>
+    <p id="exportMsg"></p>
+
   </main>
   <footer>
     <div>
@@ -55,7 +60,7 @@
     </div>
   </footer>
   <script src="./s/site.js?v=163" defer></script>
-  <script src="./s/code/pages/admin-and-editor-list.js?v=163" defer></script>
+  <script src="./s/code/pages/yaninizdayiz-individual-list.js?v=163" defer></script>
 </body>
 
 </html>

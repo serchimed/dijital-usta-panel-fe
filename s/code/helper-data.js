@@ -129,15 +129,19 @@ function updateFilterCounter(filterInput, visibleCount, totalCount, searchText) 
   existingCounter.textContent = `( ${visibleCount} / ${totalCount} )`;
 }
 
-async function loadTables(querySelector = "table.load tbody") {
+async function loadTables(querySelector = "table.load tbody", customReq = null) {
   let tBodies = document.querySelectorAll(querySelector);
 
-  let key = window.location.pathname.includes("candidate") ? "memberId" : "companyId";
-  let id = getId(key);
-  if (!id) { id = USER.id; }
-
-  let req = {};
-  req[key] = id;
+  let req;
+  if (customReq !== null) {
+    req = customReq;
+  } else {
+    let key = window.location.pathname.includes("candidate") ? "memberId" : "companyId";
+    let id = getId(key);
+    if (!id) { id = USER.id; }
+    req = {};
+    req[key] = id;
+  }
 
   for (let tbody of tBodies) {
     tbody.textContent = "";
@@ -345,4 +349,156 @@ async function fillInputs(url, key = "memberId") {
   }
 
   return null;
+}
+
+function populateCityFilter(data, fieldName = "city", $cityFilter = null) {
+  if (!$cityFilter) { $cityFilter = document.getElementById("cityFilter"); }
+  if (!$cityFilter) return;
+
+  let cities = new Set();
+  data.forEach(item => {
+    let value = item[fieldName];
+    if (value && value.trim()) {
+      cities.add(value.trim());
+    }
+  });
+
+  let sortedCities = Array.from(cities).sort((a, b) => a.localeCompare(b, 'tr-TR'));
+
+  while ($cityFilter.options.length > 1) {
+    $cityFilter.remove(1);
+  }
+
+  sortedCities.forEach(city => {
+    let option = document.createElement("option");
+    option.value = city;
+    option.textContent = city;
+    $cityFilter.appendChild(option);
+  });
+}
+
+function filterTableWithCity(cityColumnIndex = 4, $table = null, $textFilter = null, $cityFilter = null) {
+  if (!$table) { $table = document.querySelector('table'); }
+  if (!$textFilter) { $textFilter = document.querySelector('.tblfilter'); }
+  if (!$cityFilter) { $cityFilter = document.getElementById('cityFilter'); }
+
+  if (!$table || !$textFilter || !$cityFilter) return;
+
+  let searchText = ($textFilter.value || '').toLowerCase().trim();
+  let selectedCity = ($cityFilter.value || '').trim();
+
+  let tbody = $table.querySelector('tbody');
+  if (!tbody) return;
+
+  let rows = tbody.querySelectorAll('tr');
+  let visibleCount = 0;
+  let totalCount = 0;
+
+  rows.forEach(row => {
+    let cells = row.querySelectorAll('td');
+    if (cells.length === 0 || (cells.length === 1 && cells[0].colSpan > 1)) return;
+
+    totalCount++;
+
+    let cityCell = cells[cityColumnIndex];
+    let cityValue = cityCell ? cityCell.textContent.trim() : '';
+    let cityMatch = !selectedCity || cityValue === selectedCity;
+
+    let textMatch = true;
+    if (searchText) {
+      let rowText = '';
+      cells.forEach(cell => { rowText += cell.textContent.toLowerCase() + ' '; });
+      textMatch = rowText.includes(searchText);
+    }
+
+    if (cityMatch && textMatch) {
+      row.style.display = '';
+      visibleCount++;
+    } else {
+      row.style.display = 'none';
+    }
+  });
+
+  updateFilterCounter($textFilter, visibleCount, totalCount, searchText || selectedCity);
+}
+
+function initTableSort(data, columnMapping, renderCallback, filterCallback = null) {
+  let sortState = { column: null, ascending: true };
+
+  function sortTable(column) {
+    if (sortState.column === column) {
+      sortState.ascending = !sortState.ascending;
+    } else {
+      sortState.column = column;
+      sortState.ascending = true;
+    }
+
+    data.sort((a, b) => {
+      let valA = a[column] ?? "";
+      let valB = b[column] ?? "";
+
+      if (typeof valA === "string") valA = valA.toLowerCase();
+      if (typeof valB === "string") valB = valB.toLowerCase();
+
+      if (valA < valB) return sortState.ascending ? -1 : 1;
+      if (valA > valB) return sortState.ascending ? 1 : -1;
+      return 0;
+    });
+
+    renderCallback();
+    if (filterCallback) { filterCallback(); }
+  }
+
+  let headers = document.querySelectorAll("table thead th");
+  headers.forEach((th, index) => {
+    if (columnMapping[index]) {
+      th.style.cursor = "pointer";
+      th.addEventListener(CLICK_EVENT, () => sortTable(columnMapping[index]));
+    }
+  });
+
+  return sortTable;
+}
+
+function renderTableFromData(data, $tbody = null) {
+  if (!$tbody) { $tbody = document.querySelector("table tbody"); }
+  if (!$tbody) return;
+
+  let table = $tbody.closest("table");
+  let headers = Array.from(table.querySelectorAll("thead th"));
+  let fragment = document.createDocumentFragment();
+
+  for (let item of data) {
+    let $tr = tr();
+    for (let th of headers) {
+      let key = th.id;
+      let value = item[key] ?? "";
+      let label = th.textContent || key;
+      value = formatFieldValue(value, key);
+      let $td = td(value);
+      $td.setAttribute("data-label", label);
+      $tr.append($td);
+    }
+    fragment.append($tr);
+  }
+
+  $tbody.textContent = "";
+  $tbody.append(fragment);
+}
+
+function initCityFilterEvents(cityColumnIndex, filterCallback = null) {
+  let $cityFilter = document.getElementById('cityFilter');
+  let $textFilter = document.querySelector('.tblfilter');
+
+  let handler = filterCallback || (() => filterTableWithCity(cityColumnIndex));
+
+  if ($cityFilter) {
+    $cityFilter.addEventListener('change', handler);
+  }
+
+  if ($textFilter) {
+    let newTextFilter = $textFilter.cloneNode(true);
+    $textFilter.parentNode.replaceChild(newTextFilter, $textFilter);
+    newTextFilter.addEventListener('input', handler);
+  }
 }

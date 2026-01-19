@@ -2,11 +2,11 @@ let MENU = {
   "admin": [
     { text: "Firmalar", href: "admin-company-list" },
     { text: "Adaylar", href: "admin-candidate-list" },
+    { text: "Yanınızdayız", href: "yaninizdayiz-individual-list", class: "menu-yaninizdayiz", activePages: ["yaninizdayiz-individual-list", "yaninizdayiz-business-list"] },
     { text: "Adminler ve Editörler", href: "admin-and-editor-list" },
     { text: "LMS İşlemleri", href: "admin-lms" },
     { text: "Data İşlemleri", href: "admin-data" },
     { text: "Ayarlar", href: "admin-settings" }
-
   ],
   "company": [
     { text: "Adaylar", href: "company-candidate-list" }
@@ -80,6 +80,9 @@ let PAGE_ROLES = {
   "admin-training-subject-edit": ["admin"],
   "admin-data": ["admin"],
   "admin-profile": ["admin", "editor"],
+
+  "yaninizdayiz-individual-list": ["admin"],
+  "yaninizdayiz-business-list": ["admin"],
   "admin-profile-edit": ["admin", "editor"],
 
   "company-profile": ["company"],
@@ -181,13 +184,16 @@ function buildAuthenticatedMenu() {
   let role = USER.role.toLowerCase();
   let items = MENU[role] || [];
   items.forEach(item => {
-    if (item.href === page) {
-      let $li = li();
+    let $li;
+    let isActive = item.href === page || (item.activePages && item.activePages.includes(page));
+    if (isActive) {
+      $li = li();
       $li.append(spn(item.text, "current-page"));
-      $nav.append($li);
     } else {
-      $nav.append(lia(item.text, item.href + ".html"));
+      $li = lia(item.text, item.href + ".html");
     }
+    if (item.class) { $li.classList.add(item.class); }
+    $nav.append($li);
   });
 
   $nav.append(li(""));
