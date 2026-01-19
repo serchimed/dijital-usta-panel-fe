@@ -1388,3 +1388,14 @@ table td a {
   font-size: 15px;
   vertical-align: middle;
 }
+
+.auto-refresh-info {
+  display: inline-block;
+  background-color: #e8f4fd;
+  color: #033366;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border-left: 3px solid #033366;
+  margin: 13px 0;
+}
