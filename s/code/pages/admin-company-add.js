@@ -54,8 +54,7 @@ onAuthReady(() => {
       city: val("city"),
       sector: val("sector"),
       webUrl: val("webUrl"),
-      trendyolUrl: val("trendyolUrl"),
-      // driveUrl: val("driveUrl")
+      trendyolUrl: val("trendyolUrl")
     };
 
     let errors = [];
@@ -81,7 +80,6 @@ onAuthReady(() => {
       }
     }
 
-    // if (req.driveUrl && !checkUrl(req.driveUrl)) { errors.push("Geçerli bir Drive klasör URL'si giriniz."); }
     if (showErrors($msg, errors)) { return; }
 
     clearErrors($msg);

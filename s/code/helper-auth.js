@@ -29,9 +29,20 @@ async function initAuth() {
 
   let allowedRoles = PAGE_ROLES[page];
   if (!allowedRoles || !allowedRoles.includes(USER.role.toLowerCase())) {
-    if (USER.role.toLowerCase() === "editor" && page === "index") {
-      window.location.replace("admin-company-list.html");
-      return;
+    let role = USER.role.toLowerCase();
+    if (page === "index" || page === "") {
+      if (role === "candidate") {
+        window.location.replace("candidate-profile.html");
+        return;
+      }
+      if (role === "company") {
+        window.location.replace("company-candidate-list.html");
+        return;
+      }
+      if (role === "editor") {
+        window.location.replace("admin-company-list.html");
+        return;
+      }
     }
     showHeaderMsg("Erişim izniniz yok, yönlendiriliyorsunuz...");
     hideOverlay();

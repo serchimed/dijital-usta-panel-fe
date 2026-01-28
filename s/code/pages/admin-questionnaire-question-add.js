@@ -8,7 +8,6 @@ onAuthReady(async () => {
     return;
   }
 
-  // Handle question type change to hide/show fields
   let questionTypeSelect = document.getElementById("questionType");
   let maxSelectionsLabel = document.getElementById("maxSelectionsLabel");
   let answersLabel = document.getElementById("answersLabel");

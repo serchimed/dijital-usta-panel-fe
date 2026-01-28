@@ -4,7 +4,7 @@ if ($tbody) {
     let data = e.detail.data;
     if (!data || data.length === 0 || e.detail.error) { return; }
 
-    let companyId = getUrlParam("id");
+    let companyId = getId("companyId");
     let rows = $tbody.querySelectorAll('tr');
     rows.forEach((tr, index) => {
       let item = data[index];
@@ -36,4 +36,9 @@ onAuthReady(async () => {
     loadTables()
   ]);
   setFilters();
+
+  if (USER && USER.role && USER.role.toLowerCase() === "editor") {
+    let $revisionsLink = document.getElementById("revisionsLink");
+    if ($revisionsLink) { $revisionsLink.style.display = "none"; }
+  }
 });

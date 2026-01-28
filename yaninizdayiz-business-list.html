@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>İşletmeler | Yanınızdayız</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
-  <link rel="stylesheet" href="./s/site.css?v=164" />
+  <link rel="stylesheet" href="./s/site.css?v=233" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
@@ -27,6 +27,8 @@
     <select id="cityFilter" class="city-filter">
       <option value="">Tüm İller</option>
     </select>
+    <button id="serverSearchBtn" class="server-search-btn" style="display:none;">Sunucuda Ara</button>
+    <button id="clearSearchBtn" class="clear-search-btn" style="display:none;">Temizle</button>
     <p class="auto-refresh-info">ℹ️ Veriler, Yanınızdayız API’sinden dakikada bir alınır.</p>
     <table class="load">
       <thead>
@@ -38,10 +40,16 @@
           <th id="province">İl</th>
           <th id="yearsInOperation">Faaliyet</th>
           <th id="hasTrendyolStore">Trendyol</th>
+          <th></th>
         </tr>
       </thead>
       <tbody id="Business"></tbody>
     </table>
+
+    <div class="pagination" id="pagination" style="display:none;">
+      <p id="pageStats"></p>
+      <div id="pageButtons"></div>
+    </div>
 
     <button id="exportBtn">CSV Olarak Dışa Aktar</button>
     <p id="exportMsg"></p>
@@ -60,8 +68,9 @@
       <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
     </div>
   </footer>
-  <script src="./s/site.js?v=164" defer></script>
-  <script src="./s/code/pages/yaninizdayiz-business-list.js?v=164" defer></script>
+  <script src="./s/site.js?v=233" defer></script>
+  <script src="./s/code/helper-yaninizdayiz-list.js?v=189" defer></script>
+  <script src="./s/code/pages/yaninizdayiz-business-list.js?v=233" defer></script>
 </body>
 
 </html>

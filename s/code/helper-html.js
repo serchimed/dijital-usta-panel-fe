@@ -266,7 +266,10 @@ function formatDateInput(dateStr) {
   if (!dateStr) return "";
   let dt = new Date(dateStr);
   if (isNaN(dt.getTime())) return "";
-  return dt.toISOString().split('T')[0];
+  let year = dt.getFullYear();
+  let month = String(dt.getMonth() + 1).padStart(2, '0');
+  let day = String(dt.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function checkEmail(email) {

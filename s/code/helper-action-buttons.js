@@ -463,21 +463,10 @@ function createHireApproveButton(memberId, companyId, displayName, isInterviewRe
     let $candidateLabel = lbl(`Aday: ${displayName}`);
     $candidateLabel.className = "modal-subdued";
 
-    // let $urlLabel = lbl("İşe Alım Evrak Linki (Google Drive URL)");
-    // let $urlInput = url("https://drive.google.com/...");
-    // $urlInput.required = true;
-    // $urlLabel.append($urlInput);
-
     let $msgDiv = div(CSS_CLASSES.modalMessage);
     let $modal;
 
     let handleHire = async function () {
-      // let url = $urlInput.value.trim();
-      // if (!url || !checkUrl(url)) {
-      //   showModalMessage($msgDiv, "error", "Geçerli bir evrak linkini giriniz.");
-      //   return;
-      // }
-
       setButtonLoading(buttons.submitBtn, true);
 
       let result = await api("Candidate/Hire", {

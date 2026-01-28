@@ -26,7 +26,6 @@ function getReq(id) {
     phone: val("phone"),
     webUrl: val("webUrl"),
     trendyolUrl: val("trendyolUrl"),
-    // driveUrl: val("driveUrl"),
     county: val("county"),
     languages: val("languages")
   };
@@ -36,9 +35,6 @@ onAuthReady(async () => {
   let id = await fillInputs("Company/Get", "companyId");
   let initialRequest = getReq(id);
 
-  if (USER.role === "editor" || USER.role === "admin") {
-    //document.getElementById("driveUrl").parentElement.style.display = "block";
-  }
 
   let $webUrl = document.getElementById("webUrl");
   let $trendyolUrl = document.getElementById("trendyolUrl");
@@ -102,9 +98,6 @@ onAuthReady(async () => {
 
     let redirectUrl = "company-profile.html?id=" + id;
     if (USER.role === "editor" || USER.role === "admin") {
-      // if (!req.driveUrl) { errors.push("Drive klasör URL'sini giriniz."); }
-      // else if (!checkUrl(req.driveUrl)) { errors.push("Geçerli bir Drive klasör URL'si giriniz."); }
-
       redirectUrl = "admin-company-profile.html?id=" + id;
     }
 

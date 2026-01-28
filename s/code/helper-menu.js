@@ -45,9 +45,11 @@ let PAGE_ROLES = {
 
   "admin-company-list": ["admin", "editor"],
   "admin-company-profile": ["admin", "editor"],
+  "admin-company-revisions": ["admin"],
   "admin-candidate-list": ["admin", "editor"],
   "admin-candidate-list-included": ["admin"],
   "admin-candidate-profile": ["admin", "editor"],
+  "admin-candidate-revisions": ["admin"],
   "admin-candidate-email-update": ["admin"],
 
   "admin-and-editor-list": ["admin"],

@@ -116,6 +116,9 @@ onAuthReady(async () => {
 
     let $surveyLink = document.querySelector('a.qs[href*="admin-candidate-survey.html"]');
     if ($surveyLink) { $surveyLink.style.display = "none"; }
+
+    let $revisionsLink = document.getElementById("revisionsLink");
+    if ($revisionsLink) { $revisionsLink.style.display = "none"; }
   }
 
   let $btnAIApprove = document.getElementById("btnAIApprove");
