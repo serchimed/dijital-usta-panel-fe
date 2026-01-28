@@ -57,9 +57,9 @@ function createYaninizdayizList(config) {
   function handleTextFilterInput() {
     let searchText = elements.$textFilter.value.trim();
     if (searchText.length >= YANINIZDAYIZ_CONFIG.MIN_SEARCH_LENGTH && searchText !== state.searchTerm) {
-      elements.$serverSearchBtn.style.display = 'inline-block';
+      elements.$serverSearchBtn.classList.remove('hidden');
     } else if (searchText === state.searchTerm || searchText.length === 0) {
-      elements.$serverSearchBtn.style.display = 'none';
+      elements.$serverSearchBtn.classList.add('hidden');
     }
     filterTableWithCity(config.cityColumnIndex);
   }
@@ -68,9 +68,9 @@ function createYaninizdayizList(config) {
     state.searchTerm = elements.$textFilter.value.trim();
     state.currentPage = 1;
     await loadData();
-    elements.$serverSearchBtn.style.display = 'none';
+    elements.$serverSearchBtn.classList.add('hidden');
     if (state.searchTerm) {
-      elements.$clearSearchBtn.style.display = 'inline-block';
+      elements.$clearSearchBtn.classList.remove('hidden');
     }
   }
 
@@ -80,8 +80,8 @@ function createYaninizdayizList(config) {
     elements.$cityFilter.value = "";
     state.currentPage = 1;
     await loadData();
-    elements.$clearSearchBtn.style.display = 'none';
-    elements.$serverSearchBtn.style.display = 'none';
+    elements.$clearSearchBtn.classList.add('hidden');
+    elements.$serverSearchBtn.classList.add('hidden');
   }
 
   function showLoading() {
@@ -92,13 +92,13 @@ function createYaninizdayizList(config) {
   function showError() {
     elements.$tbody.textContent = "";
     elements.$tbody.append(getMsgLine(YANINIZDAYIZ_CONFIG.MESSAGES.LOAD_ERROR));
-    elements.$pagination.style.display = 'none';
+    elements.$pagination.classList.add('hidden');
   }
 
   function showNoData() {
     elements.$tbody.textContent = "";
     elements.$tbody.append(getMsgLine(YANINIZDAYIZ_CONFIG.MESSAGES.NO_DATA));
-    elements.$pagination.style.display = 'none';
+    elements.$pagination.classList.add('hidden');
   }
 
   function buildRequest() {
@@ -192,11 +192,11 @@ function createYaninizdayizList(config) {
 
   function updatePagination() {
     if (state.totalPages <= 1 && state.totalCount <= YANINIZDAYIZ_CONFIG.PAGE_SIZE) {
-      elements.$pagination.style.display = 'none';
+      elements.$pagination.classList.add('hidden');
       return;
     }
 
-    elements.$pagination.style.display = 'block';
+    elements.$pagination.classList.remove('hidden');
     updatePaginationStats();
     updatePaginationButtons();
   }

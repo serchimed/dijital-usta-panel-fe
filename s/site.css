@@ -1511,3 +1511,7 @@ ins {
   background: #efe;
   text-decoration: none;
 }
+
+.hidden {
+  display: none;
+}

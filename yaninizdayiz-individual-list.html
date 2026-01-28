@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bireyler | Yanınızdayız</title>
   <link rel="preconnect" href="https://api.dijitalusta.net" />
-  <link rel="stylesheet" href="./s/site.css?v=233" />
+  <link rel="stylesheet" href="./s/site.css?v=236" />
   <link rel="icon" type="image/x-icon" href="./s/favicon.ico" />
 </head>
 
@@ -27,8 +27,8 @@
     <select id="cityFilter" class="city-filter">
       <option value="">Tüm İller</option>
     </select>
-    <button id="serverSearchBtn" class="server-search-btn" style="display:none;">Sunucuda Ara</button>
-    <button id="clearSearchBtn" class="clear-search-btn" style="display:none;">Temizle</button>
+    <button id="serverSearchBtn" class="server-search-btn hidden">Sunucuda Ara</button>
+    <button id="clearSearchBtn" class="clear-search-btn hidden">Temizle</button>
     <p class="auto-refresh-info">ℹ️ Veriler, Yanınızdayız API’sinden dakikada bir alınır.</p>
     <table class="load">
       <thead>
@@ -46,7 +46,7 @@
       <tbody id="Individual"></tbody>
     </table>
 
-    <div class="pagination" id="pagination" style="display:none;">
+    <div class="pagination hidden" id="pagination">
       <p id="pageStats"></p>
       <div id="pageButtons"></div>
     </div>
@@ -68,9 +68,9 @@
       <a href="concent.html">KVKK Aydınlatma Metni ve Açık Rıza Formu</a>
     </div>
   </footer>
-  <script src="./s/site.js?v=233" defer></script>
+  <script src="./s/site.js?v=236" defer></script>
   <script src="./s/code/helper-yaninizdayiz-list.js?v=189" defer></script>
-  <script src="./s/code/pages/yaninizdayiz-individual-list.js?v=233" defer></script>
+  <script src="./s/code/pages/yaninizdayiz-individual-list.js?v=236" defer></script>
 </body>
 
 </html>
