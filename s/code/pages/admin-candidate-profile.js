@@ -4,6 +4,20 @@ let companiesLoaded = false;
 
 let $shortlistTbody = document.getElementById("CandidateShortlisted");
 
+let $candidateCompanyTbody = document.getElementById("CandidateCompany");
+if ($candidateCompanyTbody) {
+  $candidateCompanyTbody.addEventListener("tableLoaded", function (e) {
+    if (e.detail.error || !e.detail.data || e.detail.data.length === 0) { return; }
+
+    let rows = this.querySelectorAll("tr");
+    e.detail.data.forEach((item, index) => {
+      if (item.isAllowed === false) {
+        if (rows[index]) { rows[index].remove(); }
+      }
+    });
+  });
+}
+
 function createCancelHireButton(memberId, companyId, onSuccess) {
   let $hireCancelBtn = btn("btn-danger", "İşe Alımı İptal Et");
 
@@ -398,7 +412,7 @@ onAuthReady(async () => {
         if (!companiesLoaded) {
           let companyResult = await api("CandidateCompany/GetAll", { memberId: candidateId });
           if (companyResult && companyResult.isSuccess) {
-            companies = companyResult.data;
+            companies = companyResult.data.filter(c => c.isAllowed !== false);
             companiesLoaded = true;
           }
         }

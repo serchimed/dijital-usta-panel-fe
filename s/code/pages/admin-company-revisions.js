@@ -28,7 +28,7 @@ function isFalsy(v) {
 
 function getDiff(older, newer) {
   let changes = {};
-  let allKeys = new Set([...Object.keys(older || {}), ...Object.keys(newer || {})]);
+  let allKeys = new Set(Object.keys(newer || {}));
 
   for (let key of allKeys) {
     if (key === "id" || key === "companyId" || key === "createdAt" || key === "updatedAt" || key === "revisionId" || key === "updatedBy" || key === "updatedByName" || key === "updatedByEmail") continue;
@@ -36,7 +36,6 @@ function getDiff(older, newer) {
     let oldRaw = older?.[key];
     let newRaw = newer?.[key];
 
-    // Her iki değer de falsy ise değişiklik sayma
     if (isFalsy(oldRaw) && isFalsy(newRaw)) continue;
 
     let oldVal = fmtVal(oldRaw);
@@ -58,7 +57,6 @@ onAuthReady(async () => {
 
   let companyId = getId("companyId");
 
-  // .qs linklerine ?id= parametresi ekle (admin-company-profile.html ?id= bekliyor)
   let $qsLinks = document.querySelectorAll(".qs");
   $qsLinks.forEach($a => $a.href = $a.href + "?id=" + companyId);
 
@@ -118,7 +116,6 @@ onAuthReady(async () => {
       let changes = getDiff(revision, compareWith);
       let changeCount = Object.keys(changes).length;
 
-      // Değişiklik yoksa bu revizyonu gösterme
       if (changeCount === 0) continue;
 
       $summary.textContent = summaryBase + " - " + changeCount + " alan değişti";

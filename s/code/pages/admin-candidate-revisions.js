@@ -74,9 +74,6 @@ const ACTION_LABELS = {
   Unblocked: "Engelleme Kaldırıldı"
 };
 
-// Karşılaştırmadan hariç tutulan alanlar:
-// - Teknik alanlar: id, memberId, createdAt, updatedAt, revisionId, updatedBy, updatedByName, updatedByEmail, type, timestamp
-// - Sadece current'ta olan alanlar (revision'da yok): motivationLetter, aIApproved, isInviteAccepted, isHired, isHireInformed, hiredCompanyName
 const EXCLUDED_KEYS = ["id", "memberId", "createdAt", "updatedAt", "revisionId", "updatedBy", "updatedByName", "updatedByEmail", "type", "timestamp", "motivationLetter", "aIApproved", "isInviteAccepted", "isHired", "isHireInformed", "hiredCompanyName"];
 
 function fmtVal(v) {
@@ -115,7 +112,7 @@ function isFalsy(v) {
 
 function getDiff(older, newer) {
   let changes = {};
-  let allKeys = new Set([...Object.keys(older || {}), ...Object.keys(newer || {})]);
+  let allKeys = new Set(Object.keys(newer || {}));
 
   for (let key of allKeys) {
     if (EXCLUDED_KEYS.includes(key)) {
@@ -288,7 +285,6 @@ onAuthReady(async () => {
 
   let memberId = getId("memberId");
 
-  // .qs linklerine ?id= parametresi ekle (admin-candidate-profile.html ?id= bekliyor)
   let $qsLinks = document.querySelectorAll(".qs");
   $qsLinks.forEach($a => $a.href = $a.href + "?id=" + memberId);
 
@@ -319,7 +315,6 @@ onAuthReady(async () => {
 
   items.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-  // revision tipindeki itemları ayır (diff için)
   let revisionItems = items.filter(item => item.type === "revision");
 
   for (let i = 0; i < items.length; i++) {
@@ -348,7 +343,6 @@ onAuthReady(async () => {
         $summary.textContent = summaryText;
         renderRevisionFull(itemData, $content);
       } else {
-        // Daha eski revizyonla karşılaştır (eski → bu)
         let olderRevision = revisionItems[revisionIndex + 1];
         let olderData = olderRevision.data || olderRevision;
         let changes = getDiff(olderData, itemData);
